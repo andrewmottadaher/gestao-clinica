@@ -152,4 +152,26 @@ class EspecialidadeServiceTest {
         assertEquals("Neurologia", resultado.getNome());
         assertEquals("Especialidade do sistema nervoso", resultado.getDescricao());
     }
+
+    @Test
+    void naoDeveAtualizarEspecialidadeComNomeDuplicado() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade segunda = service.cadastrar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizar(
+                segunda.getId(),
+                "Cardiologia",
+                "Nova descricao"));
+
+        assertEquals("Neurologia",
+                repository.buscarPorId(segunda.getId()).getNome());
+    }
 }

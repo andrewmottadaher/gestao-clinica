@@ -39,4 +39,16 @@ public class EspecialidadeRepository {
                 .anyMatch(especialidade -> especialidade.getNome().trim()
                         .equalsIgnoreCase(nome.trim()));
     }
+
+    public Especialidade atualizar(int id, String nome, String descricao) {
+        if (!especialidades.containsKey(id)) {
+            return null;
+        }
+
+        Especialidade especialidade = new Especialidade(id, nome, descricao);
+
+        especialidades.put(id, especialidade);
+
+        return especialidade;
+    }
 }

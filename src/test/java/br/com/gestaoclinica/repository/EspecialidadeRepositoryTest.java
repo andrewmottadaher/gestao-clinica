@@ -159,4 +159,17 @@ class EspecialidadeRepositoryTest {
                         "Especialidade do sistema nervoso",
                         atualizada.getDescricao()));
     }
+
+    @Test
+    void deveRetornarNuloAoAtualizarEspecialidadeInexistente() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade atualizada = repository.atualizar(
+                999,
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        assertNull(atualizada);
+        assertTrue(repository.listarTodos().isEmpty());
+    }
 }

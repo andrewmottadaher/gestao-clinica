@@ -31,4 +31,8 @@ public class MedicoRepository {
 
         return medico;
     }
+
+    public Medico buscarPorId(int id) {
+        return medicos.get(id);
+    }
 }

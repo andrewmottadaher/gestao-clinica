@@ -23,4 +23,11 @@ class EspecialidadeTest {
                 () -> new Especialidade(
                         0, "Cardiologia", "Especialidade do coracao"));
     }
+
+    @Test
+    void naoDeveCriarEspecialidadeComNomeNulo() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Especialidade(
+                        1, null, "Especialidade do coracao"));
+    }
 }

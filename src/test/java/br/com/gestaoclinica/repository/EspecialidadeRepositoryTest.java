@@ -63,4 +63,11 @@ class EspecialidadeRepositoryTest {
 
         assertNull(encontrada);
     }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoExistiremEspecialidades() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        assertTrue(repository.listarTodos().isEmpty());
+    }
 }

@@ -51,4 +51,11 @@ class EspecialidadeTest {
                 () -> new Especialidade(
                         1, "Cardiologia", null));
     }
+
+    @Test
+    void naoDeveCriarEspecialidadeComDescricaoVazia() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Especialidade(
+                        1, "Cardiologia", ""));
+    }
 }

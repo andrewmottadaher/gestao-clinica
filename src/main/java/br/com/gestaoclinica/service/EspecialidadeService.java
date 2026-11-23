@@ -38,4 +38,8 @@ public class EspecialidadeService {
 
         return repository.atualizar(id, nome, descricao);
     }
+
+    public boolean excluir(int id) {
+        return repository.excluir(id);
+    }
 }

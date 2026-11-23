@@ -51,4 +51,8 @@ public class EspecialidadeRepository {
 
         return especialidade;
     }
+
+    public boolean excluir(int id) {
+        return especialidades.remove(id) != null;
+    }
 }

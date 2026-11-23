@@ -258,4 +258,30 @@ class EspecialidadeServiceTest {
         assertEquals(cadastrada.getId(), resultado.get(0).getId());
         assertEquals("Cardiologia", resultado.get(0).getNome());
     }
+
+    @Test
+    void deveManterOutrasEspecialidadesAposExcluirUma() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade segunda = service.cadastrar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        service.cadastrar(
+                "Ortopedia",
+                "Especialidade dos ossos");
+
+        boolean resultado = service.excluir(segunda.getId());
+
+        assertTrue(resultado);
+        assertEquals(2, service.listarTodos().size());
+        assertNull(service.buscarPorId(segunda.getId()));
+        assertNotNull(service.buscarPorId(1));
+        assertNotNull(service.buscarPorId(3));
+    }
 }

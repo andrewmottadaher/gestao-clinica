@@ -12,6 +12,10 @@ public class Especialidade {
             throw new IllegalArgumentException("O ID deve ser maior que zero.");
         }
 
+        if (nome == null) {
+            throw new IllegalArgumentException("O nome da especialidade e obrigatorio.");
+        }
+
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;

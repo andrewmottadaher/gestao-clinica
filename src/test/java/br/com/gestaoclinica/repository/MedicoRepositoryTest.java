@@ -117,4 +117,33 @@ class MedicoRepositoryTest {
 
         assertNull(encontrado);
     }
+
+    @Test
+    void deveLocalizarMedicoCorretoEntreVariosCadastrados() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        repository.salvar(
+                "Joao Silva", "CRM12345", "joao@email.com",
+                "31999999999", especialidade);
+
+        Medico segundo = repository.salvar(
+                "Maria Souza", "CRM67890", "maria@email.com",
+                "31988888888", especialidade);
+
+        repository.salvar(
+                "Pedro Santos", "CRM54321", "pedro@email.com",
+                "31977777777", especialidade);
+
+        Medico encontrado = repository.buscarPorId(2);
+
+        assertAll(
+                () -> assertNotNull(encontrado),
+                () -> assertEquals(segundo, encontrado),
+                () -> assertEquals("Maria Souza", encontrado.getNome()));
+    }
 }

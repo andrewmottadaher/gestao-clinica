@@ -58,4 +58,11 @@ class EspecialidadeTest {
                 () -> new Especialidade(
                         1, "Cardiologia", ""));
     }
+
+    @Test
+    void naoDeveCriarEspecialidadeComDescricaoEmBranco() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Especialidade(
+                        1, "Cardiologia", "   "));
+    }
 }

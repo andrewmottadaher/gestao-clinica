@@ -5,6 +5,8 @@ import br.com.gestaoclinica.model.Medico;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MedicoRepository {
 
@@ -34,5 +36,9 @@ public class MedicoRepository {
 
     public Medico buscarPorId(int id) {
         return medicos.get(id);
+    }
+
+    public List<Medico> listarTodos() {
+        return new ArrayList<>(medicos.values());
     }
 }

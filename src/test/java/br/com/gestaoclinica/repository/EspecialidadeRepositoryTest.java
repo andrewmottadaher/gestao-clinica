@@ -281,4 +281,26 @@ class EspecialidadeRepositoryTest {
 
         assertEquals(1, especialidade.getId());
     }
+
+    @Test
+    void deveBuscarEspecialidadeCorretaEntreVariosRegistros() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade segunda = repository.salvar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        repository.salvar(
+                "Ortopedia",
+                "Especialidade dos ossos");
+
+        Especialidade resultado = repository.buscarPorId(segunda.getId());
+
+        assertNotNull(resultado);
+        assertEquals("Neurologia", resultado.getNome());
+    }
 }

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 class EspecialidadeRepositoryTest {
 
     @Test
@@ -302,5 +304,20 @@ class EspecialidadeRepositoryTest {
 
         assertNotNull(resultado);
         assertEquals("Neurologia", resultado.getNome());
+    }
+
+    @Test
+    void naoDevePermitirAlteracaoDoRepositorioPelaListaRetornada() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        List<Especialidade> resultado = repository.listarTodos();
+
+        resultado.clear();
+
+        assertEquals(1, repository.listarTodos().size());
     }
 }

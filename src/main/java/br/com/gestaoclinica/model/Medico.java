@@ -12,6 +12,11 @@ public class Medico {
 
     public Medico(int id, String nome, String crm, String email,
             String telefone, Especialidade especialidade) {
+        if (id <= 0) {
+            throw new IllegalArgumentException(
+                    "O ID do medico deve ser maior que zero.");
+        }
+
         this.id = id;
         this.nome = nome;
         this.crm = crm;

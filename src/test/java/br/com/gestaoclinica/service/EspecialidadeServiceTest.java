@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -202,5 +203,16 @@ class EspecialidadeServiceTest {
 
         assertTrue(resultado);
         assertNull(service.buscarPorId(cadastrada.getId()));
+    }
+
+    @Test
+    void deveRetornarFalsoAoExcluirEspecialidadeInexistente() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        boolean resultado = service.excluir(999);
+
+        assertFalse(resultado);
+        assertTrue(repository.listarTodos().isEmpty());
     }
 }

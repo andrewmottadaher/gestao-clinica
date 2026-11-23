@@ -218,4 +218,28 @@ class EspecialidadeServiceTest {
         assertFalse(resultado);
         assertTrue(repository.listarTodos().isEmpty());
     }
+
+    @Test
+    void deveBuscarEspecialidadeCorretaEntreVariosRegistros() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade segunda = service.cadastrar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        service.cadastrar(
+                "Ortopedia",
+                "Especialidade dos ossos");
+
+        Especialidade resultado = service.buscarPorId(segunda.getId());
+
+        assertNotNull(resultado);
+        assertEquals(segunda.getId(), resultado.getId());
+        assertEquals("Neurologia", resultado.getNome());
+    }
 }

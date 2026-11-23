@@ -183,4 +183,14 @@ class MedicoRepositoryTest {
                 () -> assertTrue(medicos.stream()
                         .anyMatch(m -> m.getNome().equals("Pedro Santos"))));
     }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoExistiremMedicos() {
+        MedicoRepository repository = new MedicoRepository();
+
+        var medicos = repository.listarTodos();
+
+        assertNotNull(medicos);
+        assertTrue(medicos.isEmpty());
+    }
 }

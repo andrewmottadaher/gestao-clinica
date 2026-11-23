@@ -193,4 +193,27 @@ class MedicoRepositoryTest {
         assertNotNull(medicos);
         assertTrue(medicos.isEmpty());
     }
+
+    @Test
+    void deveRetornarCopiaIndependenteDaListaDeMedicos() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        var medicos = repository.listarTodos();
+
+        medicos.clear();
+
+        assertEquals(1, repository.listarTodos().size());
+    }
 }

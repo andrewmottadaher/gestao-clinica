@@ -3,6 +3,7 @@ package br.com.gestaoclinica.service;
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -98,5 +99,25 @@ class EspecialidadeServiceTest {
         Especialidade resultado = service.buscarPorId(999);
 
         assertNull(resultado);
+    }
+
+    @Test
+    void deveListarTodasAsEspecialidadesCadastradas() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        service.cadastrar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        List<Especialidade> resultado = service.listarTodos();
+
+        assertEquals(2, resultado.size());
+        assertEquals("Cardiologia", resultado.get(0).getNome());
+        assertEquals("Neurologia", resultado.get(1).getNome());
     }
 }

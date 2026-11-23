@@ -108,4 +108,13 @@ class MedicoRepositoryTest {
                 () -> assertEquals(cadastrado, encontrado),
                 () -> assertEquals("Joao Silva", encontrado.getNome()));
     }
+
+    @Test
+    void deveRetornarNullQuandoMedicoNaoExistir() {
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico encontrado = repository.buscarPorId(99);
+
+        assertNull(encontrado);
+    }
 }

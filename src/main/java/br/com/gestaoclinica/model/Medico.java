@@ -73,4 +73,9 @@ public class Medico {
     public String getAtivo() {
         return ativo;
     }
+
+    public Medico(int id, String nome, String crm, String email,
+            String telefone, Especialidade especialidade, String ativo) {
+        this(id, nome, crm, email, telefone, especialidade);
+    }
 }

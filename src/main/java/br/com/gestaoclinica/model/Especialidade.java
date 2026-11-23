@@ -12,7 +12,7 @@ public class Especialidade {
             throw new IllegalArgumentException("O ID deve ser maior que zero.");
         }
 
-        if (nome == null || nome.isEmpty()) {
+        if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("O nome da especialidade e obrigatorio.");
         }
 

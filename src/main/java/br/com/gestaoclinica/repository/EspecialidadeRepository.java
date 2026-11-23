@@ -31,13 +31,18 @@ public class EspecialidadeRepository {
     }
 
     public boolean existeNome(String nome) {
+        return existeNome(nome, 0);
+    }
+
+    public boolean existeNome(String nome, int idIgnorado) {
         if (nome == null) {
             return false;
         }
 
         return especialidades.values().stream()
-                .anyMatch(especialidade -> especialidade.getNome().trim()
-                        .equalsIgnoreCase(nome.trim()));
+                .anyMatch(especialidade -> especialidade.getId() != idIgnorado
+                        && especialidade.getNome().trim()
+                                .equalsIgnoreCase(nome.trim()));
     }
 
     public Especialidade atualizar(int id, String nome, String descricao) {

@@ -70,4 +70,24 @@ class EspecialidadeRepositoryTest {
 
         assertTrue(repository.listarTodos().isEmpty());
     }
+
+    @Test
+    void deveListarTodasAsEspecialidadesCadastradas() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade primeira = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade segunda = repository.salvar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        var especialidades = repository.listarTodos();
+
+        assertAll(
+                () -> assertEquals(2, especialidades.size()),
+                () -> assertTrue(especialidades.contains(primeira)),
+                () -> assertTrue(especialidades.contains(segunda)));
+    }
 }

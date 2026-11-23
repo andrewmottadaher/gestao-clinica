@@ -223,4 +223,21 @@ class EspecialidadeRepositoryTest {
         assertFalse(excluida);
         assertTrue(repository.listarTodos().isEmpty());
     }
+
+    @Test
+    void deveIdentificarNomeCadastradoEmOutraEspecialidade() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade primeira = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        repository.salvar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        assertTrue(repository.existeNome(
+                "Neurologia",
+                primeira.getId()));
+    }
 }

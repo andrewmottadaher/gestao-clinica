@@ -266,4 +266,19 @@ class EspecialidadeRepositoryTest {
                 "Neurologia",
                 especialidade.getId()));
     }
+
+    @Test
+    void naoDeveConsumirIdAoTentarSalvarEspecialidadeInvalida() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        assertThrows(IllegalArgumentException.class, () -> repository.salvar(
+                null,
+                "Especialidade sem nome"));
+
+        Especialidade especialidade = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertEquals(1, especialidade.getId());
+    }
 }

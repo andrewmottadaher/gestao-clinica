@@ -320,4 +320,29 @@ class EspecialidadeRepositoryTest {
 
         assertEquals(1, repository.listarTodos().size());
     }
+
+    @Test
+    void deveManterOutrasEspecialidadesAposExcluirUma() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade segunda = repository.salvar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        repository.salvar(
+                "Ortopedia",
+                "Especialidade dos ossos");
+
+        boolean excluida = repository.excluir(segunda.getId());
+
+        assertTrue(excluida);
+        assertEquals(2, repository.listarTodos().size());
+        assertNull(repository.buscarPorId(segunda.getId()));
+        assertTrue(repository.existeNome("Cardiologia"));
+        assertTrue(repository.existeNome("Ortopedia"));
+    }
 }

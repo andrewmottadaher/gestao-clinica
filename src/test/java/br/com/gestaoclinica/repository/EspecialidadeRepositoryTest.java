@@ -108,4 +108,15 @@ class EspecialidadeRepositoryTest {
 
         assertFalse(repository.existeNome("Cardiologia"));
     }
+
+    @Test
+    void deveIgnorarDiferencasEntreLetrasMaiusculasEMinusculas() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertTrue(repository.existeNome("CARDIOLOGIA"));
+    }
 }

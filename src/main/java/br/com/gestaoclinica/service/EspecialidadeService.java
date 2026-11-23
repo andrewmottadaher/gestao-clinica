@@ -3,6 +3,8 @@ package br.com.gestaoclinica.service;
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
 
+import java.util.List;
+
 public class EspecialidadeService {
 
     private final EspecialidadeRepository repository;
@@ -22,5 +24,9 @@ public class EspecialidadeService {
 
     public Especialidade buscarPorId(int id) {
         return repository.buscarPorId(id);
+    }
+
+    public List<Especialidade> listarTodos() {
+        return repository.listarTodos();
     }
 }

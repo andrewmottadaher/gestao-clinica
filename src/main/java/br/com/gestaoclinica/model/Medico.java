@@ -12,6 +12,11 @@ public class Medico {
 
     public Medico(int id, String nome, String crm, String email,
             String telefone, Especialidade especialidade) {
+        this(id, nome, crm, email, telefone, especialidade, "S");
+    }
+
+    public Medico(int id, String nome, String crm, String email,
+            String telefone, Especialidade especialidade, String ativo) {
         if (id <= 0) {
             throw new IllegalArgumentException(
                     "O ID do medico deve ser maior que zero.");
@@ -43,7 +48,7 @@ public class Medico {
         this.email = email;
         this.telefone = telefone;
         this.especialidade = especialidade;
-        this.ativo = "S";
+        this.ativo = ativo;
     }
 
     public int getId() {
@@ -72,10 +77,5 @@ public class Medico {
 
     public String getAtivo() {
         return ativo;
-    }
-
-    public Medico(int id, String nome, String crm, String email,
-            String telefone, Especialidade especialidade, String ativo) {
-        this(id, nome, crm, email, telefone, especialidade);
     }
 }

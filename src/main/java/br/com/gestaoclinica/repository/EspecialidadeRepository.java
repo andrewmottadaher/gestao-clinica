@@ -1,0 +1,63 @@
+package br.com.gestaoclinica.repository;
+
+import br.com.gestaoclinica.model.Especialidade;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class EspecialidadeRepository {
+
+    private final Map<Integer, Especialidade> especialidades = new HashMap<>();
+    private int proximoId = 1;
+
+    public Especialidade salvar(String nome, String descricao) {
+        Especialidade especialidade = new Especialidade(
+                proximoId, nome, descricao);
+
+        especialidades.put(proximoId, especialidade);
+        proximoId++;
+
+        return especialidade;
+    }
+
+    public Especialidade buscarPorId(int id) {
+        return especialidades.get(id);
+    }
+
+    public List<Especialidade> listarTodos() {
+        return new ArrayList<>(especialidades.values());
+    }
+
+    public boolean existeNome(String nome) {
+        return existeNome(nome, 0);
+    }
+
+    public boolean existeNome(String nome, int idIgnorado) {
+        if (nome == null) {
+            return false;
+        }
+
+        return especialidades.values().stream()
+                .anyMatch(especialidade -> especialidade.getId() != idIgnorado
+                        && especialidade.getNome().trim()
+                                .equalsIgnoreCase(nome.trim()));
+    }
+
+    public Especialidade atualizar(int id, String nome, String descricao) {
+        if (!especialidades.containsKey(id)) {
+            return null;
+        }
+
+        Especialidade especialidade = new Especialidade(id, nome, descricao);
+
+        especialidades.put(id, especialidade);
+
+        return especialidade;
+    }
+
+    public boolean excluir(int id) {
+        return especialidades.remove(id) != null;
+    }
+}

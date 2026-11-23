@@ -188,4 +188,19 @@ class EspecialidadeServiceTest {
         assertNull(resultado);
         assertTrue(repository.listarTodos().isEmpty());
     }
+
+    @Test
+    void deveExcluirEspecialidadeCadastrada() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        Especialidade cadastrada = service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        boolean resultado = service.excluir(cadastrada.getId());
+
+        assertTrue(resultado);
+        assertNull(service.buscarPorId(cadastrada.getId()));
+    }
 }

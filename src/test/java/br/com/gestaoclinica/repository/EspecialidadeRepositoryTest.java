@@ -172,4 +172,29 @@ class EspecialidadeRepositoryTest {
         assertNull(atualizada);
         assertTrue(repository.listarTodos().isEmpty());
     }
+
+    @Test
+    void naoDeveAlterarEspecialidadeQuandoNomeForInvalido() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade cadastrada = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> repository.atualizar(
+                        cadastrada.getId(),
+                        " ",
+                        "Nova descricao"));
+
+        Especialidade encontrada = repository.buscarPorId(cadastrada.getId());
+
+        assertAll(
+                () -> assertNotNull(encontrada),
+                () -> assertEquals("Cardiologia", encontrada.getNome()),
+                () -> assertEquals(
+                        "Especialidade do coracao",
+                        encontrada.getDescricao()));
+    }
 }

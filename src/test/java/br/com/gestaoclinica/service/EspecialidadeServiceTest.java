@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EspecialidadeServiceTest {
 
@@ -119,5 +120,16 @@ class EspecialidadeServiceTest {
         assertEquals(2, resultado.size());
         assertEquals("Cardiologia", resultado.get(0).getNome());
         assertEquals("Neurologia", resultado.get(1).getNome());
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoExistiremEspecialidades() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        List<Especialidade> resultado = service.listarTodos();
+
+        assertNotNull(resultado);
+        assertTrue(resultado.isEmpty());
     }
 }

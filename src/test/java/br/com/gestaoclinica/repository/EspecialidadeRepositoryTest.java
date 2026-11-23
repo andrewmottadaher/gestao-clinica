@@ -13,13 +13,28 @@ class EspecialidadeRepositoryTest {
 
         Especialidade especialidade = repository.salvar(
                 "Cardiologia",
-                "Especialidade do coracao"
-        );
+                "Especialidade do coracao");
 
         assertAll(
                 () -> assertEquals(1, especialidade.getId()),
                 () -> assertEquals("Cardiologia", especialidade.getNome()),
-                () -> assertEquals("Especialidade do coracao", especialidade.getDescricao())
-        );
+                () -> assertEquals("Especialidade do coracao", especialidade.getDescricao()));
+    }
+
+    @Test
+    void deveGerarIdsSequenciaisAoSalvarEspecialidades() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade primeira = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade segunda = repository.salvar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        assertAll(
+                () -> assertEquals(1, primeira.getId()),
+                () -> assertEquals(2, segunda.getId()));
     }
 }

@@ -213,4 +213,14 @@ class EspecialidadeRepositoryTest {
                 () -> assertNull(repository.buscarPorId(cadastrada.getId())),
                 () -> assertTrue(repository.listarTodos().isEmpty()));
     }
+
+    @Test
+    void deveRetornarFalsoAoExcluirEspecialidadeInexistente() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        boolean excluida = repository.excluir(999);
+
+        assertFalse(excluida);
+        assertTrue(repository.listarTodos().isEmpty());
+    }
 }

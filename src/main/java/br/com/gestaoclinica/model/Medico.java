@@ -32,6 +32,10 @@ public class Medico {
             throw new IllegalArgumentException(
                     "O telefone do medico e obrigatorio.");
         }
+        if (especialidade == null) {
+            throw new IllegalArgumentException(
+                    "A especialidade do medico e obrigatoria.");
+        }
 
         this.id = id;
         this.nome = nome;

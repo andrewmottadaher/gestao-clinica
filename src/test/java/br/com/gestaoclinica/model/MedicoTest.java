@@ -99,4 +99,15 @@ class MedicoTest {
                         () -> new Medico(1, "Joao Silva", "CRM12345", "joao@email.com",
                                 "   ", especialidade)));
     }
+
+    @Test
+    void deveRejeitarEspecialidadeNula() {
+        assertThrows(IllegalArgumentException.class, () -> new Medico(
+                1,
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                null));
+    }
 }

@@ -29,4 +29,13 @@ public class EspecialidadeService {
     public List<Especialidade> listarTodos() {
         return repository.listarTodos();
     }
+
+    public Especialidade atualizar(int id, String nome, String descricao) {
+        if (repository.existeNome(nome, id)) {
+            throw new IllegalArgumentException(
+                    "Ja existe uma especialidade cadastrada com esse nome.");
+        }
+
+        return repository.atualizar(id, nome, descricao);
+    }
 }

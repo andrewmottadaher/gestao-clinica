@@ -24,6 +24,10 @@ public class Medico {
             throw new IllegalArgumentException(
                     "O CRM do medico e obrigatorio.");
         }
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O email do medico e obrigatorio.");
+        }
 
         this.id = id;
         this.nome = nome;

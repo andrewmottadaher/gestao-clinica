@@ -40,4 +40,20 @@ class EspecialidadeServiceTest {
 
         assertEquals(1, repository.listarTodos().size());
     }
+
+    @Test
+    void naoDeveCadastrarEspecialidadeComNomeDuplicadoDiferenciandoMaiusculas() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertThrows(IllegalArgumentException.class, () -> service.cadastrar(
+                "CARDIOLOGIA",
+                "Outra descricao"));
+
+        assertEquals(1, repository.listarTodos().size());
+    }
 }

@@ -28,6 +28,10 @@ public class Medico {
             throw new IllegalArgumentException(
                     "O email do medico e obrigatorio.");
         }
+        if (telefone == null || telefone.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O telefone do medico e obrigatorio.");
+        }
 
         this.id = id;
         this.nome = nome;

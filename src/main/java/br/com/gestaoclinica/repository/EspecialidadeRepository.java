@@ -20,4 +20,8 @@ public class EspecialidadeRepository {
 
         return especialidade;
     }
+
+    public Especialidade buscarPorId(int id) {
+        return especialidades.get(id);
+    }
 }

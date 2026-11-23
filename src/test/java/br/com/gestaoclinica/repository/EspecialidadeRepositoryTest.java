@@ -54,4 +54,13 @@ class EspecialidadeRepositoryTest {
                 () -> assertEquals("Cardiologia", encontrada.getNome()),
                 () -> assertEquals("Especialidade do coracao", encontrada.getDescricao()));
     }
+
+    @Test
+    void deveRetornarNuloAoBuscarEspecialidadeComIdInexistente() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade encontrada = repository.buscarPorId(999);
+
+        assertNull(encontrada);
+    }
 }

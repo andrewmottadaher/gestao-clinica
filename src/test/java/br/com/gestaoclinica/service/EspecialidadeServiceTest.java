@@ -56,4 +56,20 @@ class EspecialidadeServiceTest {
 
         assertEquals(1, repository.listarTodos().size());
     }
+
+    @Test
+    void naoDeveCadastrarEspecialidadeComNomeDuplicadoComEspacosNasExtremidades() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertThrows(IllegalArgumentException.class, () -> service.cadastrar(
+                "  Cardiologia  ",
+                "Outra descricao"));
+
+        assertEquals(1, repository.listarTodos().size());
+    }
 }

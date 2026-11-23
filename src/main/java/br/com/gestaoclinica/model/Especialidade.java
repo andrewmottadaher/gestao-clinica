@@ -16,6 +16,10 @@ public class Especialidade {
             throw new IllegalArgumentException("O nome da especialidade e obrigatorio.");
         }
 
+        if (descricao == null) {
+            throw new IllegalArgumentException("A descricao da especialidade e obrigatoria.");
+        }
+
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;

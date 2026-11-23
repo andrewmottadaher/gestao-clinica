@@ -19,4 +19,8 @@ public class EspecialidadeService {
 
         return repository.salvar(nome, descricao);
     }
+
+    public Especialidade buscarPorId(int id) {
+        return repository.buscarPorId(id);
+    }
 }

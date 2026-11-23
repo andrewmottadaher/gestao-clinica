@@ -29,4 +29,14 @@ public class EspecialidadeRepository {
     public List<Especialidade> listarTodos() {
         return new ArrayList<>(especialidades.values());
     }
+
+    public boolean existeNome(String nome) {
+        if (nome == null) {
+            return false;
+        }
+
+        return especialidades.values().stream()
+                .anyMatch(especialidade -> especialidade.getNome().trim()
+                        .equalsIgnoreCase(nome.trim()));
+    }
 }

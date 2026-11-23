@@ -174,4 +174,18 @@ class EspecialidadeServiceTest {
         assertEquals("Neurologia",
                 repository.buscarPorId(segunda.getId()).getNome());
     }
+
+    @Test
+    void deveRetornarNuloAoAtualizarEspecialidadeInexistente() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        Especialidade resultado = service.atualizar(
+                999,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertNull(resultado);
+        assertTrue(repository.listarTodos().isEmpty());
+    }
 }

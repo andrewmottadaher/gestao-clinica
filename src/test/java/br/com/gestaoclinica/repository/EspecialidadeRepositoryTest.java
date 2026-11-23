@@ -119,4 +119,15 @@ class EspecialidadeRepositoryTest {
 
         assertTrue(repository.existeNome("CARDIOLOGIA"));
     }
+
+    @Test
+    void deveIgnorarEspacosNasExtremidadesDoNome() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertTrue(repository.existeNome("  Cardiologia  "));
+    }
 }

@@ -90,4 +90,15 @@ class EspecialidadeRepositoryTest {
                 () -> assertTrue(especialidades.contains(primeira)),
                 () -> assertTrue(especialidades.contains(segunda)));
     }
+
+    @Test
+    void deveRetornarVerdadeiroQuandoNomeJaEstiverCadastrado() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertTrue(repository.existeNome("Cardiologia"));
+    }
 }

@@ -16,6 +16,10 @@ public class Medico {
             throw new IllegalArgumentException(
                     "O ID do medico deve ser maior que zero.");
         }
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O nome do medico e obrigatorio.");
+        }
 
         this.id = id;
         this.nome = nome;

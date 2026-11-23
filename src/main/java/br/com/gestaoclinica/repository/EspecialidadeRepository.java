@@ -2,7 +2,9 @@ package br.com.gestaoclinica.repository;
 
 import br.com.gestaoclinica.model.Especialidade;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EspecialidadeRepository {
@@ -12,8 +14,7 @@ public class EspecialidadeRepository {
 
     public Especialidade salvar(String nome, String descricao) {
         Especialidade especialidade = new Especialidade(
-                proximoId, nome, descricao
-        );
+                proximoId, nome, descricao);
 
         especialidades.put(proximoId, especialidade);
         proximoId++;
@@ -23,5 +24,9 @@ public class EspecialidadeRepository {
 
     public Especialidade buscarPorId(int id) {
         return especialidades.get(id);
+    }
+
+    public List<Especialidade> listarTodos() {
+        return new ArrayList<>(especialidades.values());
     }
 }

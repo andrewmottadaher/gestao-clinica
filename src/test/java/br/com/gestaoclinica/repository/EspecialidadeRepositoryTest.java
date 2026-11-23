@@ -130,4 +130,11 @@ class EspecialidadeRepositoryTest {
 
         assertTrue(repository.existeNome("  Cardiologia  "));
     }
+
+    @Test
+    void deveRetornarFalsoQuandoNomeForNulo() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        assertFalse(repository.existeNome(null));
+    }
 }

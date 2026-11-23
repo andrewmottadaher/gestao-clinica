@@ -16,7 +16,7 @@ public class Especialidade {
             throw new IllegalArgumentException("O nome da especialidade e obrigatorio.");
         }
 
-        if (descricao == null || descricao.isEmpty()) {
+        if (descricao == null || descricao.isBlank()) {
             throw new IllegalArgumentException("A descricao da especialidade e obrigatoria.");
         }
 

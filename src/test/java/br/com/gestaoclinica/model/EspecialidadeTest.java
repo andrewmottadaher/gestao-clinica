@@ -9,13 +9,18 @@ class EspecialidadeTest {
     @Test
     void deveCriarEspecialidadeComDadosValidos() {
         Especialidade especialidade = new Especialidade(
-                1, "Cardiologia", "Especialidade do coracao"
-        );
+                1, "Cardiologia", "Especialidade do coracao");
 
         assertAll(
                 () -> assertEquals(1, especialidade.getId()),
                 () -> assertEquals("Cardiologia", especialidade.getNome()),
-                () -> assertEquals("Especialidade do coracao", especialidade.getDescricao())
-        );
+                () -> assertEquals("Especialidade do coracao", especialidade.getDescricao()));
+    }
+
+    @Test
+    void naoDeveCriarEspecialidadeComIdInvalido() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Especialidade(
+                        0, "Cardiologia", "Especialidade do coracao"));
     }
 }

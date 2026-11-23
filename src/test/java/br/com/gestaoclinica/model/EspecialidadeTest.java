@@ -30,4 +30,11 @@ class EspecialidadeTest {
                 () -> new Especialidade(
                         1, null, "Especialidade do coracao"));
     }
+
+    @Test
+    void naoDeveCriarEspecialidadeComNomeVazio() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Especialidade(
+                        1, "", "Especialidade do coracao"));
+    }
 }

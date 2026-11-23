@@ -261,4 +261,23 @@ class MedicoRepositoryTest {
 
         assertTrue(repository.existeCrm("crm12345"));
     }
+
+    @Test
+    void deveIgnorarEspacosNasExtremidadesNaVerificacaoDoCrm() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        assertTrue(repository.existeCrm("  CRM12345  "));
+    }
 }

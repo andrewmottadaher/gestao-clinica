@@ -27,4 +27,18 @@ class MedicoTest {
         assertEquals(especialidade, medico.getEspecialidade());
         assertEquals("S", medico.getAtivo());
     }
+
+    @Test
+    void deveRejeitarIdMenorOuIgualAZero() {
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Especialidade do coracao");
+
+        assertThrows(IllegalArgumentException.class, () -> new Medico(
+                0,
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade));
+    }
 }

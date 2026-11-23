@@ -242,4 +242,20 @@ class EspecialidadeServiceTest {
         assertEquals(segunda.getId(), resultado.getId());
         assertEquals("Neurologia", resultado.getNome());
     }
+
+    @Test
+    void deveListarUmaEspecialidadeCadastrada() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        Especialidade cadastrada = service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        List<Especialidade> resultado = service.listarTodos();
+
+        assertEquals(1, resultado.size());
+        assertEquals(cadastrada.getId(), resultado.get(0).getId());
+        assertEquals("Cardiologia", resultado.get(0).getNome());
+    }
 }

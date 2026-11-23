@@ -33,13 +33,12 @@ class MedicoTest {
         Especialidade especialidade = new Especialidade(
                 1, "Cardiologia", "Especialidade do coracao");
 
-        assertThrows(IllegalArgumentException.class, () -> new Medico(
-                0,
-                "Joao Silva",
-                "CRM12345",
-                "joao@email.com",
-                "31999999999",
-                especialidade));
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> new Medico(0, "Joao Silva", "CRM12345",
+                        "joao@email.com", "31999999999", especialidade)),
+
+                () -> assertThrows(IllegalArgumentException.class, () -> new Medico(-1, "Joao Silva", "CRM12345",
+                        "joao@email.com", "31999999999", especialidade)));
     }
 
     @Test

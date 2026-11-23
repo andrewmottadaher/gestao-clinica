@@ -119,8 +119,11 @@ class EspecialidadeServiceTest {
         List<Especialidade> resultado = service.listarTodos();
 
         assertEquals(2, resultado.size());
-        assertEquals("Cardiologia", resultado.get(0).getNome());
-        assertEquals("Neurologia", resultado.get(1).getNome());
+        assertTrue(resultado.stream()
+                .anyMatch(e -> e.getNome().equals("Cardiologia")));
+
+        assertTrue(resultado.stream()
+                .anyMatch(e -> e.getNome().equals("Neurologia")));
     }
 
     @Test

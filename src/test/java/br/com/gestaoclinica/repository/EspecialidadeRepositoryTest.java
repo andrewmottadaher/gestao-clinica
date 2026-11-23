@@ -101,4 +101,11 @@ class EspecialidadeRepositoryTest {
 
         assertTrue(repository.existeNome("Cardiologia"));
     }
+
+    @Test
+    void deveRetornarFalsoQuandoNomeNaoEstiverCadastrado() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        assertFalse(repository.existeNome("Cardiologia"));
+    }
 }

@@ -137,4 +137,26 @@ class EspecialidadeRepositoryTest {
 
         assertFalse(repository.existeNome(null));
     }
+
+    @Test
+    void deveAtualizarEspecialidadePreservandoSeuId() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade cadastrada = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade atualizada = repository.atualizar(
+                cadastrada.getId(),
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        assertAll(
+                () -> assertNotNull(atualizada),
+                () -> assertEquals(cadastrada.getId(), atualizada.getId()),
+                () -> assertEquals("Neurologia", atualizada.getNome()),
+                () -> assertEquals(
+                        "Especialidade do sistema nervoso",
+                        atualizada.getDescricao()));
+    }
 }

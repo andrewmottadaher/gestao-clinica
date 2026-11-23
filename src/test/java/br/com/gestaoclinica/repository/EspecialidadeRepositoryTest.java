@@ -197,4 +197,20 @@ class EspecialidadeRepositoryTest {
                         "Especialidade do coracao",
                         encontrada.getDescricao()));
     }
+
+    @Test
+    void deveExcluirEspecialidadeCadastrada() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade cadastrada = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        boolean excluida = repository.excluir(cadastrada.getId());
+
+        assertAll(
+                () -> assertTrue(excluida),
+                () -> assertNull(repository.buscarPorId(cadastrada.getId())),
+                () -> assertTrue(repository.listarTodos().isEmpty()));
+    }
 }

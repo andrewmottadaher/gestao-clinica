@@ -132,4 +132,24 @@ class EspecialidadeServiceTest {
         assertNotNull(resultado);
         assertTrue(resultado.isEmpty());
     }
+
+    @Test
+    void deveAtualizarEspecialidadeComDadosValidos() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        Especialidade cadastrada = service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade resultado = service.atualizar(
+                cadastrada.getId(),
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        assertNotNull(resultado);
+        assertEquals(cadastrada.getId(), resultado.getId());
+        assertEquals("Neurologia", resultado.getNome());
+        assertEquals("Especialidade do sistema nervoso", resultado.getDescricao());
+    }
 }

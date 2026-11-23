@@ -253,4 +253,17 @@ class EspecialidadeRepositoryTest {
                 "Cardiologia",
                 especialidade.getId()));
     }
+
+    @Test
+    void deveRetornarFalsoQuandoNomeNaoEstiverEmOutraEspecialidade() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade especialidade = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        assertFalse(repository.existeNome(
+                "Neurologia",
+                especialidade.getId()));
+    }
 }

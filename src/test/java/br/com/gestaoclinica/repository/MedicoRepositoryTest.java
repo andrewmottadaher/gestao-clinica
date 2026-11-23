@@ -35,4 +35,26 @@ class MedicoRepositoryTest {
                 () -> assertEquals(especialidade, medico.getEspecialidade()),
                 () -> assertEquals("S", medico.getAtivo()));
     }
+
+    @Test
+    void deveGerarIdsSequenciaisAoSalvarMedicos() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico primeiro = repository.salvar(
+                "Joao Silva", "CRM12345", "joao@email.com",
+                "31999999999", especialidade);
+
+        Medico segundo = repository.salvar(
+                "Maria Souza", "CRM67890", "maria@email.com",
+                "31988888888", especialidade);
+
+        assertAll(
+                () -> assertEquals(1, primeiro.getId()),
+                () -> assertEquals(2, segundo.getId()));
+    }
 }

@@ -83,4 +83,29 @@ class MedicoRepositoryTest {
 
         assertEquals(1, medico.getId());
     }
+
+    @Test
+    void deveBuscarMedicoPorId() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico cadastrado = repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        Medico encontrado = repository.buscarPorId(1);
+
+        assertNotNull(encontrado);
+
+        assertAll(
+                () -> assertEquals(cadastrado, encontrado),
+                () -> assertEquals("Joao Silva", encontrado.getNome()));
+    }
 }

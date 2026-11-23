@@ -41,4 +41,14 @@ public class MedicoRepository {
     public List<Medico> listarTodos() {
         return new ArrayList<>(medicos.values());
     }
+
+    public boolean existeCrm(String crm) {
+        if (crm == null) {
+            return false;
+        }
+
+        return medicos.values().stream()
+                .anyMatch(medico -> medico.getCrm().trim()
+                        .equalsIgnoreCase(crm.trim()));
+    }
 }

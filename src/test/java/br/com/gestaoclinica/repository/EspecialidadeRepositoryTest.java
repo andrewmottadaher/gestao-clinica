@@ -37,4 +37,21 @@ class EspecialidadeRepositoryTest {
                 () -> assertEquals(1, primeira.getId()),
                 () -> assertEquals(2, segunda.getId()));
     }
+
+    @Test
+    void deveBuscarEspecialidadePorId() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        Especialidade cadastrada = repository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade encontrada = repository.buscarPorId(cadastrada.getId());
+
+        assertAll(
+                () -> assertNotNull(encontrada),
+                () -> assertEquals(cadastrada.getId(), encontrada.getId()),
+                () -> assertEquals("Cardiologia", encontrada.getNome()),
+                () -> assertEquals("Especialidade do coracao", encontrada.getDescricao()));
+    }
 }

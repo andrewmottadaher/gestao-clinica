@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EspecialidadeServiceTest {
@@ -87,5 +88,15 @@ class EspecialidadeServiceTest {
         assertNotNull(resultado);
         assertEquals(cadastrada.getId(), resultado.getId());
         assertEquals("Cardiologia", resultado.getNome());
+    }
+
+    @Test
+    void deveRetornarNuloAoBuscarEspecialidadeComIdInexistente() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(repository);
+
+        Especialidade resultado = service.buscarPorId(999);
+
+        assertNull(resultado);
     }
 }

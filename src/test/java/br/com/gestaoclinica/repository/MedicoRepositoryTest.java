@@ -5,6 +5,8 @@ import br.com.gestaoclinica.model.Medico;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MedicoRepositoryTest {
@@ -145,5 +147,40 @@ class MedicoRepositoryTest {
                 () -> assertNotNull(encontrado),
                 () -> assertEquals(segundo, encontrado),
                 () -> assertEquals("Maria Souza", encontrado.getNome()));
+    }
+
+    @Test
+    void deveListarTodosOsMedicosCadastrados() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        repository.salvar(
+                "Joao Silva", "CRM12345", "joao@email.com",
+                "31999999999", especialidade);
+
+        repository.salvar(
+                "Maria Souza", "CRM67890", "maria@email.com",
+                "31988888888", especialidade);
+
+        repository.salvar(
+                "Pedro Santos", "CRM54321", "pedro@email.com",
+                "31977777777", especialidade);
+
+        List<Medico> medicos = repository.listarTodos();
+
+        assertNotNull(medicos);
+
+        assertAll(
+                () -> assertEquals(3, medicos.size()),
+                () -> assertTrue(medicos.stream()
+                        .anyMatch(m -> m.getNome().equals("Joao Silva"))),
+                () -> assertTrue(medicos.stream()
+                        .anyMatch(m -> m.getNome().equals("Maria Souza"))),
+                () -> assertTrue(medicos.stream()
+                        .anyMatch(m -> m.getNome().equals("Pedro Santos"))));
     }
 }

@@ -20,6 +20,10 @@ public class Medico {
             throw new IllegalArgumentException(
                     "O nome do medico e obrigatorio.");
         }
+        if (crm == null || crm.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O CRM do medico e obrigatorio.");
+        }
 
         this.id = id;
         this.nome = nome;

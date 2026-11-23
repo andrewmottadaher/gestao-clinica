@@ -235,4 +235,11 @@ class MedicoRepositoryTest {
 
         assertTrue(repository.existeCrm("CRM12345"));
     }
+
+    @Test
+    void deveRetornarFalseQuandoCrmNaoEstiverCadastrado() {
+        MedicoRepository repository = new MedicoRepository();
+
+        assertFalse(repository.existeCrm("CRM99999"));
+    }
 }

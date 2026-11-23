@@ -71,4 +71,17 @@ class MedicoTest {
                         () -> new Medico(1, "Joao Silva", "   ", "joao@email.com",
                                 "31999999999", especialidade)));
     }
+
+    @Test
+    void deveRejeitarEmailNuloOuVazio() {
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Especialidade do coracao");
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> new Medico(1, "Joao Silva", "CRM12345", null,
+                        "31999999999", especialidade)),
+
+                () -> assertThrows(IllegalArgumentException.class, () -> new Medico(1, "Joao Silva", "CRM12345", "   ",
+                        "31999999999", especialidade)));
+    }
 }

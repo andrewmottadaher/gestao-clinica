@@ -90,6 +90,7 @@ public class MedicoRepository {
     }
 
     public boolean existePorEspecialidade(int especialidadeId) {
-        return false;
+        return medicos.values().stream()
+                .anyMatch(medico -> medico.getEspecialidade().getId() == especialidadeId);
     }
 }

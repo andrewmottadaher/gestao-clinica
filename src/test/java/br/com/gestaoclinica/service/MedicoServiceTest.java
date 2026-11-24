@@ -141,4 +141,26 @@ class MedicoServiceTest {
 
         assertEquals(1, medicoRepository.listarTodos().size());
     }
+
+    @Test
+    void naoDeveCadastrarMedicoComEspecialidadeInexistente() {
+        EspecialidadeRepository especialidadeRepository =
+                new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                service.cadastrar(
+                        "Joao Silva",
+                        "CRM12345",
+                        "joao@email.com",
+                        "31999999999",
+                        999));
+
+        assertEquals(0, medicoRepository.listarTodos().size());
+    }
 }

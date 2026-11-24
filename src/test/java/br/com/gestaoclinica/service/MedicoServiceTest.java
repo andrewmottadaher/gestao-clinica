@@ -689,4 +689,30 @@ class MedicoServiceTest {
         assertEquals(false, resultado);
         assertEquals(0, service.listarTodos().size());
     }
+
+    @Test
+    void deveRetornarFalseAoExcluirMedicoDuasVezes() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        assertEquals(true, service.excluir(cadastrado.getId()));
+        assertEquals(false, service.excluir(cadastrado.getId()));
+        assertEquals(0, service.listarTodos().size());
+    }
 }

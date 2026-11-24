@@ -163,4 +163,34 @@ class MedicoServiceTest {
 
         assertEquals(0, medicoRepository.listarTodos().size());
     }
+
+    @Test
+    void deveBuscarMedicoPorId() {
+        EspecialidadeRepository especialidadeRepository =
+                new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        Medico resultado = service.buscarPorId(cadastrado.getId());
+
+        assertNotNull(resultado);
+        assertEquals(cadastrado.getId(), resultado.getId());
+        assertEquals("Joao Silva", resultado.getNome());
+        assertEquals("CRM12345", resultado.getCrm());
+    }
 }

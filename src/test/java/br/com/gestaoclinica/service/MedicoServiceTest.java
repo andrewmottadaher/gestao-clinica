@@ -443,4 +443,39 @@ class MedicoServiceTest {
         assertEquals(especialidade.getId(),
                 mantido.getEspecialidade().getId());
     }
+
+    @Test
+    void devePermitirAtualizarMedicoMantendoProprioCrm() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        Medico resultado = service.atualizar(
+                cadastrado.getId(),
+                "Joao Silva Santos",
+                cadastrado.getCrm(),
+                "joao.santos@email.com",
+                "31988888888",
+                especialidade.getId());
+
+        assertEquals(cadastrado.getId(), resultado.getId());
+        assertEquals("Joao Silva Santos", resultado.getNome());
+        assertEquals("CRM12345", resultado.getCrm());
+        assertEquals("joao.santos@email.com", resultado.getEmail());
+    }
 }

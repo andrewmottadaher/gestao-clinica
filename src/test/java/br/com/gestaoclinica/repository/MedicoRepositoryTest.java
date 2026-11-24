@@ -483,4 +483,32 @@ class MedicoRepositoryTest {
         assertFalse(repository.existePorEspecialidade(
                 neurologia.getId()));
     }
+
+    @Test
+    void deveIdentificarCrmDeOutroMedicoAoIgnorarId() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico primeiroMedico = repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        Medico segundoMedico = repository.salvar(
+                "Maria Souza",
+                "CRM67890",
+                "maria@email.com",
+                "31988888888",
+                especialidade);
+
+        assertTrue(repository.existeCrm(
+                primeiroMedico.getCrm(),
+                segundoMedico.getId()));
+    }
 }

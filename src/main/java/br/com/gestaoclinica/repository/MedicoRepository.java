@@ -84,4 +84,8 @@ public class MedicoRepository {
 
         return atualizado;
     }
+
+    public boolean excluir(int id) {
+        return false;
+    }
 }

@@ -396,4 +396,26 @@ class MedicoRepositoryTest {
                 "CRM12345",
                 medico.getId()));
     }
+
+    @Test
+    void deveExcluirMedicoCadastrado() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico medico = repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        boolean excluido = repository.excluir(medico.getId());
+
+        assertTrue(excluido);
+        assertNull(repository.buscarPorId(medico.getId()));
+    }
 }

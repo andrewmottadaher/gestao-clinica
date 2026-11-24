@@ -646,4 +646,31 @@ class MedicoServiceTest {
         assertEquals("joao@email.com", mantido.getEmail());
         assertEquals("31999999999", mantido.getTelefone());
     }
+
+    @Test
+    void deveExcluirMedicoExistente() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        boolean resultado = service.excluir(cadastrado.getId());
+
+        assertEquals(true, resultado);
+        assertEquals(0, service.listarTodos().size());
+    }
 }

@@ -628,4 +628,14 @@ class MedicoRepositoryTest {
                 assertEquals(true, resultado);
                 assertEquals("S", repository.buscarPorId(medico.getId()).getAtivo());
         }
+
+        @Test
+        void deveRetornarFalseAoAtivarMedicoInexistente() {
+                MedicoRepository repository = new MedicoRepository();
+
+                boolean resultado = repository.ativar(999);
+
+                assertEquals(false, resultado);
+                assertEquals(0, repository.listarTodos().size());
+        }
 }

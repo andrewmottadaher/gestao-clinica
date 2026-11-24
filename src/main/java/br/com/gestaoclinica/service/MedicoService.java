@@ -90,4 +90,8 @@ public class MedicoService {
     public boolean inativar(int id) {
         return medicoRepository.inativar(id);
     }
+
+    public boolean ativar(int id) {
+        return medicoRepository.ativar(id);
+    }
 }

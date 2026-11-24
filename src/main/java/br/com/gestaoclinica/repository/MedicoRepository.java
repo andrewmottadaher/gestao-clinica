@@ -60,6 +60,23 @@ public class MedicoRepository {
             String telefone,
             Especialidade especialidade) {
 
-        return null;
+        Medico atual = medicos.get(id);
+
+        if (atual == null) {
+            return null;
+        }
+
+        Medico atualizado = new Medico(
+                id,
+                nome,
+                crm,
+                email,
+                telefone,
+                especialidade,
+                atual.getAtivo());
+
+        medicos.put(id, atualizado);
+
+        return atualizado;
     }
 }

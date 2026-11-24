@@ -322,4 +322,24 @@ class MedicoRepositoryTest {
                 () -> assertEquals("31988888888", atualizado.getTelefone()),
                 () -> assertEquals(especialidade, atualizado.getEspecialidade()));
     }
+    
+    @Test
+    void deveRetornarNullAoAtualizarMedicoInexistente() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico atualizado = repository.atualizar(
+                999,
+                "Joao Santos",
+                "CRM54321",
+                "joao.santos@email.com",
+                "31988888888",
+                especialidade);
+
+        assertNull(atualizado);
+    }
 }

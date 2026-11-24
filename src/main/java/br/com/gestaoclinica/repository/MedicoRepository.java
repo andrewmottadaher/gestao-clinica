@@ -101,6 +101,10 @@ public class MedicoRepository {
             return false;
         }
 
+        if ("N".equals(atual.getAtivo())) {
+            return false;
+        }
+
         Medico inativado = new Medico(
                 atual.getId(),
                 atual.getNome(),

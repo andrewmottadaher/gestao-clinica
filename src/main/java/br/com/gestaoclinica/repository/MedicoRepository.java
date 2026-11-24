@@ -93,4 +93,25 @@ public class MedicoRepository {
         return medicos.values().stream()
                 .anyMatch(medico -> medico.getEspecialidade().getId() == especialidadeId);
     }
+
+    public boolean inativar(int id) {
+        Medico atual = medicos.get(id);
+
+        if (atual == null) {
+            return false;
+        }
+
+        Medico inativado = new Medico(
+                atual.getId(),
+                atual.getNome(),
+                atual.getCrm(),
+                atual.getEmail(),
+                atual.getTelefone(),
+                atual.getEspecialidade(),
+                "N");
+
+        medicos.put(id, inativado);
+
+        return true;
+    }
 }

@@ -458,4 +458,29 @@ class MedicoRepositoryTest {
         assertFalse(repository.existePorEspecialidade(
                 especialidade.getId()));
     }
+
+    @Test
+    void deveIgnorarMedicosVinculadosAOutraEspecialidade() {
+        Especialidade cardiologia = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade neurologia = new Especialidade(
+                2,
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                cardiologia);
+
+        assertFalse(repository.existePorEspecialidade(
+                neurologia.getId()));
+    }
 }

@@ -794,4 +794,20 @@ class MedicoServiceTest {
         assertEquals(false, resultado);
         assertEquals("N", service.buscarPorId(medico.getId()).getAtivo());
     }
+
+    @Test
+    void deveRetornarFalseAoAtivarMedicoInexistente() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        boolean resultado = service.ativar(999);
+
+        assertEquals(false, resultado);
+        assertEquals(0, service.listarTodos().size());
+    }
 }

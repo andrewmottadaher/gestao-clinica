@@ -287,4 +287,39 @@ class MedicoRepositoryTest {
 
         assertFalse(repository.existeCrm(null));
     }
+
+    @Test
+    void deveAtualizarDadosDeMedicoCadastrado() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico cadastrado = repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        Medico atualizado = repository.atualizar(
+                cadastrado.getId(),
+                "Joao Santos",
+                "CRM54321",
+                "joao.santos@email.com",
+                "31988888888",
+                especialidade);
+
+        assertNotNull(atualizado);
+
+        assertAll(
+                () -> assertEquals(cadastrado.getId(), atualizado.getId()),
+                () -> assertEquals("Joao Santos", atualizado.getNome()),
+                () -> assertEquals("CRM54321", atualizado.getCrm()),
+                () -> assertEquals("joao.santos@email.com", atualizado.getEmail()),
+                () -> assertEquals("31988888888", atualizado.getTelefone()),
+                () -> assertEquals(especialidade, atualizado.getEspecialidade()));
+    }
 }

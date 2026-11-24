@@ -51,4 +51,15 @@ public class MedicoRepository {
                 .anyMatch(medico -> medico.getCrm().trim()
                         .equalsIgnoreCase(crm.trim()));
     }
+
+    public Medico atualizar(
+            int id,
+            String nome,
+            String crm,
+            String email,
+            String telefone,
+            Especialidade especialidade) {
+
+        return null;
+    }
 }

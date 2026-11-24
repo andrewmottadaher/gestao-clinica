@@ -43,13 +43,7 @@ public class MedicoRepository {
     }
 
     public boolean existeCrm(String crm) {
-        if (crm == null) {
-            return false;
-        }
-
-        return medicos.values().stream()
-                .anyMatch(medico -> medico.getCrm().trim()
-                        .equalsIgnoreCase(crm.trim()));
+        return existeCrm(crm, 0);
     }
 
     public boolean existeCrm(String crm, int idIgnorado) {

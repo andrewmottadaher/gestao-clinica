@@ -53,4 +53,33 @@ public class MedicoService {
     public List<Medico> listarTodos() {
         return medicoRepository.listarTodos();
     }
+
+    public Medico atualizar(
+            int id,
+            String nome,
+            String crm,
+            String email,
+            String telefone,
+            int especialidadeId) {
+
+        Especialidade especialidade = especialidadeRepository.buscarPorId(especialidadeId);
+
+        if (especialidade == null) {
+            throw new IllegalArgumentException(
+                    "Especialidade nao encontrada.");
+        }
+
+        if (medicoRepository.existeCrm(crm, id)) {
+            throw new IllegalArgumentException(
+                    "Ja existe um medico cadastrado com esse CRM.");
+        }
+
+        return medicoRepository.atualizar(
+                id,
+                nome,
+                crm,
+                email,
+                telefone,
+                especialidade);
+    }
 }

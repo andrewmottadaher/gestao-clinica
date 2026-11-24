@@ -278,4 +278,20 @@ class MedicoServiceTest {
                         .map(Medico::getNome)
                         .collect(java.util.stream.Collectors.toSet()));
     }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoHouverMedicosCadastrados() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        var resultado = service.listarTodos();
+
+        assertNotNull(resultado);
+        assertEquals(0, resultado.size());
+    }
 }

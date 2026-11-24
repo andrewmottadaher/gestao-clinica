@@ -130,4 +130,37 @@ class MedicoTest {
 
                 assertEquals("N", medico.getAtivo());
         }
+
+        @Test
+        void deveRejeitarStatusNulo() {
+                Especialidade especialidade = new Especialidade(
+                                1, "Cardiologia", "Descricao");
+
+                assertThrows(IllegalArgumentException.class, () -> new Medico(
+                                1, "Joao Silva", "CRM123",
+                                "joao@email.com", "31999999999",
+                                especialidade, null));
+        }
+
+        @Test
+        void deveRejeitarStatusVazio() {
+                Especialidade especialidade = new Especialidade(
+                                1, "Cardiologia", "Descricao");
+
+                assertThrows(IllegalArgumentException.class, () -> new Medico(
+                                1, "Joao Silva", "CRM123",
+                                "joao@email.com", "31999999999",
+                                especialidade, ""));
+        }
+
+        @Test
+        void deveRejeitarStatusDiferenteDeSeNS() {
+                Especialidade especialidade = new Especialidade(
+                                1, "Cardiologia", "Descricao");
+
+                assertThrows(IllegalArgumentException.class, () -> new Medico(
+                                1, "Joao Silva", "CRM123",
+                                "joao@email.com", "31999999999",
+                                especialidade, "X"));
+        }
 }

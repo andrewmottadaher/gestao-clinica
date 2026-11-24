@@ -323,4 +323,47 @@ class MedicoServiceTest {
         assertEquals("Joao Silva", resultado.get(0).getNome());
         assertEquals("CRM12345", resultado.get(0).getCrm());
     }
+
+    @Test
+    void deveAtualizarMedicoComDadosValidos() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade cardiologia = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        Especialidade neurologia = especialidadeRepository.salvar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                cardiologia.getId());
+
+        Medico resultado = service.atualizar(
+                cadastrado.getId(),
+                "Joao Silva Santos",
+                "CRM54321",
+                "joao.santos@email.com",
+                "31988888888",
+                neurologia.getId());
+
+        assertEquals(cadastrado.getId(), resultado.getId());
+        assertEquals("Joao Silva Santos", resultado.getNome());
+        assertEquals("CRM54321", resultado.getCrm());
+        assertEquals("joao.santos@email.com", resultado.getEmail());
+        assertEquals("31988888888", resultado.getTelefone());
+        assertEquals(neurologia.getId(),
+                resultado.getEspecialidade().getId());
+        assertEquals("S", resultado.getAtivo());
+    }
 }

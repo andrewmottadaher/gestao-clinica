@@ -1,5 +1,7 @@
 package br.com.gestaoclinica.service;
 
+import java.util.List;
+
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.model.Medico;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
@@ -46,5 +48,9 @@ public class MedicoService {
 
     public Medico buscarPorId(int id) {
         return medicoRepository.buscarPorId(id);
+    }
+
+    public List<Medico> listarTodos() {
+        return medicoRepository.listarTodos();
     }
 }

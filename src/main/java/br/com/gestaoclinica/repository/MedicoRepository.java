@@ -86,6 +86,6 @@ public class MedicoRepository {
     }
 
     public boolean excluir(int id) {
-        return false;
+        return medicos.remove(id) != null;
     }
 }

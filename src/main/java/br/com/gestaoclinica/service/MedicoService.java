@@ -43,4 +43,8 @@ public class MedicoService {
                 telefone,
                 especialidade);
     }
+
+    public Medico buscarPorId(int id) {
+        return medicoRepository.buscarPorId(id);
+    }
 }

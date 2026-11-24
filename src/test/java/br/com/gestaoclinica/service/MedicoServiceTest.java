@@ -478,4 +478,30 @@ class MedicoServiceTest {
         assertEquals("CRM12345", resultado.getCrm());
         assertEquals("joao.santos@email.com", resultado.getEmail());
     }
+
+    @Test
+    void deveRetornarNullAoAtualizarMedicoComIdInexistente() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico resultado = service.atualizar(
+                999,
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        assertEquals(null, resultado);
+        assertEquals(0, medicoRepository.listarTodos().size());
+    }
 }

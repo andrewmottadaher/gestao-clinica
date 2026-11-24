@@ -86,4 +86,8 @@ public class MedicoService {
     public boolean excluir(int id) {
         return medicoRepository.excluir(id);
     }
+
+    public boolean inativar(int id) {
+        return medicoRepository.inativar(id);
+    }
 }

@@ -715,4 +715,38 @@ class MedicoServiceTest {
         assertEquals(false, service.excluir(cadastrado.getId()));
         assertEquals(0, service.listarTodos().size());
     }
+
+    @Test
+    void deveInativarMedicoAtivo() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        boolean resultado = service.inativar(cadastrado.getId());
+
+        assertEquals(true, resultado);
+
+        Medico atualizado = service.buscarPorId(cadastrado.getId());
+
+        assertEquals("N", atualizado.getAtivo());
+        assertEquals("Joao Silva", atualizado.getNome());
+        assertEquals("CRM12345", atualizado.getCrm());
+        assertEquals("joao@email.com", atualizado.getEmail());
+        assertEquals("31999999999", atualizado.getTelefone());
+    }
 }

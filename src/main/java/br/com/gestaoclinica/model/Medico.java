@@ -41,6 +41,10 @@ public class Medico {
             throw new IllegalArgumentException(
                     "A especialidade do medico e obrigatoria.");
         }
+        if (!"S".equals(ativo) && !"N".equals(ativo)) {
+            throw new IllegalArgumentException(
+                    "O status do medico deve ser S ou N.");
+        }
 
         this.id = id;
         this.nome = nome;

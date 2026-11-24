@@ -53,7 +53,14 @@ public class MedicoRepository {
     }
 
     public boolean existeCrm(String crm, int idIgnorado) {
-        return existeCrm(crm);
+        if (crm == null) {
+            return false;
+        }
+
+        return medicos.values().stream()
+                .anyMatch(medico -> medico.getId() != idIgnorado
+                        && medico.getCrm().trim()
+                                .equalsIgnoreCase(crm.trim()));
     }
 
     public Medico atualizar(

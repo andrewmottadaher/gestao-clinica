@@ -530,4 +530,24 @@ class MedicoRepositoryTest {
 
         assertFalse(repository.existeCrm(null, medico.getId()));
     }
+
+    @Test
+    void deveRetornarFalseAoExcluirMedicoJaExcluido() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico medico = repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        assertTrue(repository.excluir(medico.getId()));
+        assertFalse(repository.excluir(medico.getId()));
+    }
 }

@@ -118,4 +118,29 @@ public class MedicoRepository {
 
         return true;
     }
+
+    public boolean ativar(int id) {
+        Medico atual = medicos.get(id);
+
+        if (atual == null) {
+            return false;
+        }
+
+        if ("S".equals(atual.getAtivo())) {
+            return false;
+        }
+
+        Medico ativado = new Medico(
+                atual.getId(),
+                atual.getNome(),
+                atual.getCrm(),
+                atual.getEmail(),
+                atual.getTelefone(),
+                atual.getEspecialidade(),
+                "S");
+
+        medicos.put(id, ativado);
+
+        return true;
+    }
 }

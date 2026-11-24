@@ -445,4 +445,17 @@ class MedicoRepositoryTest {
         assertTrue(repository.existePorEspecialidade(
                 especialidade.getId()));
     }
+
+    @Test
+    void deveRetornarFalseQuandoNaoHouverMedicosNaEspecialidade() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        assertFalse(repository.existePorEspecialidade(
+                especialidade.getId()));
+    }
 }

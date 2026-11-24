@@ -406,4 +406,41 @@ class MedicoServiceTest {
         assertEquals("CRM67890",
                 medicoRepository.buscarPorId(segundo.getId()).getCrm());
     }
+
+    @Test
+    void naoDeveAtualizarMedicoComEspecialidadeInexistente() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizar(
+                cadastrado.getId(),
+                "Joao Silva Santos",
+                "CRM54321",
+                "joao.santos@email.com",
+                "31988888888",
+                999));
+
+        Medico mantido = medicoRepository.buscarPorId(cadastrado.getId());
+
+        assertEquals("Joao Silva", mantido.getNome());
+        assertEquals("CRM12345", mantido.getCrm());
+        assertEquals(especialidade.getId(),
+                mantido.getEspecialidade().getId());
+    }
 }

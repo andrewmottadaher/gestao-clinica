@@ -673,4 +673,20 @@ class MedicoServiceTest {
         assertEquals(true, resultado);
         assertEquals(0, service.listarTodos().size());
     }
+
+    @Test
+    void deveRetornarFalseAoExcluirMedicoInexistente() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        boolean resultado = service.excluir(999);
+
+        assertEquals(false, resultado);
+        assertEquals(0, service.listarTodos().size());
+    }
 }

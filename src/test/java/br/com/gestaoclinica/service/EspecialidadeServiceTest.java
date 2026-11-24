@@ -2,6 +2,8 @@ package br.com.gestaoclinica.service;
 
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
+import br.com.gestaoclinica.repository.MedicoRepository;
+
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
@@ -283,5 +285,30 @@ class EspecialidadeServiceTest {
         assertNull(service.buscarPorId(segunda.getId()));
         assertNotNull(service.buscarPorId(1));
         assertNotNull(service.buscarPorId(3));
+    }
+
+    @Test
+    void deveImpedirExclusaoDeEspecialidadeComMedicoVinculado() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        EspecialidadeService service = new EspecialidadeService(especialidadeRepository);
+
+        Especialidade especialidade = service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        medicoRepository.salvar(
+                "Joao Silva",
+                "CRM123",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.excluir(especialidade.getId()));
+
+        assertNotNull(service.buscarPorId(especialidade.getId()));
     }
 }

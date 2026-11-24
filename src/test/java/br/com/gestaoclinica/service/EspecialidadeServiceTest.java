@@ -2,6 +2,8 @@ package br.com.gestaoclinica.service;
 
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
+import br.com.gestaoclinica.repository.MedicoRepository;
+
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
@@ -17,7 +19,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveCadastrarEspecialidadeComDadosValidos() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         Especialidade resultado = service.cadastrar(
                 "Cardiologia",
@@ -32,7 +35,8 @@ class EspecialidadeServiceTest {
     @Test
     void naoDeveCadastrarEspecialidadeComNomeDuplicado() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         service.cadastrar(
                 "Cardiologia",
@@ -48,7 +52,8 @@ class EspecialidadeServiceTest {
     @Test
     void naoDeveCadastrarEspecialidadeComNomeDuplicadoDiferenciandoMaiusculas() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         service.cadastrar(
                 "Cardiologia",
@@ -64,7 +69,8 @@ class EspecialidadeServiceTest {
     @Test
     void naoDeveCadastrarEspecialidadeComNomeDuplicadoComEspacosNasExtremidades() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         service.cadastrar(
                 "Cardiologia",
@@ -80,7 +86,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveBuscarEspecialidadePorId() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         Especialidade cadastrada = service.cadastrar(
                 "Cardiologia",
@@ -96,7 +103,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveRetornarNuloAoBuscarEspecialidadeComIdInexistente() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         Especialidade resultado = service.buscarPorId(999);
 
@@ -106,7 +114,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveListarTodasAsEspecialidadesCadastradas() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         service.cadastrar(
                 "Cardiologia",
@@ -129,7 +138,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveRetornarListaVaziaQuandoNaoExistiremEspecialidades() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         List<Especialidade> resultado = service.listarTodos();
 
@@ -140,7 +150,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveAtualizarEspecialidadeComDadosValidos() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         Especialidade cadastrada = service.cadastrar(
                 "Cardiologia",
@@ -160,7 +171,8 @@ class EspecialidadeServiceTest {
     @Test
     void naoDeveAtualizarEspecialidadeComNomeDuplicado() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         service.cadastrar(
                 "Cardiologia",
@@ -182,7 +194,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveRetornarNuloAoAtualizarEspecialidadeInexistente() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         Especialidade resultado = service.atualizar(
                 999,
@@ -196,7 +209,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveExcluirEspecialidadeCadastrada() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         Especialidade cadastrada = service.cadastrar(
                 "Cardiologia",
@@ -211,7 +225,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveRetornarFalsoAoExcluirEspecialidadeInexistente() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         boolean resultado = service.excluir(999);
 
@@ -222,7 +237,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveBuscarEspecialidadeCorretaEntreVariosRegistros() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         service.cadastrar(
                 "Cardiologia",
@@ -246,7 +262,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveListarUmaEspecialidadeCadastrada() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         Especialidade cadastrada = service.cadastrar(
                 "Cardiologia",
@@ -262,7 +279,8 @@ class EspecialidadeServiceTest {
     @Test
     void deveManterOutrasEspecialidadesAposExcluirUma() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
-        EspecialidadeService service = new EspecialidadeService(repository);
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
 
         service.cadastrar(
                 "Cardiologia",
@@ -283,5 +301,28 @@ class EspecialidadeServiceTest {
         assertNull(service.buscarPorId(segunda.getId()));
         assertNotNull(service.buscarPorId(1));
         assertNotNull(service.buscarPorId(3));
+    }
+
+    @Test
+    void deveImpedirExclusaoDeEspecialidadeComMedicoVinculado() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeService service = new EspecialidadeService(repository, medicoRepository);
+
+        Especialidade especialidade = service.cadastrar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        medicoRepository.salvar(
+                "Joao Silva",
+                "CRM123",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.excluir(especialidade.getId()));
+
+        assertNotNull(service.buscarPorId(especialidade.getId()));
     }
 }

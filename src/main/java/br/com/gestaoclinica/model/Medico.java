@@ -1,0 +1,85 @@
+package br.com.gestaoclinica.model;
+
+public class Medico {
+
+    private int id;
+    private String nome;
+    private String crm;
+    private String email;
+    private String telefone;
+    private Especialidade especialidade;
+    private String ativo;
+
+    public Medico(int id, String nome, String crm, String email,
+            String telefone, Especialidade especialidade) {
+        this(id, nome, crm, email, telefone, especialidade, "S");
+    }
+
+    public Medico(int id, String nome, String crm, String email,
+            String telefone, Especialidade especialidade, String ativo) {
+        if (id <= 0) {
+            throw new IllegalArgumentException(
+                    "O ID do medico deve ser maior que zero.");
+        }
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O nome do medico e obrigatorio.");
+        }
+        if (crm == null || crm.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O CRM do medico e obrigatorio.");
+        }
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O email do medico e obrigatorio.");
+        }
+        if (telefone == null || telefone.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O telefone do medico e obrigatorio.");
+        }
+        if (especialidade == null) {
+            throw new IllegalArgumentException(
+                    "A especialidade do medico e obrigatoria.");
+        }
+        if (!"S".equals(ativo) && !"N".equals(ativo)) {
+            throw new IllegalArgumentException(
+                    "O status do medico deve ser S ou N.");
+        }
+
+        this.id = id;
+        this.nome = nome;
+        this.crm = crm;
+        this.email = email;
+        this.telefone = telefone;
+        this.especialidade = especialidade;
+        this.ativo = ativo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCrm() {
+        return crm;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public Especialidade getEspecialidade() {
+        return especialidade;
+    }
+
+    public String getAtivo() {
+        return ativo;
+    }
+}

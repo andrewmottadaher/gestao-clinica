@@ -2,15 +2,20 @@ package br.com.gestaoclinica.service;
 
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
+import br.com.gestaoclinica.repository.MedicoRepository;
 
 import java.util.List;
 
 public class EspecialidadeService {
 
     private final EspecialidadeRepository repository;
+    private final MedicoRepository medicoRepository;
 
-    public EspecialidadeService(EspecialidadeRepository repository) {
+    public EspecialidadeService(
+            EspecialidadeRepository repository,
+            MedicoRepository medicoRepository) {
         this.repository = repository;
+        this.medicoRepository = medicoRepository;
     }
 
     public Especialidade cadastrar(String nome, String descricao) {
@@ -40,6 +45,11 @@ public class EspecialidadeService {
     }
 
     public boolean excluir(int id) {
+        if (medicoRepository.existePorEspecialidade(id)) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel excluir uma especialidade vinculada a medicos.");
+        }
+
         return repository.excluir(id);
     }
 }

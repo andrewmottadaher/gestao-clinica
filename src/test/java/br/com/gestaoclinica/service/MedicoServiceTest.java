@@ -240,4 +240,42 @@ class MedicoServiceTest {
         assertEquals("Maria Souza", resultado.getNome());
         assertEquals("CRM67890", resultado.getCrm());
     }
+
+    @Test
+    void deveListarTodosOsMedicosCadastrados() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        service.cadastrar(
+                "Maria Souza",
+                "CRM67890",
+                "maria@email.com",
+                "31988888888",
+                especialidade.getId());
+
+        var resultado = service.listarTodos();
+
+        assertEquals(2, resultado.size());
+        assertEquals(
+                java.util.Set.of("Joao Silva", "Maria Souza"),
+                resultado.stream()
+                        .map(Medico::getNome)
+                        .collect(java.util.stream.Collectors.toSet()));
+    }
 }

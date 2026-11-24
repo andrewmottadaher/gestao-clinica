@@ -52,6 +52,10 @@ public class MedicoRepository {
                         .equalsIgnoreCase(crm.trim()));
     }
 
+    public boolean existeCrm(String crm, int idIgnorado) {
+        return existeCrm(crm);
+    }
+
     public Medico atualizar(
             int id,
             String nome,

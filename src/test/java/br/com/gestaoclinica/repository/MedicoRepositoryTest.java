@@ -342,7 +342,7 @@ class MedicoRepositoryTest {
 
         assertNull(atualizado);
     }
-    
+
     @Test
     void naoDeveAlterarDadosOriginaisQuandoAtualizacaoForInvalida() {
         Especialidade especialidade = new Especialidade(
@@ -374,5 +374,26 @@ class MedicoRepositoryTest {
         assertSame(cadastrado, encontrado);
         assertEquals("Joao Silva", encontrado.getNome());
         assertEquals("CRM12345", encontrado.getCrm());
+    }
+
+    @Test
+    void naoDeveConsiderarDuplicadoOCrmDoProprioMedico() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico medico = repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        assertFalse(repository.existeCrm(
+                "CRM12345",
+                medico.getId()));
     }
 }

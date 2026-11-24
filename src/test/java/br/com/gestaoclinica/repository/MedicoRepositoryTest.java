@@ -550,4 +550,37 @@ class MedicoRepositoryTest {
         assertTrue(repository.excluir(medico.getId()));
         assertFalse(repository.excluir(medico.getId()));
     }
+
+    @Test
+    void deveInativarMedicoPreservandoSeusDados() {
+        EspecialidadeRepository especialidadeRepository =
+        new EspecialidadeRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+            "Cardiologia",
+            "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        Medico cadastrado = repository.salvar(
+            "Joao Silva",
+            "CRM12345",
+            "joao@email.com",
+            "31999999999",
+            especialidade);
+
+        boolean resultado = repository.inativar(cadastrado.getId());
+
+        assertEquals(true, resultado);
+
+        Medico atualizado = repository.buscarPorId(cadastrado.getId());
+
+        assertEquals("N", atualizado.getAtivo());
+        assertEquals("Joao Silva", atualizado.getNome());
+        assertEquals("CRM12345", atualizado.getCrm());
+        assertEquals("joao@email.com", atualizado.getEmail());
+        assertEquals("31999999999", atualizado.getTelefone());
+        assertEquals(especialidade.getId(),
+                atualizado.getEspecialidade().getId());
+    }
 }

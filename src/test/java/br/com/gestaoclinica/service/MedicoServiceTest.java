@@ -610,4 +610,40 @@ class MedicoServiceTest {
         assertEquals("joao@email.com", mantido.getEmail());
         assertEquals("31999999999", mantido.getTelefone());
     }
+
+    @Test
+    void naoDeveAtualizarMedicoComTelefoneInvalido() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        Medico cadastrado = service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizar(
+                cadastrado.getId(),
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                " ",
+                especialidade.getId()));
+
+        Medico mantido = medicoRepository.buscarPorId(cadastrado.getId());
+
+        assertEquals("Joao Silva", mantido.getNome());
+        assertEquals("joao@email.com", mantido.getEmail());
+        assertEquals("31999999999", mantido.getTelefone());
+    }
 }

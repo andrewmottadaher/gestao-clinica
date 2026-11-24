@@ -75,4 +75,37 @@ class MedicoServiceTest {
 
         assertEquals(1, medicoRepository.listarTodos().size());
     }
+
+    @Test
+    void naoDeveCadastrarMedicoComCrmDiferenciandoMaiusculas() {
+        EspecialidadeRepository especialidadeRepository =
+                new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        service.cadastrar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        assertThrows(IllegalArgumentException.class, () ->
+                service.cadastrar(
+                        "Maria Souza",
+                        "crm12345",
+                        "maria@email.com",
+                        "31988888888",
+                        especialidade.getId()));
+
+        assertEquals(1, medicoRepository.listarTodos().size());
+    }
 }

@@ -82,4 +82,8 @@ public class MedicoService {
                 telefone,
                 especialidade);
     }
+
+    public boolean excluir(int id) {
+        return medicoRepository.excluir(id);
+    }
 }

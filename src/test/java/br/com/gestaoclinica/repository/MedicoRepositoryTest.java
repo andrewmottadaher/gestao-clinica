@@ -418,4 +418,11 @@ class MedicoRepositoryTest {
         assertTrue(excluido);
         assertNull(repository.buscarPorId(medico.getId()));
     }
+
+    @Test
+    void deveRetornarFalseAoExcluirMedicoInexistente() {
+        MedicoRepository repository = new MedicoRepository();
+
+        assertFalse(repository.excluir(999));
+    }
 }

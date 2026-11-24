@@ -88,4 +88,8 @@ public class MedicoRepository {
     public boolean excluir(int id) {
         return medicos.remove(id) != null;
     }
+
+    public boolean existePorEspecialidade(int especialidadeId) {
+        return false;
+    }
 }

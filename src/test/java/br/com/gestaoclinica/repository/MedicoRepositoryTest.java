@@ -425,4 +425,24 @@ class MedicoRepositoryTest {
 
         assertFalse(repository.excluir(999));
     }
+
+    @Test
+    void deveIdentificarMedicosVinculadosAEspecialidade() {
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade do coracao");
+
+        MedicoRepository repository = new MedicoRepository();
+
+        repository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        assertTrue(repository.existePorEspecialidade(
+                especialidade.getId()));
+    }
 }

@@ -749,4 +749,20 @@ class MedicoServiceTest {
         assertEquals("joao@email.com", atualizado.getEmail());
         assertEquals("31999999999", atualizado.getTelefone());
     }
+
+    @Test
+    void deveRetornarFalseAoInativarMedicoInexistente() {
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository);
+
+        boolean resultado = service.inativar(999);
+
+        assertEquals(false, resultado);
+        assertEquals(0, service.listarTodos().size());
+    }
 }

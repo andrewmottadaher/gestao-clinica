@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PacienteServiceTest {
@@ -87,5 +88,19 @@ class PacienteServiceTest {
         assertNotNull(encontrado);
         assertEquals(cadastrado.getId(), encontrado.getId());
         assertEquals("Joao Silva", encontrado.getNome());
+    }
+
+    @Test
+    void deveRetornarNullAoBuscarPacientePorIdInexistente() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente encontrado = service.buscarPorId(999);
+
+        assertNull(encontrado);
     }
 }

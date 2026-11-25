@@ -46,6 +46,10 @@ public class Consulta {
             throw new IllegalArgumentException(
                     "O valor da consulta nao pode ser negativo.");
         }
+        if (status == null) {
+            throw new IllegalArgumentException(
+                    "O status da consulta e obrigatorio.");
+        }
 
         this.id = id;
         this.paciente = paciente;

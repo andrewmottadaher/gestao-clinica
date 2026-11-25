@@ -140,4 +140,8 @@ public class ConsultaService {
 
         return true;
     }
+
+    public boolean concluir(int consultaId) {
+        return false;
+    }
 }

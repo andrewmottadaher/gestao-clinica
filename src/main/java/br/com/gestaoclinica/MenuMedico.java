@@ -1,8 +1,14 @@
 package br.com.gestaoclinica;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+import br.com.gestaoclinica.model.Medico;
+import br.com.gestaoclinica.repository.ConsultaRepository;
+import br.com.gestaoclinica.repository.EspecialidadeRepository;
+import br.com.gestaoclinica.repository.MedicoRepository;
 import br.com.gestaoclinica.service.EspecialidadeService;
 import br.com.gestaoclinica.service.MedicoService;
 
@@ -165,8 +171,41 @@ public class MenuMedico {
                 return;
             }
 
+            output.println("\n--- ESPECIALIDADES DISPONIVEIS ---");
+
+            especialidadeService.listarTodos().forEach(especialidade -> output.println(
+                    especialidade.getId() + " - "
+                            + especialidade.getNome()));
+
+            output.print("Nome: ");
+            String nome = scanner.nextLine().trim();
+
+            output.print("CRM: ");
+            String crm = scanner.nextLine().trim();
+
+            output.print("E-mail: ");
+            String email = scanner.nextLine().trim();
+
+            output.print("Telefone: ");
+            String telefone = scanner.nextLine().trim();
+
+            output.print("ID da especialidade: ");
+            int especialidadeId = Integer.parseInt(scanner.nextLine().trim());
+
+            service.atualizar(
+                    id,
+                    nome,
+                    crm,
+                    email,
+                    telefone,
+                    especialidadeId);
+
+            output.println("Medico atualizado com sucesso.");
+
         } catch (NumberFormatException e) {
             output.println("Informe um ID valido.");
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
         }
     }
 }

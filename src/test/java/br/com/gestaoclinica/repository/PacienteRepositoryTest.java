@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PacienteRepositoryTest {
@@ -189,5 +190,29 @@ class PacienteRepositoryTest {
                 "UNIMED");
 
         assertNull(atualizado);
+    }
+
+    @Test
+    void devePreservarPacienteOriginalQuandoAtualizacaoForInvalida() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente paciente = repository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        assertThrows(IllegalArgumentException.class, () -> repository.atualizar(
+                paciente.getId(),
+                null,
+                "98765432100",
+                LocalDate.of(1985, 8, 20),
+                "M",
+                "31888888888",
+                "UNIMED"));
+
+        assertEquals("Joao", repository.buscarPorId(paciente.getId()).getNome());
     }
 }

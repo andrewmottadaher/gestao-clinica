@@ -26,6 +26,10 @@ public class Prontuario {
             throw new IllegalArgumentException(
                     "A consulta e obrigatoria.");
         }
+        if (consulta.getStatus() != StatusConsulta.REALIZADA) {
+            throw new IllegalArgumentException(
+                    "O prontuario so pode ser criado para consultas realizadas.");
+        }
 
         this.id = id;
         this.consulta = consulta;

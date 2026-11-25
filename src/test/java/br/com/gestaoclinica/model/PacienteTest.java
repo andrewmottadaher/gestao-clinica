@@ -127,4 +127,16 @@ class PacienteTest {
                 "31999999999",
                 null));
     }
+
+    @Test
+    void deveRejeitarSexoInvalido() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "X",
+                "31999999999",
+                null));
+    }
 }

@@ -4,6 +4,7 @@ import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.PacienteRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
 import br.com.gestaoclinica.model.Consulta;
+import br.com.gestaoclinica.model.Medico;
 import br.com.gestaoclinica.model.ModalidadeConsulta;
 
 import java.math.BigDecimal;
@@ -38,6 +39,13 @@ public class ConsultaService {
         if (medicoRepository.buscarPorId(medicoId) == null) {
             throw new IllegalArgumentException(
                     "Medico nao encontrado.");
+        }
+
+        Medico medico = medicoRepository.buscarPorId(medicoId);
+
+        if ("N".equals(medico.getAtivo())) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel agendar consulta com medico inativo.");
         }
 
         return null;

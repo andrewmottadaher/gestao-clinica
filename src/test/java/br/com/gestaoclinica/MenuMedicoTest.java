@@ -2,6 +2,7 @@ package br.com.gestaoclinica;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -537,5 +538,74 @@ class MenuMedicoTest {
         String resultado = saida.toString(StandardCharsets.UTF_8);
 
         assertTrue(resultado.contains("Informe um ID valido."));
+    }
+
+    @Test
+    void deveExcluirMedicoPelaInterface() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        especialidadeService.cadastrar("Cardiologia", "Doencas do coracao");
+
+        service.cadastrar(
+                "Carlos Silva",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                1);
+
+        Scanner scanner = new Scanner("5\n1\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        assertNull(service.buscarPorId(1));
+    }
+
+    @Test
+    void deveIniciarExclusaoDeMedico() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        Scanner scanner = new Scanner("5\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Informe o ID do medico para excluir:"));
     }
 }

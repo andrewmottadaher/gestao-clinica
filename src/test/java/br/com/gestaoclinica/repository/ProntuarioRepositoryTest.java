@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -172,5 +173,37 @@ class ProntuarioRepositoryTest {
 
         assertNotNull(repository.listarTodos());
         assertEquals(2, repository.listarTodos().size());
+    }
+
+    @Test
+    void devePreservarProntuariosAoModificarListaRetornada() {
+        ProntuarioRepository repository = new ProntuarioRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta consulta = new Consulta(
+                1, paciente, medico,
+                LocalDate.now().atTime(10, 0),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        repository.salvar(
+                consulta, "Hipertensao arterial", null, null);
+
+        List<Prontuario> prontuarios = repository.listarTodos();
+        prontuarios.clear();
+
+        assertEquals(1, repository.listarTodos().size());
     }
 }

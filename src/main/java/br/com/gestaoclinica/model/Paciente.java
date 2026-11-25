@@ -25,5 +25,9 @@ public class Paciente {
             throw new IllegalArgumentException(
                     "O CPF do paciente e obrigatorio.");
         }
+        if (dataNascimento == null) {
+            throw new IllegalArgumentException(
+                    "A data de nascimento do paciente e obrigatoria.");
+        }
     }
 }

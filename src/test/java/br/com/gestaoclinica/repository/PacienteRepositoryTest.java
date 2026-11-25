@@ -66,4 +66,13 @@ class PacienteRepositoryTest {
 
         assertEquals(salvo, encontrado);
     }
+
+    @Test
+    void deveRetornarNullAoBuscarPacienteInexistente() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente encontrado = repository.buscarPorId(99);
+
+        assertEquals(null, encontrado);
+    }
 }

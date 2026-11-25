@@ -1,5 +1,7 @@
 package br.com.gestaoclinica.service;
 
+import java.util.List;
+
 import br.com.gestaoclinica.model.Consulta;
 import br.com.gestaoclinica.model.Prontuario;
 import br.com.gestaoclinica.repository.ConsultaRepository;
@@ -43,5 +45,9 @@ public class ProntuarioService {
 
     public Prontuario buscarPorId(int id) {
         return prontuarioRepository.buscarPorId(id);
+    }
+
+    public List<Prontuario> listarTodos() {
+        return prontuarioRepository.listarTodos();
     }
 }

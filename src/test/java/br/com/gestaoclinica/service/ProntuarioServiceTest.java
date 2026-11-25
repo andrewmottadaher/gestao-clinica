@@ -386,4 +386,66 @@ class ProntuarioServiceTest {
 
         assertNull(atualizado);
     }
+
+    @Test
+    void devePreservarProntuarioOriginalQuandoAtualizacaoForInvalida() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteRepository pacienteRepository = new PacienteRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31888888888",
+                null);
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                especialidade);
+
+        Consulta consulta = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        Prontuario cadastrado = service.cadastrar(
+                consulta.getId(),
+                "Diagnostico original",
+                "Prescricao original",
+                "Observacoes originais");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.atualizar(
+                        cadastrado.getId(),
+                        consulta.getId(),
+                        "",
+                        "Nova prescricao",
+                        "Novas observacoes"));
+
+        Prontuario encontrado = service.buscarPorId(cadastrado.getId());
+
+        assertEquals("Diagnostico original", encontrado.getDiagnostico());
+        assertEquals("Prescricao original", encontrado.getPrescricao());
+        assertEquals("Observacoes originais", encontrado.getObservacoes());
+    }
 }

@@ -29,4 +29,8 @@ public class ProntuarioRepository {
 
         return prontuario;
     }
+
+    public Prontuario buscarPorId(int id) {
+        return prontuarios.get(id);
+    }
 }

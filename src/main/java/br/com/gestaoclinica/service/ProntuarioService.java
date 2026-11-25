@@ -76,4 +76,8 @@ public class ProntuarioService {
                 prescricao,
                 observacoes);
     }
+
+    public boolean excluir(int id) {
+        return prontuarioRepository.excluir(id);
+    }
 }

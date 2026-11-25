@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PacienteTest {
@@ -173,6 +174,18 @@ class PacienteTest {
                 LocalDate.of(1990, 5, 10),
                 "M",
                 "   ",
+                null));
+    }
+
+    @Test
+    void devePermitirConvenioNulo() {
+        assertDoesNotThrow(() -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
                 null));
     }
 }

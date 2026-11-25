@@ -533,4 +533,54 @@ class ConsultaServiceTest {
                 new BigDecimal("300.00"),
                 ModalidadeConsulta.TELEMEDICINA));
     }
+
+    @Test
+    void deveRejeitarAtualizacaoQuandoMedicoEstaInativo() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        medicoRepository.inativar(medico.getId());
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository);
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizar(
+                1,
+                1,
+                1,
+                LocalDateTime.of(2026, 12, 11, 15, 30),
+                new BigDecimal("300.00"),
+                ModalidadeConsulta.TELEMEDICINA));
+    }
 }

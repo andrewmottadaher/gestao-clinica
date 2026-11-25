@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ConsultaRepositoryTest {
 
@@ -105,5 +106,14 @@ class ConsultaRepositoryTest {
 
         assertNotNull(consultaEncontrada);
         assertEquals(consultaSalva, consultaEncontrada);
+    }
+
+    @Test
+    void deveRetornarNullAoBuscarConsultaPorIdInexistente() {
+        ConsultaRepository repository = new ConsultaRepository();
+
+        Consulta consultaEncontrada = repository.buscarPorId(999);
+
+        assertNull(consultaEncontrada);
     }
 }

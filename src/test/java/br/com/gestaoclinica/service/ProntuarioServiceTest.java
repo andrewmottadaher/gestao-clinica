@@ -17,11 +17,13 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ProntuarioServiceTest {
 
@@ -225,5 +227,82 @@ class ProntuarioServiceTest {
         Prontuario encontrado = service.buscarPorId(999);
 
         assertNull(encontrado);
+    }
+
+    @Test
+    void deveListarTodosOsProntuariosCadastrados() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteRepository pacienteRepository = new PacienteRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31888888888",
+                null);
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                especialidade);
+
+        Consulta consulta1 = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        Consulta consulta2 = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("300.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.TELEMEDICINA);
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        service.cadastrar(
+                consulta1.getId(), "Diagnostico 1", null, null);
+
+        service.cadastrar(
+                consulta2.getId(), "Diagnostico 2", null, null);
+
+        List<Prontuario> prontuarios = service.listarTodos();
+
+        assertEquals(2, prontuarios.size());
+        assertEquals("Diagnostico 1", prontuarios.get(0).getDiagnostico());
+        assertEquals("Diagnostico 2", prontuarios.get(1).getDiagnostico());
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoHouverProntuarios() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        List<Prontuario> prontuarios = service.listarTodos();
+
+        assertNotNull(prontuarios);
+        assertTrue(prontuarios.isEmpty());
     }
 }

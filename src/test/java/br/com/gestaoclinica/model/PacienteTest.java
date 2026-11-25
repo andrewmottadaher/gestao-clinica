@@ -10,14 +10,25 @@ class PacienteTest {
 
     @Test
     void deveRejeitarIdZero() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new Paciente(
-                        0,
-                        "Joao Silva",
-                        "12345678901",
-                        LocalDate.of(1990, 5, 10),
-                        "M",
-                        "31999999999",
-                        null));
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                0,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarNomeNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                null,
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
     }
 }

@@ -43,6 +43,9 @@ public class MenuEspecialidade {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+            if (opcao.equals("2")) {
+                listarEspecialidades();
+            }
         }
     }
 
@@ -62,6 +65,24 @@ public class MenuEspecialidade {
 
         } catch (IllegalArgumentException e) {
             output.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private void listarEspecialidades() {
+        var especialidades = service.listarTodos();
+
+        if (especialidades.isEmpty()) {
+            output.println("Nenhuma especialidade cadastrada.");
+            return;
+        }
+
+        output.println("\n--- ESPECIALIDADES CADASTRADAS ---");
+
+        for (var especialidade : especialidades) {
+            output.println("ID: " + especialidade.getId());
+            output.println("Nome: " + especialidade.getNome());
+            output.println("Descricao: " + especialidade.getDescricao());
+            output.println("----------------------------------");
         }
     }
 }

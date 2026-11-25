@@ -50,6 +50,7 @@ public class MenuMedico {
 
             switch (opcao) {
                 case 1 -> cadastrar();
+                case 2 -> listar();
                 case 0 -> output.println("Voltando ao menu principal...");
                 default -> output.println("Opcao invalida.");
             }
@@ -99,5 +100,32 @@ public class MenuMedico {
         } catch (IllegalArgumentException e) {
             output.println(e.getMessage());
         }
+    }
+
+    private void listar() {
+        var medicos = service.listarTodos();
+
+        if (medicos.isEmpty()) {
+            output.println("Nenhum medico cadastrado.");
+            return;
+        }
+
+        output.println("\n--- MEDICOS CADASTRADOS ---");
+
+        medicos.forEach(medico -> {
+            output.println("------------------------------");
+            output.println("ID: " + medico.getId());
+            output.println("Nome: " + medico.getNome());
+            output.println("CRM: " + medico.getCrm());
+            output.println("Especialidade: " + medico.getEspecialidade().getNome());
+
+            String situacao = "S".equals(medico.getAtivo())
+                    ? "Ativo"
+                    : "Inativo";
+
+            output.println("Situacao: " + situacao);
+        });
+
+        output.println("------------------------------");
     }
 }

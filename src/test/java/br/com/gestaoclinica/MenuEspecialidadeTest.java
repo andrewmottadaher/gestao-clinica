@@ -273,4 +273,23 @@ class MenuEspecialidadeTest {
         assertTrue(saida.toString(StandardCharsets.UTF_8)
                 .contains("Especialidade nao encontrada."));
     }
+
+    @Test
+    void deveInformarErroQuandoIdInformadoNaoForNumerico() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner("3\nabc\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Erro: informe um ID numerico valido."));
+    }
 }

@@ -3,6 +3,7 @@ package br.com.gestaoclinica.service;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
 import br.com.gestaoclinica.repository.PacienteRepository;
+import br.com.gestaoclinica.model.Consulta;
 import br.com.gestaoclinica.model.ModalidadeConsulta;
 import org.junit.jupiter.api.Test;
 
@@ -26,5 +27,20 @@ class ConsultaServiceTest {
                 LocalDateTime.of(2026, 12, 10, 14, 30),
                 new BigDecimal("250.00"),
                 ModalidadeConsulta.PRESENCIAL));
+    }
+
+    public Consulta agendar(
+            int pacienteId,
+            int medicoId,
+            LocalDateTime dataHoraAgendamento,
+            BigDecimal valor,
+            ModalidadeConsulta modalidade) {
+
+        if (pacienteRepository.buscarPorId(pacienteId) == null) {
+            throw new IllegalArgumentException(
+                    "Paciente nao encontrado.");
+        }
+
+        return null;
     }
 }

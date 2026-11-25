@@ -50,4 +50,30 @@ public class ProntuarioService {
     public List<Prontuario> listarTodos() {
         return prontuarioRepository.listarTodos();
     }
+
+    public Prontuario atualizar(
+            int prontuarioId,
+            int consultaId,
+            String diagnostico,
+            String prescricao,
+            String observacoes) {
+
+        Prontuario existente = prontuarioRepository.buscarPorId(prontuarioId);
+
+        if (existente == null) {
+            return null;
+        }
+
+        if (existente.getConsulta().getId() != consultaId) {
+            throw new IllegalArgumentException(
+                    "Nao e permitido alterar a consulta do prontuario.");
+        }
+
+        return prontuarioRepository.atualizar(
+                prontuarioId,
+                existente.getConsulta(),
+                diagnostico,
+                prescricao,
+                observacoes);
+    }
 }

@@ -180,4 +180,46 @@ class ConsultaRepositoryTest {
 
         assertEquals(1, repository.listarTodos().size());
     }
+
+    @Test
+    void deveAtualizarConsultaExistente() {
+        ConsultaRepository repository = new ConsultaRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta consultaSalva = repository.salvar(
+                paciente, medico,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        Consulta consultaAtualizada = repository.atualizar(
+                consultaSalva.getId(),
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 12, 15, 10, 0),
+                new BigDecimal("300.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.TELEMEDICINA);
+
+        assertNotNull(consultaAtualizada);
+        assertEquals(consultaSalva.getId(), consultaAtualizada.getId());
+        assertEquals(
+                LocalDateTime.of(2026, 12, 15, 10, 0),
+                consultaAtualizada.getDataHoraAgendamento());
+        assertEquals(new BigDecimal("300.00"), consultaAtualizada.getValor());
+        assertEquals(ModalidadeConsulta.TELEMEDICINA,
+                consultaAtualizada.getModalidade());
+    }
 }

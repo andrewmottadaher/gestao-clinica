@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ConsultaTest {
 
@@ -45,5 +46,29 @@ class ConsultaTest {
         assertEquals(valor, consulta.getValor());
         assertEquals(StatusConsulta.AGENDADA, consulta.getStatus());
         assertEquals(ModalidadeConsulta.PRESENCIAL, consulta.getModalidade());
+    }
+
+    @Test
+    void deveRejeitarIdZero() {
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        assertThrows(IllegalArgumentException.class, () -> new Consulta(
+                0,
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL));
     }
 }

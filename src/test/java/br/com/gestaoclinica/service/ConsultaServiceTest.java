@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConsultaServiceTest {
 
@@ -251,5 +252,18 @@ class ConsultaServiceTest {
 
         assertNotNull(consultas);
         assertEquals(2, consultas.size());
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoExistemConsultas() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository());
+
+        List<Consulta> consultas = service.listarTodos();
+
+        assertNotNull(consultas);
+        assertTrue(consultas.isEmpty());
     }
 }

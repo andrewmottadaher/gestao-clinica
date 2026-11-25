@@ -292,4 +292,29 @@ class MenuEspecialidadeTest {
         assertTrue(saida.toString(StandardCharsets.UTF_8)
                 .contains("Erro: informe um ID numerico valido."));
     }
+
+    @Test
+    void deveAtualizarEspecialidadePelaInterface() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        service.cadastrar("Cardiologia", "Descricao antiga");
+
+        Scanner scanner = new Scanner(
+                "4\n1\nCardiologia Clinica\nNova descricao\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Especialidade atualizada com sucesso."));
+        assertEquals("Cardiologia Clinica", repository.buscarPorId(1).getNome());
+        assertEquals("Nova descricao", repository.buscarPorId(1).getDescricao());
+    }
 }

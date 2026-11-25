@@ -312,7 +312,7 @@ class MenuMedicoTest {
                 "31999999999",
                 1);
 
-        Scanner scanner = new Scanner("3\n0\n");
+        Scanner scanner = new Scanner("3\n1\n0\n");
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
 
@@ -330,5 +330,36 @@ class MenuMedicoTest {
         assertTrue(resultado.contains("CRM: CRM123"));
         assertTrue(resultado.contains("Especialidade: Cardiologia"));
         assertTrue(resultado.contains("Situacao: Ativo"));
+    }
+
+    @Test
+    void deveInformarQuandoMedicoNaoExistirNaBusca() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        Scanner scanner = new Scanner("3\n99\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Medico nao encontrado."));
     }
 }

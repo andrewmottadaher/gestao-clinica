@@ -36,11 +36,32 @@ public class MenuEspecialidade {
             output.print("Escolha uma opcao: ");
 
             String opcao = scanner.nextLine().trim();
-
+            if (opcao.equals("1")) {
+                cadastrarEspecialidade();
+            }
             if (opcao.equals("0")) {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+        }
+    }
+
+    private void cadastrarEspecialidade() {
+        output.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        output.print("Descricao: ");
+        String descricao = scanner.nextLine();
+
+        try {
+            var especialidade = service.cadastrar(nome, descricao);
+
+            output.println(
+                    "Especialidade cadastrada com sucesso. ID: "
+                            + especialidade.getId());
+
+        } catch (IllegalArgumentException e) {
+            output.println("Erro: " + e.getMessage());
         }
     }
 }

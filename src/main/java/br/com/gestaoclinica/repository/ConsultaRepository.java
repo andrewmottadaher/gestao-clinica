@@ -8,7 +8,9 @@ import br.com.gestaoclinica.model.ModalidadeConsulta;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ConsultaRepository {
@@ -41,5 +43,9 @@ public class ConsultaRepository {
 
     public Consulta buscarPorId(int id) {
         return consultas.get(id);
+    }
+
+    public List<Consulta> listarTodos() {
+        return new ArrayList<>(consultas.values());
     }
 }

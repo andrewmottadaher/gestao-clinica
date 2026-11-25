@@ -1014,4 +1014,16 @@ class ConsultaServiceTest {
         assertNotNull(consultaConcluida);
         assertEquals(StatusConsulta.REALIZADA, consultaConcluida.getStatus());
     }
+
+    @Test
+    void deveRetornarFalseAoConcluirConsultaInexistente() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository());
+
+        boolean cancelada = service.cancelar(999);
+
+        assertFalse(cancelada);
+    }
 }

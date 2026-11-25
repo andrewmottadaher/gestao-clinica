@@ -17,5 +17,9 @@ public class Paciente {
             throw new IllegalArgumentException(
                     "O ID do paciente deve ser maior que zero.");
         }
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O nome do paciente e obrigatorio.");
+        }
     }
 }

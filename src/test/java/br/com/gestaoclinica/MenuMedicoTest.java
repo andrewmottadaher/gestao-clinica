@@ -288,4 +288,47 @@ class MenuMedicoTest {
 
         assertTrue(resultado.contains("Nenhum medico cadastrado."));
     }
+
+    @Test
+    void deveBuscarMedicoPorId() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        especialidadeService.cadastrar("Cardiologia", "Doencas do coracao");
+
+        service.cadastrar(
+                "Carlos Silva",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                1);
+
+        Scanner scanner = new Scanner("3\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Nome: Carlos Silva"));
+        assertTrue(resultado.contains("CRM: CRM123"));
+        assertTrue(resultado.contains("Especialidade: Cardiologia"));
+        assertTrue(resultado.contains("Situacao: Ativo"));
+    }
 }

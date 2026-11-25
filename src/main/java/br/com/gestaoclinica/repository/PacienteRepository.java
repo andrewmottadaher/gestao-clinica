@@ -40,6 +40,21 @@ public class PacienteRepository {
         return pacientes.get(id);
     }
 
+    public boolean existeCpf(String cpf) {
+        return existeCpf(cpf, 0);
+    }
+
+    public boolean existeCpf(String cpf, int idIgnorado) {
+        if (cpf == null) {
+            return false;
+        }
+
+        return pacientes.values().stream()
+                .anyMatch(paciente -> paciente.getId() != idIgnorado
+                        && paciente.getCpf().trim()
+                                .equalsIgnoreCase(cpf.trim()));
+    }
+
     public List<Paciente> listarTodos() {
         return new ArrayList<>(pacientes.values());
     }

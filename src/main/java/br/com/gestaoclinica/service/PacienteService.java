@@ -41,6 +41,6 @@ public class PacienteService {
     }
 
     public Paciente buscarPorId(int id) {
-        return null;
+        return pacienteRepository.buscarPorId(id);
     }
 }

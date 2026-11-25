@@ -353,4 +353,11 @@ class ProntuarioRepositoryTest {
         assertEquals(true, excluido);
         assertNull(repository.buscarPorId(prontuario.getId()));
     }
+
+    @Test
+    void deveRetornarFalseAoExcluirProntuarioInexistente() {
+        ProntuarioRepository repository = new ProntuarioRepository();
+
+        assertEquals(false, repository.excluir(999));
+    }
 }

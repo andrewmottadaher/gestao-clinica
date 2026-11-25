@@ -187,4 +187,36 @@ class ProntuarioTest {
                         null,
                         null));
     }
+
+    @Test
+    void deveRejeitarDataRegistroAnteriorAoAgendamento() {
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta consulta = new Consulta(
+                1,
+                paciente,
+                medico,
+                LocalDate.now().plusDays(1).atTime(10, 0),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Prontuario(
+                        1,
+                        consulta,
+                        "Hipertensao arterial",
+                        null,
+                        null));
+    }
 }

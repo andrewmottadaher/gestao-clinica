@@ -17,6 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProntuarioRepositoryTest {
 
@@ -281,5 +282,43 @@ class ProntuarioRepositoryTest {
                 null);
 
         assertNull(resultado);
+    }
+
+    @Test
+    void devePreservarProntuarioOriginalQuandoAtualizacaoForInvalida() {
+        ProntuarioRepository repository = new ProntuarioRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta consulta = new Consulta(
+                1, paciente, medico,
+                LocalDate.now().atTime(10, 0),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        Prontuario original = repository.salvar(
+                consulta, "Diagnostico original", null, null);
+
+        assertThrows(IllegalArgumentException.class, () -> repository.atualizar(
+                original.getId(),
+                consulta,
+                "   ",
+                "Nova prescricao",
+                "Novas observacoes"));
+
+        assertEquals(
+                "Diagnostico original",
+                repository.buscarPorId(original.getId()).getDiagnostico());
     }
 }

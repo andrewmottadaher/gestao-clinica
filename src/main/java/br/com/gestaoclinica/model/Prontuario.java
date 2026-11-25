@@ -30,6 +30,10 @@ public class Prontuario {
             throw new IllegalArgumentException(
                     "O prontuario so pode ser criado para consultas realizadas.");
         }
+        if (diagnostico == null || diagnostico.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O diagnostico e obrigatorio.");
+        }
 
         this.id = id;
         this.consulta = consulta;

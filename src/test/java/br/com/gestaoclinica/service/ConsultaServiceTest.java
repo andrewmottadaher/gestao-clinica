@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -201,5 +202,54 @@ class ConsultaServiceTest {
         Consulta consulta = service.buscarPorId(999);
 
         assertNull(consulta);
+    }
+
+    @Test
+    void deveListarTodasAsConsultasCadastradas() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                pacienteRepository,
+                medicoRepository);
+
+        service.agendar(
+                1,
+                1,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        service.agendar(
+                1,
+                1,
+                LocalDateTime.of(2026, 12, 11, 15, 30),
+                new BigDecimal("300.00"),
+                ModalidadeConsulta.TELEMEDICINA);
+
+        List<Consulta> consultas = service.listarTodos();
+
+        assertNotNull(consultas);
+        assertEquals(2, consultas.size());
     }
 }

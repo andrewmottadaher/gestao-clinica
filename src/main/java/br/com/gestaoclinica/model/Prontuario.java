@@ -34,6 +34,11 @@ public class Prontuario {
             throw new IllegalArgumentException(
                     "O diagnostico e obrigatorio.");
         }
+        if (LocalDate.now().isBefore(
+                consulta.getDataHoraAgendamento().toLocalDate())) {
+            throw new IllegalArgumentException(
+                    "A data de registro nao pode ser anterior ao agendamento.");
+        }
 
         this.id = id;
         this.consulta = consulta;

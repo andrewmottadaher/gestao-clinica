@@ -222,4 +222,33 @@ class ConsultaRepositoryTest {
         assertEquals(ModalidadeConsulta.TELEMEDICINA,
                 consultaAtualizada.getModalidade());
     }
+
+    @Test
+    void deveRetornarNullAoAtualizarConsultaInexistente() {
+        ConsultaRepository repository = new ConsultaRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta consultaAtualizada = repository.atualizar(
+                999,
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 12, 15, 10, 0),
+                new BigDecimal("300.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.TELEMEDICINA);
+
+        assertNull(consultaAtualizada);
+        assertEquals(0, repository.listarTodos().size());
+    }
 }

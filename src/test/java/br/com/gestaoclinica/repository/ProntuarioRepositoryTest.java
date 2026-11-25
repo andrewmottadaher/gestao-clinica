@@ -206,4 +206,47 @@ class ProntuarioRepositoryTest {
 
         assertEquals(1, repository.listarTodos().size());
     }
+
+    @Test
+    void deveAtualizarProntuarioExistente() {
+        ProntuarioRepository repository = new ProntuarioRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta consulta = new Consulta(
+                1, paciente, medico,
+                LocalDate.now().atTime(10, 0),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        Prontuario original = repository.salvar(
+                consulta, "Diagnostico inicial", null, null);
+
+        Prontuario atualizado = repository.atualizar(
+                original.getId(),
+                consulta,
+                "Diagnostico atualizado",
+                "Prescricao atualizada",
+                "Observacoes atualizadas");
+
+        assertNotNull(atualizado);
+        assertEquals(original.getId(), atualizado.getId());
+        assertEquals("Diagnostico atualizado", atualizado.getDiagnostico());
+        assertEquals("Prescricao atualizada", atualizado.getPrescricao());
+        assertEquals("Observacoes atualizadas", atualizado.getObservacoes());
+        assertEquals(
+                "Diagnostico atualizado",
+                repository.buscarPorId(original.getId()).getDiagnostico());
+    }
 }

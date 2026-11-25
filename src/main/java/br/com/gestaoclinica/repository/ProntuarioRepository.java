@@ -39,4 +39,27 @@ public class ProntuarioRepository {
     public List<Prontuario> listarTodos() {
         return new ArrayList<>(prontuarios.values());
     }
+
+    public Prontuario atualizar(
+            int id,
+            Consulta consulta,
+            String diagnostico,
+            String prescricao,
+            String observacoes) {
+
+        if (!prontuarios.containsKey(id)) {
+            return null;
+        }
+
+        Prontuario prontuarioAtualizado = new Prontuario(
+                id,
+                consulta,
+                diagnostico,
+                prescricao,
+                observacoes);
+
+        prontuarios.put(id, prontuarioAtualizado);
+
+        return prontuarioAtualizado;
+    }
 }

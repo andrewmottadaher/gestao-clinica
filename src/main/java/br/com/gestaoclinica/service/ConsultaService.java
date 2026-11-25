@@ -6,6 +6,8 @@ import br.com.gestaoclinica.repository.MedicoRepository;
 import br.com.gestaoclinica.model.Consulta;
 import br.com.gestaoclinica.model.Medico;
 import br.com.gestaoclinica.model.ModalidadeConsulta;
+import br.com.gestaoclinica.model.Paciente;
+import br.com.gestaoclinica.model.StatusConsulta;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,22 +34,31 @@ public class ConsultaService {
             BigDecimal valor,
             ModalidadeConsulta modalidade) {
 
-        if (pacienteRepository.buscarPorId(pacienteId) == null) {
+        Paciente paciente = pacienteRepository.buscarPorId(pacienteId);
+
+        if (paciente == null) {
             throw new IllegalArgumentException(
                     "Paciente nao encontrado.");
         }
-        if (medicoRepository.buscarPorId(medicoId) == null) {
+
+        Medico medico = medicoRepository.buscarPorId(medicoId);
+
+        if (medico == null) {
             throw new IllegalArgumentException(
                     "Medico nao encontrado.");
         }
-
-        Medico medico = medicoRepository.buscarPorId(medicoId);
 
         if ("N".equals(medico.getAtivo())) {
             throw new IllegalArgumentException(
                     "Nao e possivel agendar consulta com medico inativo.");
         }
 
-        return null;
+        return consultaRepository.salvar(
+                paciente,
+                medico,
+                dataHoraAgendamento,
+                valor,
+                StatusConsulta.AGENDADA,
+                modalidade);
     }
 }

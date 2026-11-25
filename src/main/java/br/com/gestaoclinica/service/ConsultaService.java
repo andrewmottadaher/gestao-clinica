@@ -78,6 +78,42 @@ public class ConsultaService {
             LocalDateTime dataHoraAgendamento,
             BigDecimal valor,
             ModalidadeConsulta modalidade) {
-        return null;
+
+        Consulta consultaExistente = consultaRepository.buscarPorId(consultaId);
+
+        if (consultaExistente == null) {
+            return null;
+        }
+
+        if (consultaExistente.getStatus() != StatusConsulta.AGENDADA) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel atualizar uma consulta que nao esteja agendada.");
+        }
+
+        Paciente paciente = pacienteRepository.buscarPorId(pacienteId);
+
+        if (paciente == null) {
+            throw new IllegalArgumentException("Paciente nao encontrado.");
+        }
+
+        Medico medico = medicoRepository.buscarPorId(medicoId);
+
+        if (medico == null) {
+            throw new IllegalArgumentException("Medico nao encontrado.");
+        }
+
+        if ("N".equals(medico.getAtivo())) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel atualizar uma consulta para um medico inativo.");
+        }
+
+        return consultaRepository.atualizar(
+                consultaId,
+                paciente,
+                medico,
+                dataHoraAgendamento,
+                valor,
+                consultaExistente.getStatus(),
+                modalidade);
     }
 }

@@ -227,4 +227,30 @@ class ConsultaTest {
                 StatusConsulta.AGENDADA,
                 null));
     }
+
+    @Test
+    void deveAceitarValorZero() {
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta consulta = new Consulta(
+                1,
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("0.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        assertEquals(new BigDecimal("0.00"), consulta.getValor());
+    }
 }

@@ -230,4 +230,19 @@ class PacienteRepositoryTest {
 
         assertTrue(repository.existeCpf("12345678900"));
     }
+
+    @Test
+    void deveIgnorarEspacosNasExtremidadesAoVerificarCpf() {
+        PacienteRepository repository = new PacienteRepository();
+
+        repository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        assertTrue(repository.existeCpf(" 12345678900 "));
+    }
 }

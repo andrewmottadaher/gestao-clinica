@@ -116,4 +116,8 @@ public class ConsultaService {
                 consultaExistente.getStatus(),
                 modalidade);
     }
+
+    public boolean cancelar(int consultaId) {
+        return false;
+    }
 }

@@ -39,4 +39,8 @@ public class PacienteService {
                 telefone,
                 convenio);
     }
+
+    public Paciente buscarPorId(int id) {
+        return null;
+    }
 }

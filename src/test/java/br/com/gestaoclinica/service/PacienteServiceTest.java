@@ -64,4 +64,28 @@ class PacienteServiceTest {
                         "31988888888",
                         null));
     }
+
+    @Test
+    void deveBuscarPacientePorIdExistente() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente cadastrado = service.cadastrar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente encontrado = service.buscarPorId(cadastrado.getId());
+
+        assertNotNull(encontrado);
+        assertEquals(cadastrado.getId(), encontrado.getId());
+        assertEquals("Joao Silva", encontrado.getNome());
+    }
 }

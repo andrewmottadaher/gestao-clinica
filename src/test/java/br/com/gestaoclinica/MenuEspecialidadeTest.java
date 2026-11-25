@@ -317,4 +317,23 @@ class MenuEspecialidadeTest {
         assertEquals("Cardiologia Clinica", repository.buscarPorId(1).getNome());
         assertEquals("Nova descricao", repository.buscarPorId(1).getDescricao());
     }
+
+    @Test
+    void deveInformarQuandoEspecialidadeNaoExistirNaAtualizacao() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner("4\n99\nCardiologia\nDescricao de teste\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Especialidade nao encontrada."));
+    }
 }

@@ -642,4 +642,73 @@ class ConsultaServiceTest {
         assertEquals(paciente.getId(), consultaAtual.getPaciente().getId());
         assertEquals(medico.getId(), consultaAtual.getMedico().getId());
     }
+
+    @Test
+    void deveAtualizarPacienteEMedicoDaConsulta() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+
+        Paciente pacienteOriginal = pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente novoPaciente = pacienteRepository.salvar(
+                "Maria Souza",
+                "98765432100",
+                LocalDate.of(1985, 8, 20),
+                "F",
+                "31977777777",
+                null);
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        Medico medicoOriginal = medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        Medico novoMedico = medicoRepository.salvar(
+                "Ana Lima",
+                "CRM456",
+                "ana@email.com",
+                "31966666666",
+                especialidade);
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        Consulta original = consultaRepository.salvar(
+                pacienteOriginal,
+                medicoOriginal,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository);
+
+        Consulta atualizada = service.atualizar(
+                original.getId(),
+                novoPaciente.getId(),
+                novoMedico.getId(),
+                LocalDateTime.of(2026, 12, 11, 15, 30),
+                new BigDecimal("300.00"),
+                ModalidadeConsulta.TELEMEDICINA);
+
+        assertNotNull(atualizada);
+        assertEquals(novoPaciente.getId(), atualizada.getPaciente().getId());
+        assertEquals(novoMedico.getId(), atualizada.getMedico().getId());
+    }
 }

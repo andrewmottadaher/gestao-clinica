@@ -76,55 +76,13 @@ public class Main {
         }
     }
 
-    private static void cadastrarEspecialidade() {
-        System.out.println("\n--- CADASTRAR ESPECIALIDADE ---");
-
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
-
-        System.out.print("Descricao: ");
-        String descricao = scanner.nextLine();
-
-        try {
-            var especialidade = especialidadeService.cadastrar(nome, descricao);
-
-            System.out.println(
-                    "Especialidade cadastrada com sucesso. ID: "
-                            + especialidade.getId());
-
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());
-        }
-    }
-
     private static void gerenciarEspecialidades() {
-        int opcao;
+        MenuEspecialidade menu = new MenuEspecialidade(
+                especialidadeService,
+                scanner,
+                System.out);
 
-        do {
-            System.out.println("\n==================================");
-            System.out.println("     GERENCIAR ESPECIALIDADES");
-            System.out.println("==================================");
-            System.out.println("1 - Cadastrar especialidade");
-            System.out.println("2 - Listar especialidades");
-            System.out.println("3 - Buscar especialidade por ID");
-            System.out.println("4 - Atualizar especialidade");
-            System.out.println("5 - Excluir especialidade");
-            System.out.println("0 - Voltar ao menu principal");
-            System.out.println("==================================");
-
-            opcao = lerInteiro("Escolha uma opcao: ");
-
-            switch (opcao) {
-                case 1 -> cadastrarEspecialidade();
-                case 2 -> System.out.println("Listagem em construcao.");
-                case 3 -> System.out.println("Busca em construcao.");
-                case 4 -> System.out.println("Atualizacao em construcao.");
-                case 5 -> System.out.println("Exclusao em construcao.");
-                case 0 -> System.out.println("Voltando ao menu principal...");
-                default -> System.out.println("Opcao invalida.");
-            }
-
-        } while (opcao != 0);
+        menu.exibir();
     }
 
     public static void main(String[] args) {

@@ -38,4 +38,8 @@ public class ConsultaRepository {
 
         return consulta;
     }
+
+    public Consulta buscarPorId(int id) {
+        return consultas.get(id);
+    }
 }

@@ -78,6 +78,11 @@ public class PacienteService {
     }
 
     public boolean excluir(int id) {
-        return false;
+        if (consultaRepository.existePorPaciente(id)) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel excluir um paciente vinculado a consultas.");
+        }
+
+        return pacienteRepository.excluir(id);
     }
 }

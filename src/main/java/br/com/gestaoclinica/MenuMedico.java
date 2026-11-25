@@ -51,6 +51,7 @@ public class MenuMedico {
             switch (opcao) {
                 case 1 -> cadastrar();
                 case 2 -> listar();
+                case 3 -> buscar();
                 case 0 -> output.println("Voltando ao menu principal...");
                 default -> output.println("Opcao invalida.");
             }
@@ -112,20 +113,42 @@ public class MenuMedico {
 
         output.println("\n--- MEDICOS CADASTRADOS ---");
 
-        medicos.forEach(medico -> {
-            output.println("------------------------------");
-            output.println("ID: " + medico.getId());
-            output.println("Nome: " + medico.getNome());
-            output.println("CRM: " + medico.getCrm());
-            output.println("Especialidade: " + medico.getEspecialidade().getNome());
+        medicos.forEach(this::exibirDadosMedico);
 
-            String situacao = "S".equals(medico.getAtivo())
-                    ? "Ativo"
-                    : "Inativo";
+        output.println("------------------------------");
+    }
 
-            output.println("Situacao: " + situacao);
-        });
+    private void buscar() {
+        try {
+            output.print("Informe o ID do medico: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
 
+            var medico = service.buscarPorId(id);
+
+            if (medico == null) {
+                output.println("Medico nao encontrado.");
+                return;
+            }
+
+            exibirDadosMedico(medico);
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        }
+    }
+
+    private void exibirDadosMedico(br.com.gestaoclinica.model.Medico medico) {
+        output.println("------------------------------");
+        output.println("ID: " + medico.getId());
+        output.println("Nome: " + medico.getNome());
+        output.println("CRM: " + medico.getCrm());
+        output.println("Especialidade: " + medico.getEspecialidade().getNome());
+
+        String situacao = "S".equals(medico.getAtivo())
+                ? "Ativo"
+                : "Inativo";
+
+        output.println("Situacao: " + situacao);
         output.println("------------------------------");
     }
 }

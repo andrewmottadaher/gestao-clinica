@@ -25,6 +25,12 @@ public class PacienteService {
             String sexo,
             String telefone,
             String convenio) {
-        return null;
+        return pacienteRepository.salvar(
+                nome,
+                cpf,
+                dataNascimento,
+                sexo,
+                telefone,
+                convenio);
     }
 }

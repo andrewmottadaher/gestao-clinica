@@ -38,6 +38,10 @@ public class Consulta {
             throw new IllegalArgumentException(
                     "A data e hora do agendamento sao obrigatorias.");
         }
+        if (valor == null) {
+            throw new IllegalArgumentException(
+                    "O valor da consulta e obrigatorio.");
+        }
 
         this.id = id;
         this.paciente = paciente;

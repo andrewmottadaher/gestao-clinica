@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
+import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.model.Medico;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
@@ -592,7 +593,7 @@ class MenuMedicoTest {
                 especialidadeRepository,
                 medicoRepository);
 
-        Scanner scanner = new Scanner("5\n0\n");
+        Scanner scanner = new Scanner("5\n1\n0\n");
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
 
@@ -607,5 +608,45 @@ class MenuMedicoTest {
         String resultado = saida.toString(StandardCharsets.UTF_8);
 
         assertTrue(resultado.contains("Informe o ID do medico para excluir:"));
+    }
+
+    @Test
+    void deveExcluirMedicoPelaInterface() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        Especialidade especialidade = especialidadeService.cadastrar(
+                "Cardiologia",
+                "Especialidade cardiologica");
+
+        service.cadastrar(
+                "Carlos Silva",
+                "123456",
+                "carlos@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        Scanner scanner = new Scanner("5\n1\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        assertNull(service.buscarPorId(1));
     }
 }

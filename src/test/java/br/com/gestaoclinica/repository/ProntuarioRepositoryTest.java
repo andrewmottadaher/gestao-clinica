@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ProntuarioRepositoryTest {
 
@@ -122,5 +123,14 @@ class ProntuarioRepositoryTest {
 
         assertNotNull(prontuarioEncontrado);
         assertEquals(prontuarioSalvo, prontuarioEncontrado);
+    }
+
+    @Test
+    void deveRetornarNullAoBuscarProntuarioPorIdInexistente() {
+        ProntuarioRepository repository = new ProntuarioRepository();
+
+        Prontuario prontuarioEncontrado = repository.buscarPorId(999);
+
+        assertNull(prontuarioEncontrado);
     }
 }

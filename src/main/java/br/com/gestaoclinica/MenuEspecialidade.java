@@ -46,6 +46,9 @@ public class MenuEspecialidade {
             if (opcao.equals("2")) {
                 listarEspecialidades();
             }
+            if (opcao.equals("3")) {
+                buscarEspecialidadePorId();
+            }
         }
     }
 
@@ -83,6 +86,25 @@ public class MenuEspecialidade {
             output.println("Nome: " + especialidade.getNome());
             output.println("Descricao: " + especialidade.getDescricao());
             output.println("----------------------------------");
+        }
+    }
+
+    private void buscarEspecialidadePorId() {
+        output.print("Informe o ID da especialidade: ");
+
+        try {
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            var especialidade = service.buscarPorId(id);
+
+            output.println("ID: " + especialidade.getId());
+            output.println("Nome: " + especialidade.getNome());
+            output.println("Descricao: " + especialidade.getDescricao());
+
+        } catch (NumberFormatException e) {
+            output.println("Erro: informe um ID numerico valido.");
+        } catch (IllegalArgumentException e) {
+            output.println("Erro: " + e.getMessage());
         }
     }
 }

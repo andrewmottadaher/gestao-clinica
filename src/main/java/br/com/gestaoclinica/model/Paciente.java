@@ -29,5 +29,9 @@ public class Paciente {
             throw new IllegalArgumentException(
                     "A data de nascimento do paciente e obrigatoria.");
         }
+        if (!"M".equals(sexo) && !"F".equals(sexo)) {
+            throw new IllegalArgumentException(
+                    "O sexo do paciente deve ser M ou F.");
+        }
     }
 }

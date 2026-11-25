@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -135,5 +136,12 @@ class PacienteRepositoryTest {
 
         assertTrue(excluido);
         assertNull(repository.buscarPorId(paciente.getId()));
+    }
+
+    @Test
+    void deveRetornarFalseAoExcluirPacienteInexistente() {
+        PacienteRepository repository = new PacienteRepository();
+
+        assertFalse(repository.excluir(99));
     }
 }

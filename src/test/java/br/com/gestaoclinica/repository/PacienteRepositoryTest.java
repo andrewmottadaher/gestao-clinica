@@ -144,4 +144,34 @@ class PacienteRepositoryTest {
 
         assertFalse(repository.excluir(99));
     }
+
+    @Test
+    void deveAtualizarPacienteExistente() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente paciente = repository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente atualizado = repository.atualizar(
+                paciente.getId(),
+                "Carlos",
+                "98765432100",
+                LocalDate.of(1985, 8, 20),
+                "M",
+                "31888888888",
+                "UNIMED");
+
+        assertEquals(paciente.getId(), atualizado.getId());
+        assertEquals("Carlos", atualizado.getNome());
+        assertEquals("98765432100", atualizado.getCpf());
+        assertEquals(LocalDate.of(1985, 8, 20), atualizado.getDataNascimento());
+        assertEquals("M", atualizado.getSexo());
+        assertEquals("31888888888", atualizado.getTelefone());
+        assertEquals("UNIMED", atualizado.getConvenio());
+    }
 }

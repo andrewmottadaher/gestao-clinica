@@ -66,4 +66,9 @@ public class ProntuarioRepository {
     public boolean excluir(int id) {
         return prontuarios.remove(id) != null;
     }
+
+    public boolean existePorConsulta(int consultaId) {
+        return prontuarios.values().stream()
+                .anyMatch(prontuario -> prontuario.getConsulta().getId() == consultaId);
+    }
 }

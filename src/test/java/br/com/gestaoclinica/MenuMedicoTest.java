@@ -257,4 +257,35 @@ class MenuMedicoTest {
         assertTrue(resultado.contains("Especialidade: Cardiologia"));
         assertTrue(resultado.contains("Situacao: Ativo"));
     }
+
+    @Test
+    void deveInformarQuandoNaoExistiremMedicosCadastrados() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        Scanner scanner = new Scanner("2\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Nenhum medico cadastrado."));
+    }
 }

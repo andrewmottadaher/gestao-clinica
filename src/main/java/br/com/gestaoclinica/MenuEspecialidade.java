@@ -96,6 +96,10 @@ public class MenuEspecialidade {
             int id = Integer.parseInt(scanner.nextLine().trim());
 
             var especialidade = service.buscarPorId(id);
+            if (especialidade == null) {
+    output.println("Especialidade nao encontrada.");
+    return;
+}
 
             output.println("ID: " + especialidade.getId());
             output.println("Nome: " + especialidade.getNome());

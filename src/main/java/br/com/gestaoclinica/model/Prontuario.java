@@ -18,6 +18,11 @@ public class Prontuario {
             String prescricao,
             String observacoes) {
 
+        if (id <= 0) {
+            throw new IllegalArgumentException(
+                    "O ID deve ser maior que zero.");
+        }
+
         this.id = id;
         this.consulta = consulta;
         this.diagnostico = diagnostico;

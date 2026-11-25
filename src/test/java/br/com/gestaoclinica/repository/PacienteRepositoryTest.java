@@ -287,4 +287,12 @@ class PacienteRepositoryTest {
                 primeiro.getCpf(),
                 segundo.getId()));
     }
+
+    @Test
+    void deveRetornarFalseQuandoCpfForNulo() {
+        PacienteRepository repository = new PacienteRepository();
+
+        assertFalse(repository.existeCpf(null));
+        assertFalse(repository.existeCpf(null, 1));
+    }
 }

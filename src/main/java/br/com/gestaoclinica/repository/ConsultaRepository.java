@@ -84,4 +84,9 @@ public class ConsultaRepository {
         return consultas.values().stream()
                 .anyMatch(consulta -> consulta.getPaciente().getId() == pacienteId);
     }
+
+    public boolean existePorMedico(int medicoId) {
+        return consultas.values().stream()
+                .anyMatch(consulta -> consulta.getMedico().getId() == medicoId);
+    }
 }

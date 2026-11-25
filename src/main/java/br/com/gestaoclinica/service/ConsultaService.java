@@ -142,6 +142,26 @@ public class ConsultaService {
     }
 
     public boolean concluir(int consultaId) {
-        return false;
+        Consulta consultaExistente = consultaRepository.buscarPorId(consultaId);
+
+        if (consultaExistente == null) {
+            return false;
+        }
+
+        if (consultaExistente.getStatus() != StatusConsulta.AGENDADA) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel concluir uma consulta que nao esteja agendada.");
+        }
+
+        consultaRepository.atualizar(
+                consultaId,
+                consultaExistente.getPaciente(),
+                consultaExistente.getMedico(),
+                consultaExistente.getDataHoraAgendamento(),
+                consultaExistente.getValor(),
+                StatusConsulta.REALIZADA,
+                consultaExistente.getModalidade());
+
+        return true;
     }
 }

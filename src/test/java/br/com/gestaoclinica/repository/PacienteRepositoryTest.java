@@ -49,4 +49,21 @@ class PacienteRepositoryTest {
                 () -> assertEquals(2, segundo.getId()),
                 () -> assertEquals(3, terceiro.getId()));
     }
+
+    @Test
+    void deveBuscarPacientePorId() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente salvo = repository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente encontrado = repository.buscarPorId(salvo.getId());
+
+        assertEquals(salvo, encontrado);
+    }
 }

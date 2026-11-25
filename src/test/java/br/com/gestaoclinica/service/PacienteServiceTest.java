@@ -184,4 +184,39 @@ class PacienteServiceTest {
         assertEquals("31977777777", atualizado.getTelefone());
         assertEquals("Convenio A", atualizado.getConvenio());
     }
+
+    @Test
+    void deveRejeitarAtualizacaoComCpfDeOutroPaciente() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente primeiro = service.cadastrar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente segundo = service.cadastrar(
+                "Maria Souza",
+                "98765432100",
+                LocalDate.of(1995, 8, 20),
+                "F",
+                "31988888888",
+                null);
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizar(
+                segundo.getId(),
+                "Maria Souza",
+                primeiro.getCpf(),
+                LocalDate.of(1995, 8, 20),
+                "F",
+                "31988888888",
+                null));
+    }
 }

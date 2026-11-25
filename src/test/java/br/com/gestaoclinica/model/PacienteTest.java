@@ -55,4 +55,16 @@ class PacienteTest {
                 "31999999999",
                 null));
     }
+
+    @Test
+    void deveRejeitarCpfNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                null,
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
 }

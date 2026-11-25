@@ -21,5 +21,9 @@ public class Paciente {
             throw new IllegalArgumentException(
                     "O nome do paciente e obrigatorio.");
         }
+        if (cpf == null || cpf.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O CPF do paciente e obrigatorio.");
+        }
     }
 }

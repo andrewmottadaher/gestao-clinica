@@ -21,6 +21,11 @@ public class Consulta {
             BigDecimal valor,
             StatusConsulta status,
             ModalidadeConsulta modalidade) {
+                
+        if (id <= 0) {
+            throw new IllegalArgumentException(
+                    "O ID da consulta deve ser maior que zero.");
+        }
 
         this.id = id;
         this.paciente = paciente;

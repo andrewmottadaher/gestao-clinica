@@ -49,6 +49,9 @@ public class MenuEspecialidade {
             if (opcao.equals("3")) {
                 buscarEspecialidadePorId();
             }
+            if (opcao.equals("4")) {
+                atualizarEspecialidade();
+            }
         }
     }
 
@@ -96,14 +99,43 @@ public class MenuEspecialidade {
             int id = Integer.parseInt(scanner.nextLine().trim());
 
             var especialidade = service.buscarPorId(id);
+
             if (especialidade == null) {
-    output.println("Especialidade nao encontrada.");
-    return;
-}
+                output.println("Especialidade nao encontrada.");
+                return;
+            }
 
             output.println("ID: " + especialidade.getId());
             output.println("Nome: " + especialidade.getNome());
             output.println("Descricao: " + especialidade.getDescricao());
+
+        } catch (NumberFormatException e) {
+            output.println("Erro: informe um ID numerico valido.");
+        } catch (IllegalArgumentException e) {
+            output.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private void atualizarEspecialidade() {
+        output.print("Informe o ID da especialidade: ");
+
+        try {
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            output.print("Novo nome: ");
+            String nome = scanner.nextLine();
+
+            output.print("Nova descricao: ");
+            String descricao = scanner.nextLine();
+
+            var especialidade = service.atualizar(id, nome, descricao);
+
+            if (especialidade == null) {
+                output.println("Especialidade nao encontrada.");
+                return;
+            }
+
+            output.println("Especialidade atualizada com sucesso.");
 
         } catch (NumberFormatException e) {
             output.println("Erro: informe um ID numerico valido.");

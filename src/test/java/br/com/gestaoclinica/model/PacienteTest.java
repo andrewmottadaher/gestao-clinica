@@ -214,4 +214,16 @@ class PacienteTest {
                 "31999999999",
                 null));
     }
+
+    @Test
+    void devePermitirSexoFeminino() {
+        assertDoesNotThrow(() -> new Paciente(
+                1,
+                "Maria Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "F",
+                "31999999999",
+                null));
+    }
 }

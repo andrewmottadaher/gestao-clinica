@@ -40,4 +40,8 @@ public class ProntuarioService {
                 prescricao,
                 observacoes);
     }
+
+    public Prontuario buscarPorId(int id) {
+        return prontuarioRepository.buscarPorId(id);
+    }
 }

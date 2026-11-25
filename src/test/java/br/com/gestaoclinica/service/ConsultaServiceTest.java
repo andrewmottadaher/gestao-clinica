@@ -3,6 +3,7 @@ package br.com.gestaoclinica.service;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
 import br.com.gestaoclinica.repository.PacienteRepository;
+import br.com.gestaoclinica.repository.ProntuarioRepository;
 import br.com.gestaoclinica.model.Consulta;
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.model.ModalidadeConsulta;
@@ -1172,5 +1173,116 @@ class ConsultaServiceTest {
         assertEquals(valorOriginal, cancelada.getValor());
         assertEquals(ModalidadeConsulta.PRESENCIAL, cancelada.getModalidade());
         assertEquals(StatusConsulta.REALIZADA, cancelada.getStatus());
+    }
+
+    @Test
+    void deveRejeitarExclusaoDeConsultaComProntuarioVinculado() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        Consulta consulta = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        prontuarioRepository.salvar(
+                consulta,
+                "Diagnostico",
+                "Prescricao",
+                "Observacoes");
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                prontuarioRepository);
+
+        IllegalArgumentException excecao = assertThrows(
+                IllegalArgumentException.class,
+                () -> service.excluir(consulta.getId()));
+
+        assertEquals(
+                "Nao e possivel excluir uma consulta que possui prontuario.",
+                excecao.getMessage());
+
+        assertNotNull(consultaRepository.buscarPorId(consulta.getId()));
+    }
+
+    @Test
+    void deveExcluirConsultaSemProntuarioVinculado() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        Consulta consulta = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository);
+
+        assertTrue(service.excluir(consulta.getId()));
+        assertNull(consultaRepository.buscarPorId(consulta.getId()));
+    }
+
+    @Test
+    void deveRetornarFalseAoExcluirConsultaInexistente() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository());
+
+        assertFalse(service.excluir(999));
     }
 }

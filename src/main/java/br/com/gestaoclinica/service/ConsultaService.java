@@ -8,6 +8,7 @@ import br.com.gestaoclinica.model.Medico;
 import br.com.gestaoclinica.model.ModalidadeConsulta;
 import br.com.gestaoclinica.model.Paciente;
 import br.com.gestaoclinica.model.StatusConsulta;
+import br.com.gestaoclinica.repository.ProntuarioRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,14 +19,28 @@ public class ConsultaService {
     private final ConsultaRepository consultaRepository;
     private final PacienteRepository pacienteRepository;
     private final MedicoRepository medicoRepository;
+    private final ProntuarioRepository prontuarioRepository;
 
     public ConsultaService(
             ConsultaRepository consultaRepository,
             PacienteRepository pacienteRepository,
             MedicoRepository medicoRepository) {
+        this(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+    }
+
+    public ConsultaService(
+            ConsultaRepository consultaRepository,
+            PacienteRepository pacienteRepository,
+            MedicoRepository medicoRepository,
+            ProntuarioRepository prontuarioRepository) {
         this.consultaRepository = consultaRepository;
         this.pacienteRepository = pacienteRepository;
         this.medicoRepository = medicoRepository;
+        this.prontuarioRepository = prontuarioRepository;
     }
 
     public Consulta agendar(
@@ -163,5 +178,14 @@ public class ConsultaService {
                 consultaExistente.getModalidade());
 
         return true;
+    }
+
+    public boolean excluir(int consultaId) {
+        if (prontuarioRepository.existePorConsulta(consultaId)) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel excluir uma consulta que possui prontuario.");
+        }
+
+        return consultaRepository.excluir(consultaId);
     }
 }

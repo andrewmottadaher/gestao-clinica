@@ -250,4 +250,26 @@ class PacienteServiceTest {
         assertEquals("12345678901", atualizado.getCpf());
         assertEquals("Joao Santos", atualizado.getNome());
     }
+
+    @Test
+    void deveRetornarNullAoAtualizarPacienteInexistente() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente atualizado = service.atualizar(
+                999,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        assertNull(atualizado);
+        assertTrue(service.listarTodos().isEmpty());
+    }
 }

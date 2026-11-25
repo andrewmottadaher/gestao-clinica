@@ -59,6 +59,7 @@ public class MenuMedico {
                 case 2 -> listar();
                 case 3 -> buscar();
                 case 4 -> atualizar();
+                case 5 -> excluir();
                 case 0 -> output.println("Voltando ao menu principal...");
                 default -> output.println("Opcao invalida.");
             }
@@ -206,6 +207,22 @@ public class MenuMedico {
             output.println("Informe um ID valido.");
         } catch (IllegalArgumentException e) {
             output.println(e.getMessage());
+        }
+    }
+
+    private void excluir() {
+        try {
+            output.print("Informe o ID do medico para excluir: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            var medico = service.buscarPorId(id);
+
+            if (medico == null) {
+                output.println("Medico nao encontrado.");
+            }
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
         }
     }
 }

@@ -75,4 +75,8 @@ public class ConsultaRepository {
 
         return consultaAtualizada;
     }
+
+    public boolean excluir(int id) {
+        return consultas.remove(id) != null;
+    }
 }

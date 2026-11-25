@@ -136,4 +136,19 @@ class PacienteServiceTest {
         assertNotNull(pacientes);
         assertEquals(2, pacientes.size());
     }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoHouverPacientesCadastrados() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        List<Paciente> pacientes = service.listarTodos();
+
+        assertNotNull(pacientes);
+        assertTrue(pacientes.isEmpty());
+    }
 }

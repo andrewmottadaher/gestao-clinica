@@ -22,6 +22,12 @@ public class ProntuarioService {
             String diagnostico,
             String prescricao,
             String observacoes) {
-        return null;
+        Consulta consulta = consultaRepository.buscarPorId(consultaId);
+
+        return prontuarioRepository.salvar(
+                consulta,
+                diagnostico,
+                prescricao,
+                observacoes);
     }
 }

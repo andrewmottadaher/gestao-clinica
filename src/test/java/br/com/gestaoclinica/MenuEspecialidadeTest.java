@@ -240,7 +240,7 @@ class MenuEspecialidadeTest {
 
         service.cadastrar("Cardiologia", "Especialidade do sistema cardiovascular");
 
-        Scanner scanner = new Scanner("3\n0\n");
+        Scanner scanner = new Scanner("3\n1\n0\n");
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
 
@@ -253,5 +253,24 @@ class MenuEspecialidadeTest {
         assertTrue(resultado.contains("Informe o ID da especialidade:"));
         assertTrue(resultado.contains("Nome: Cardiologia"));
         assertTrue(resultado.contains("Descricao: Especialidade do sistema cardiovascular"));
+    }
+
+    @Test
+    void deveInformarQuandoEspecialidadeNaoForEncontrada() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner("3\n99\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Especialidade nao encontrada."));
     }
 }

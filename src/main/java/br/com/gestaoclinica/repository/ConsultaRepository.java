@@ -79,4 +79,9 @@ public class ConsultaRepository {
     public boolean excluir(int id) {
         return consultas.remove(id) != null;
     }
+
+    public boolean existePorPaciente(int pacienteId) {
+        return consultas.values().stream()
+                .anyMatch(consulta -> consulta.getPaciente().getId() == pacienteId);
+    }
 }

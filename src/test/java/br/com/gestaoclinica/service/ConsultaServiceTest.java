@@ -1118,4 +1118,59 @@ class ConsultaServiceTest {
                 IllegalArgumentException.class,
                 () -> service.concluir(consulta.getId()));
     }
+
+    @Test
+    void devePreservarDadosDaConsultaAoConcluir() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        LocalDateTime dataOriginal = LocalDateTime.of(2026, 12, 10, 14, 30);
+        BigDecimal valorOriginal = new BigDecimal("250.00");
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        Consulta original = consultaRepository.salvar(
+                paciente,
+                medico,
+                dataOriginal,
+                valorOriginal,
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository);
+
+        service.concluir(original.getId());
+
+        Consulta cancelada = consultaRepository.buscarPorId(original.getId());
+
+        assertNotNull(cancelada);
+        assertEquals(paciente.getId(), cancelada.getPaciente().getId());
+        assertEquals(medico.getId(), cancelada.getMedico().getId());
+        assertEquals(dataOriginal, cancelada.getDataHoraAgendamento());
+        assertEquals(valorOriginal, cancelada.getValor());
+        assertEquals(ModalidadeConsulta.PRESENCIAL, cancelada.getModalidade());
+        assertEquals(StatusConsulta.REALIZADA, cancelada.getStatus());
+    }
 }

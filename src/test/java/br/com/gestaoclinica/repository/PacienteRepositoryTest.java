@@ -174,4 +174,20 @@ class PacienteRepositoryTest {
         assertEquals("31888888888", atualizado.getTelefone());
         assertEquals("UNIMED", atualizado.getConvenio());
     }
+
+    @Test
+    void deveRetornarNullAoAtualizarPacienteInexistente() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente atualizado = repository.atualizar(
+                99,
+                "Carlos",
+                "98765432100",
+                LocalDate.of(1985, 8, 20),
+                "M",
+                "31888888888",
+                "UNIMED");
+
+        assertNull(atualizado);
+    }
 }

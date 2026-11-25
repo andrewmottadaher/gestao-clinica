@@ -475,4 +475,36 @@ class MenuMedicoTest {
         assertEquals("31888888888", medicoAtualizado.getTelefone());
         assertEquals("Neurologia", medicoAtualizado.getEspecialidade().getNome());
     }
+
+    @Test
+    void deveInformarQuandoMedicoNaoExistirNaAtualizacao() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        Scanner scanner = new Scanner("4\n99\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Medico nao encontrado."));
+        assertFalse(resultado.contains("Nome:"));
+    }
 }

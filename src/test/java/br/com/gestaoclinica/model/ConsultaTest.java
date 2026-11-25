@@ -107,4 +107,28 @@ class ConsultaTest {
                 StatusConsulta.AGENDADA,
                 ModalidadeConsulta.PRESENCIAL));
     }
+
+    @Test
+    void deveRejeitarDataHoraAgendamentoNula() {
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        assertThrows(IllegalArgumentException.class, () -> new Consulta(
+                1,
+                paciente,
+                medico,
+                null,
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL));
+    }
 }

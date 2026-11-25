@@ -22,7 +22,13 @@ public class ProntuarioService {
             String diagnostico,
             String prescricao,
             String observacoes) {
+
         Consulta consulta = consultaRepository.buscarPorId(consultaId);
+
+        if (consulta == null) {
+            throw new IllegalArgumentException(
+                    "Consulta nao encontrada.");
+        }
 
         return prontuarioRepository.salvar(
                 consulta,

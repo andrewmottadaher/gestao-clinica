@@ -162,4 +162,55 @@ class MenuMedicoTest {
         assertTrue(resultado.contains("Nao existem especialidades cadastradas."));
         assertTrue(medicoRepository.listarTodos().isEmpty());
     }
+
+    @Test
+    void naoDeveCadastrarMedicoComCrmDuplicado() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        especialidadeService.cadastrar("Cardiologia", "Doencas do coracao");
+
+        service.cadastrar(
+                "Carlos Silva",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                1);
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "Maria Souza\n"
+                        + "CRM123\n"
+                        + "maria@email.com\n"
+                        + "31888888888\n"
+                        + "1\n"
+                        + "0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains(
+                "Ja existe um medico cadastrado com esse CRM."));
+
+        assertTrue(medicoRepository.listarTodos().size() == 1);
+    }
 }

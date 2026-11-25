@@ -324,4 +324,14 @@ class ConsultaRepositoryTest {
         assertEquals(true, excluida);
         assertNull(repository.buscarPorId(consultaSalva.getId()));
     }
+
+    @Test
+    void deveRetornarFalseAoExcluirConsultaInexistente() {
+        ConsultaRepository repository = new ConsultaRepository();
+
+        boolean excluida = repository.excluir(999);
+
+        assertEquals(false, excluida);
+        assertEquals(0, repository.listarTodos().size());
+    }
 }

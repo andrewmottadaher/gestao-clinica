@@ -3,10 +3,13 @@ package br.com.gestaoclinica.repository;
 import br.com.gestaoclinica.model.Paciente;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PacienteRepository {
 
     private int proximoId = 1;
+    private final Map<Integer, Paciente> pacientes = new HashMap<>();
 
     public Paciente salvar(
             String nome,
@@ -25,8 +28,13 @@ public class PacienteRepository {
                 telefone,
                 convenio);
 
+        pacientes.put(proximoId, paciente);
         proximoId++;
 
         return paciente;
+    }
+
+    public Paciente buscarPorId(int id) {
+        return pacientes.get(id);
     }
 }

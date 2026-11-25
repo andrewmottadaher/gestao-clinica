@@ -215,14 +215,18 @@ public class MenuMedico {
             output.print("Informe o ID do medico para excluir: ");
             int id = Integer.parseInt(scanner.nextLine().trim());
 
-            var medico = service.buscarPorId(id);
+            boolean excluido = service.excluir(id);
 
-            if (medico == null) {
+            if (excluido) {
+                output.println("Medico excluido com sucesso.");
+            } else {
                 output.println("Medico nao encontrado.");
             }
 
         } catch (NumberFormatException e) {
             output.println("Informe um ID valido.");
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
         }
     }
 }

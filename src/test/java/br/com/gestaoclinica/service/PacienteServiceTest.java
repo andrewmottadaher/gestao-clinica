@@ -151,4 +151,37 @@ class PacienteServiceTest {
         assertNotNull(pacientes);
         assertTrue(pacientes.isEmpty());
     }
+
+    @Test
+    void deveAtualizarPacienteExistente() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente cadastrado = service.cadastrar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente atualizado = service.atualizar(
+                cadastrado.getId(),
+                "Joao Santos",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31977777777",
+                "Convenio A");
+
+        assertNotNull(atualizado);
+        assertEquals(cadastrado.getId(), atualizado.getId());
+        assertEquals("Joao Santos", atualizado.getNome());
+        assertEquals("31977777777", atualizado.getTelefone());
+        assertEquals("Convenio A", atualizado.getConvenio());
+    }
 }

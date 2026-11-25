@@ -48,4 +48,16 @@ public class PacienteService {
     public List<Paciente> listarTodos() {
         return pacienteRepository.listarTodos();
     }
+
+    public Paciente atualizar(
+            int id,
+            String nome,
+            String cpf,
+            LocalDate dataNascimento,
+            String sexo,
+            String telefone,
+            String convenio) {
+
+        return null;
+    }
 }

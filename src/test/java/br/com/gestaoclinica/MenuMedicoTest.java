@@ -1,5 +1,6 @@
 package br.com.gestaoclinica;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,6 +11,7 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
+import br.com.gestaoclinica.model.Medico;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
@@ -423,5 +425,54 @@ class MenuMedicoTest {
         String resultado = saida.toString(StandardCharsets.UTF_8);
 
         assertTrue(resultado.contains("Informe o ID do medico para atualizar:"));
+    }
+
+    @Test
+    void deveAtualizarDadosDeMedicoPelaInterface() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        especialidadeService.cadastrar("Cardiologia", "Doencas do coracao");
+        especialidadeService.cadastrar("Neurologia", "Doencas do sistema nervoso");
+
+        service.cadastrar(
+                "Carlos Silva",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                1);
+
+        Scanner scanner = new Scanner(
+                "4\n1\nCarlos Souza\nCRM456\n"
+                        + "carlos.souza@email.com\n"
+                        + "31888888888\n2\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        Medico medicoAtualizado = service.buscarPorId(1);
+
+        assertEquals("Carlos Souza", medicoAtualizado.getNome());
+        assertEquals("CRM456", medicoAtualizado.getCrm());
+        assertEquals("carlos.souza@email.com", medicoAtualizado.getEmail());
+        assertEquals("31888888888", medicoAtualizado.getTelefone());
+        assertEquals("Neurologia", medicoAtualizado.getEspecialidade().getNome());
     }
 }

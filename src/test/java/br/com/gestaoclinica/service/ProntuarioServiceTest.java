@@ -448,4 +448,78 @@ class ProntuarioServiceTest {
         assertEquals("Prescricao original", encontrado.getPrescricao());
         assertEquals("Observacoes originais", encontrado.getObservacoes());
     }
+
+    @Test
+    void deveRejeitarAlteracaoDaConsultaVinculadaAoProntuario() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteRepository pacienteRepository = new PacienteRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31888888888",
+                null);
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                especialidade);
+
+        Consulta consultaOriginal = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        Consulta outraConsulta = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("300.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.TELEMEDICINA);
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        Prontuario cadastrado = service.cadastrar(
+                consultaOriginal.getId(),
+                "Diagnostico original",
+                null,
+                null);
+
+        IllegalArgumentException excecao = assertThrows(
+                IllegalArgumentException.class,
+                () -> service.atualizar(
+                        cadastrado.getId(),
+                        outraConsulta.getId(),
+                        "Novo diagnostico",
+                        null,
+                        null));
+
+        assertEquals(
+                "Nao e permitido alterar a consulta do prontuario.",
+                excecao.getMessage());
+
+        Prontuario encontrado = service.buscarPorId(cadastrado.getId());
+
+        assertEquals(
+                consultaOriginal.getId(),
+                encontrado.getConsulta().getId());
+    }
 }

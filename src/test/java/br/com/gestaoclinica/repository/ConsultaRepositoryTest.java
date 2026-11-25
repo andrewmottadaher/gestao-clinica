@@ -395,4 +395,11 @@ class ConsultaRepositoryTest {
 
         assertTrue(repository.existePorMedico(medico.getId()));
     }
+
+    @Test
+    void deveRetornarFalseQuandoMedicoNaoPossuiConsultaVinculada() {
+        ConsultaRepository repository = new ConsultaRepository();
+
+        assertFalse(repository.existePorMedico(1));
+    }
 }

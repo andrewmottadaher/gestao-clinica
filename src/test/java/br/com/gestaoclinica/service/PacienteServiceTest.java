@@ -1,12 +1,20 @@
 package br.com.gestaoclinica.service;
 
+import br.com.gestaoclinica.model.Especialidade;
+import br.com.gestaoclinica.model.Medico;
+import br.com.gestaoclinica.model.ModalidadeConsulta;
 import br.com.gestaoclinica.model.Paciente;
+import br.com.gestaoclinica.model.StatusConsulta;
 import br.com.gestaoclinica.repository.ConsultaRepository;
+import br.com.gestaoclinica.repository.EspecialidadeRepository;
+import br.com.gestaoclinica.repository.MedicoRepository;
 import br.com.gestaoclinica.repository.PacienteRepository;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -294,5 +302,51 @@ class PacienteServiceTest {
 
         assertTrue(excluido);
         assertNull(service.buscarPorId(cadastrado.getId()));
+    }
+
+    @Test
+    void deveRejeitarExclusaoDePacienteComConsultaVinculada() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente paciente = service.cadastrar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        Especialidade especialidade = especialidadeRepository.salvar(
+                "Cardiologia",
+                "Tratamento do coracao");
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 11, 26, 10, 0),
+                new BigDecimal("200.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.excluir(paciente.getId()));
+
+        assertNotNull(service.buscarPorId(paciente.getId()));
     }
 }

@@ -5,6 +5,7 @@ import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.PacienteRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PacienteService {
 
@@ -42,5 +43,9 @@ public class PacienteService {
 
     public Paciente buscarPorId(int id) {
         return pacienteRepository.buscarPorId(id);
+    }
+
+    public List<Paciente> listarTodos() {
+        return null;
     }
 }

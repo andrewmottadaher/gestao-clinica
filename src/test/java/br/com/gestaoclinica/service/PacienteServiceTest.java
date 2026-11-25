@@ -7,11 +7,13 @@ import br.com.gestaoclinica.repository.PacienteRepository;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PacienteServiceTest {
 
@@ -102,5 +104,36 @@ class PacienteServiceTest {
         Paciente encontrado = service.buscarPorId(999);
 
         assertNull(encontrado);
+    }
+
+    @Test
+    void deveListarTodosOsPacientesCadastrados() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        service.cadastrar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        service.cadastrar(
+                "Maria Souza",
+                "98765432100",
+                LocalDate.of(1995, 8, 20),
+                "F",
+                "31988888888",
+                "Convenio A");
+
+        List<Paciente> pacientes = service.listarTodos();
+
+        assertNotNull(pacientes);
+        assertEquals(2, pacientes.size());
     }
 }

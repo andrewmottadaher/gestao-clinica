@@ -262,4 +262,29 @@ class PacienteRepositoryTest {
                 paciente.getCpf(),
                 paciente.getId()));
     }
+
+    @Test
+    void deveIdentificarCpfDeOutroPacienteNaAtualizacao() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente primeiro = repository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente segundo = repository.salvar(
+                "Maria",
+                "98765432100",
+                LocalDate.of(1985, 8, 20),
+                "F",
+                "31888888888",
+                null);
+
+        assertTrue(repository.existeCpf(
+                primeiro.getCpf(),
+                segundo.getId()));
+    }
 }

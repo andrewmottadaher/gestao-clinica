@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ConsultaServiceTest {
@@ -146,5 +147,46 @@ class ConsultaServiceTest {
         assertEquals(0, valor.compareTo(consulta.getValor()));
         assertEquals(StatusConsulta.AGENDADA, consulta.getStatus());
         assertEquals(ModalidadeConsulta.PRESENCIAL, consulta.getModalidade());
+    }
+
+    @Test
+    void deveBuscarConsultaPorIdExistente() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                pacienteRepository,
+                medicoRepository);
+
+        Consulta consultaCadastrada = service.agendar(
+                1,
+                1,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        Consulta consultaEncontrada = service.buscarPorId(1);
+
+        assertSame(consultaCadastrada, consultaEncontrada);
     }
 }

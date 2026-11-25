@@ -22,6 +22,10 @@ public class Prontuario {
             throw new IllegalArgumentException(
                     "O ID deve ser maior que zero.");
         }
+        if (consulta == null) {
+            throw new IllegalArgumentException(
+                    "A consulta e obrigatoria.");
+        }
 
         this.id = id;
         this.consulta = consulta;

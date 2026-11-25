@@ -34,7 +34,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico resultado = service.cadastrar(
                 "Joao Silva",
@@ -64,7 +65,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         service.cadastrar(
                 "Joao Silva",
@@ -95,7 +97,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         service.cadastrar(
                 "Joao Silva",
@@ -126,7 +129,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         service.cadastrar(
                 "Joao Silva",
@@ -153,7 +157,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         assertThrows(IllegalArgumentException.class, () -> service.cadastrar(
                 "Joao Silva",
@@ -177,7 +182,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -202,7 +208,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico resultado = service.buscarPorId(999);
 
@@ -221,7 +228,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         service.cadastrar(
                 "Joao Silva",
@@ -263,7 +271,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         service.cadastrar(
                 "Joao Silva",
@@ -297,7 +306,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         var resultado = service.listarTodos();
 
@@ -317,7 +327,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -350,7 +361,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -389,7 +401,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico primeiro = service.cadastrar(
                 "Joao Silva",
@@ -429,7 +442,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -466,7 +480,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -501,7 +516,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico resultado = service.atualizar(
                 999,
@@ -527,7 +543,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -562,7 +579,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -597,7 +615,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -633,7 +652,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -669,7 +689,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -692,7 +713,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         boolean resultado = service.excluir(999);
 
@@ -712,7 +734,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -738,7 +761,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         Medico cadastrado = service.cadastrar(
                 "Joao Silva",
@@ -768,7 +792,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         boolean resultado = service.inativar(999);
 
@@ -795,7 +820,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         service.inativar(medico.getId());
 
@@ -813,7 +839,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         boolean resultado = service.ativar(999);
 
@@ -840,7 +867,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                new ConsultaRepository());
 
         boolean resultado = service.ativar(medico.getId());
 
@@ -860,7 +888,8 @@ class MedicoServiceTest {
 
         MedicoService service = new MedicoService(
                 medicoRepository,
-                especialidadeRepository);
+                especialidadeRepository,
+                consultaRepository);
 
         Medico medico = service.cadastrar(
                 "Carlos Souza",

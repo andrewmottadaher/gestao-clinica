@@ -305,4 +305,85 @@ class ProntuarioServiceTest {
         assertNotNull(prontuarios);
         assertTrue(prontuarios.isEmpty());
     }
+
+    @Test
+    void deveAtualizarProntuarioExistente() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteRepository pacienteRepository = new PacienteRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31888888888",
+                null);
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                especialidade);
+
+        Consulta consulta = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        Prontuario cadastrado = service.cadastrar(
+                consulta.getId(),
+                "Diagnostico inicial",
+                "Prescricao inicial",
+                "Observacoes iniciais");
+
+        Prontuario atualizado = service.atualizar(
+                cadastrado.getId(),
+                consulta.getId(),
+                "Diagnostico atualizado",
+                "Prescricao atualizada",
+                "Observacoes atualizadas");
+
+        assertNotNull(atualizado);
+        assertEquals(cadastrado.getId(), atualizado.getId());
+        assertEquals(consulta.getId(), atualizado.getConsulta().getId());
+        assertEquals("Diagnostico atualizado", atualizado.getDiagnostico());
+        assertEquals("Prescricao atualizada", atualizado.getPrescricao());
+        assertEquals("Observacoes atualizadas", atualizado.getObservacoes());
+    }
+
+    @Test
+    void deveRetornarNullAoAtualizarProntuarioInexistente() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        Prontuario atualizado = service.atualizar(
+                999,
+                1,
+                "Diagnostico",
+                "Prescricao",
+                "Observacoes");
+
+        assertNull(atualizado);
+    }
 }

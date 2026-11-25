@@ -30,6 +30,10 @@ public class Consulta {
             throw new IllegalArgumentException(
                     "O paciente da consulta e obrigatorio.");
         }
+        if (medico == null) {
+            throw new IllegalArgumentException(
+                    "O medico da consulta e obrigatorio.");
+        }
 
         this.id = id;
         this.paciente = paciente;

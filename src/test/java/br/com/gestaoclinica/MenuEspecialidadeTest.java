@@ -422,4 +422,37 @@ class MenuEspecialidadeTest {
         assertTrue(saida.toString(StandardCharsets.UTF_8)
                 .contains("Especialidade nao encontrada."));
     }
+
+    @Test
+    void deveExibirErroAoExcluirEspecialidadeVinculadaAMedico() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                medicoRepository);
+
+        var especialidade = service.cadastrar(
+                "Cardiologia",
+                "Especialidade do sistema cardiovascular");
+
+        medicoRepository.salvar(
+                "Joao Silva",
+                "CRM12345",
+                "joao@email.com",
+                "31999999999",
+                especialidade);
+
+        Scanner scanner = new Scanner("5\n1\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Nao e possivel excluir uma especialidade vinculada a medicos."));
+        assertEquals(especialidade, repository.buscarPorId(especialidade.getId()));
+    }
 }

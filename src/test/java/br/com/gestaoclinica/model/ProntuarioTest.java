@@ -80,4 +80,15 @@ class ProntuarioTest {
                         null,
                         null));
     }
+
+    @Test
+    void deveRejeitarConsultaNula() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Prontuario(
+                        1,
+                        null,
+                        "Hipertensao arterial",
+                        null,
+                        null));
+    }
 }

@@ -44,6 +44,35 @@ public class PacienteRepository {
         return new ArrayList<>(pacientes.values());
     }
 
+    public Paciente atualizar(
+            int id,
+            String nome,
+            String cpf,
+            LocalDate dataNascimento,
+            String sexo,
+            String telefone,
+            String convenio) {
+
+        Paciente atual = pacientes.get(id);
+
+        if (atual == null) {
+            return null;
+        }
+
+        Paciente atualizado = new Paciente(
+                id,
+                nome,
+                cpf,
+                dataNascimento,
+                sexo,
+                telefone,
+                convenio);
+
+        pacientes.put(id, atualizado);
+
+        return atualizado;
+    }
+
     public boolean excluir(int id) {
         return pacientes.remove(id) != null;
     }

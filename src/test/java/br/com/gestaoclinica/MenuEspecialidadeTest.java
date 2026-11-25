@@ -107,4 +107,32 @@ class MenuEspecialidadeTest {
         scanner.close();
         output.close();
     }
+
+    @Test
+    void deveExibirErroAoCadastrarEspecialidadeComNomeVazio() {
+        EspecialidadeService service = new EspecialidadeService(
+                new EspecialidadeRepository(),
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n\nDescricao de teste\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String textoExibido = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(textoExibido.contains("Erro:"));
+        assertTrue(textoExibido.contains("O nome da especialidade e obrigatorio."));
+
+        scanner.close();
+        output.close();
+    }
 }

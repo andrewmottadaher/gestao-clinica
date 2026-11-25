@@ -20,22 +20,19 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProntuarioServiceTest {
 
     @Test
     void deveCadastrarProntuarioParaConsultaRealizada() {
-        ProntuarioRepository prontuarioRepository =
-                new ProntuarioRepository();
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
 
-        ConsultaRepository consultaRepository =
-                new ConsultaRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
 
-        PacienteRepository pacienteRepository =
-                new PacienteRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
 
-        MedicoRepository medicoRepository =
-                new MedicoRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
 
         Especialidade especialidade = new Especialidade(
                 1, "Cardiologia", "Doencas do coracao");
@@ -79,5 +76,26 @@ class ProntuarioServiceTest {
         assertEquals(
                 "Hipertensao arterial",
                 prontuario.getDiagnostico());
+    }
+   
+    @Test
+    void deveRejeitarCadastroParaConsultaInexistente() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        IllegalArgumentException excecao = assertThrows(
+                IllegalArgumentException.class,
+                () -> service.cadastrar(
+                        999,
+                        "Diagnostico",
+                        null,
+                        null));
+
+        assertEquals("Consulta nao encontrada.", excecao.getMessage());
     }
 }

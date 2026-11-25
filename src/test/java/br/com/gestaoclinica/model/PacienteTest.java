@@ -1,0 +1,227 @@
+package br.com.gestaoclinica.model;
+
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class PacienteTest {
+
+    @Test
+    void deveRejeitarIdZero() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                0,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarNomeNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                null,
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarNomeVazio() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarNomeComApenasEspacos() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "   ",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarCpfNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                null,
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarCpfVazio() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarCpfComApenasEspacos() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "   ",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarDataNascimentoNula() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                null,
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarSexoNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                null,
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarSexoVazio() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarSexoInvalido() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "X",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void deveRejeitarTelefoneNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                null,
+                null));
+    }
+
+    @Test
+    void deveRejeitarTelefoneVazio() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "",
+                null));
+    }
+
+    @Test
+    void deveRejeitarTelefoneComApenasEspacos() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "   ",
+                null));
+    }
+
+    @Test
+    void devePermitirConvenioNulo() {
+        assertDoesNotThrow(() -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void devePermitirCriacaoComDadosValidos() {
+        assertDoesNotThrow(() -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "UNIMED"));
+    }
+
+    @Test
+    void deveRejeitarIdNegativo() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                -1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
+
+    @Test
+    void devePermitirSexoFeminino() {
+        assertDoesNotThrow(() -> new Paciente(
+                1,
+                "Maria Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "F",
+                "31999999999",
+                null));
+    }
+}

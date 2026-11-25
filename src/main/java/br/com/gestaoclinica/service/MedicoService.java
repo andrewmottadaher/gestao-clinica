@@ -6,17 +6,21 @@ import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.model.Medico;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
+import br.com.gestaoclinica.repository.ConsultaRepository;
 
 public class MedicoService {
 
     private final MedicoRepository medicoRepository;
     private final EspecialidadeRepository especialidadeRepository;
+    private final ConsultaRepository consultaRepository;
 
     public MedicoService(
             MedicoRepository medicoRepository,
-            EspecialidadeRepository especialidadeRepository) {
+            EspecialidadeRepository especialidadeRepository,
+            ConsultaRepository consultaRepository) {
         this.medicoRepository = medicoRepository;
         this.especialidadeRepository = especialidadeRepository;
+        this.consultaRepository = consultaRepository;
     }
 
     public Medico cadastrar(
@@ -84,6 +88,11 @@ public class MedicoService {
     }
 
     public boolean excluir(int id) {
+        if (consultaRepository.existePorMedico(id)) {
+            throw new IllegalArgumentException(
+                    "Nao e possivel excluir um medico vinculado a consultas.");
+        }
+
         return medicoRepository.excluir(id);
     }
 

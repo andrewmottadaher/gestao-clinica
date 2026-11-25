@@ -357,4 +357,28 @@ class MenuEspecialidadeTest {
         assertTrue(saida.toString(StandardCharsets.UTF_8)
                 .contains("O nome da especialidade e obrigatorio."));
     }
+
+    @Test
+    void deveExibirErroAoAtualizarEspecialidadeComNomeDuplicado() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        service.cadastrar("Cardiologia", "Descricao da cardiologia");
+        service.cadastrar("Neurologia", "Descricao da neurologia");
+
+        Scanner scanner = new Scanner("4\n1\nNeurologia\nNova descricao\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Ja existe uma especialidade cadastrada com esse nome."));
+
+        assertEquals("Cardiologia", repository.buscarPorId(1).getNome());
+    }
 }

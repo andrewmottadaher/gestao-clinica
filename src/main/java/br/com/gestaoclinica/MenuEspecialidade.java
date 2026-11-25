@@ -21,5 +21,15 @@ public class MenuEspecialidade {
     }
 
     public void exibir() {
+        output.println("\n==================================");
+        output.println("     GERENCIAR ESPECIALIDADES");
+        output.println("==================================");
+        output.println("1 - Cadastrar especialidade");
+        output.println("2 - Listar especialidades");
+        output.println("3 - Buscar especialidade por ID");
+        output.println("4 - Atualizar especialidade");
+        output.println("5 - Excluir especialidade");
+        output.println("0 - Voltar ao menu principal");
+        output.println("==================================");
     }
 }

@@ -52,6 +52,7 @@ public class MenuMedico {
                 case 1 -> cadastrar();
                 case 2 -> listar();
                 case 3 -> buscar();
+                case 4 -> atualizar();
                 case 0 -> output.println("Voltando ao menu principal...");
                 default -> output.println("Opcao invalida.");
             }
@@ -150,5 +151,22 @@ public class MenuMedico {
 
         output.println("Situacao: " + situacao);
         output.println("------------------------------");
+    }
+
+    private void atualizar() {
+        try {
+            output.print("Informe o ID do medico para atualizar: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            var medico = service.buscarPorId(id);
+
+            if (medico == null) {
+                output.println("Medico nao encontrado.");
+                return;
+            }
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        }
     }
 }

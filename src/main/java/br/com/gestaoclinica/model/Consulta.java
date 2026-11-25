@@ -21,10 +21,14 @@ public class Consulta {
             BigDecimal valor,
             StatusConsulta status,
             ModalidadeConsulta modalidade) {
-                
+
         if (id <= 0) {
             throw new IllegalArgumentException(
                     "O ID da consulta deve ser maior que zero.");
+        }
+        if (paciente == null) {
+            throw new IllegalArgumentException(
+                    "O paciente da consulta e obrigatorio.");
         }
 
         this.id = id;

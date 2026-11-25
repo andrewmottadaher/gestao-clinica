@@ -3,7 +3,9 @@ package br.com.gestaoclinica.repository;
 import br.com.gestaoclinica.model.Consulta;
 import br.com.gestaoclinica.model.Prontuario;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProntuarioRepository {
@@ -32,5 +34,9 @@ public class ProntuarioRepository {
 
     public Prontuario buscarPorId(int id) {
         return prontuarios.get(id);
+    }
+
+    public List<Prontuario> listarTodos() {
+        return new ArrayList<>(prontuarios.values());
     }
 }

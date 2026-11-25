@@ -133,4 +133,44 @@ class ProntuarioRepositoryTest {
 
         assertNull(prontuarioEncontrado);
     }
+
+    @Test
+    void deveListarTodosOsProntuariosCadastrados() {
+        ProntuarioRepository repository = new ProntuarioRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Medico medico = new Medico(
+                1, "Carlos", "CRM123", "carlos@email.com",
+                "31999999999", especialidade);
+
+        Paciente paciente = new Paciente(
+                1, "Joao", "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M", "31888888888", null);
+
+        Consulta primeiraConsulta = new Consulta(
+                1, paciente, medico,
+                LocalDate.now().atTime(10, 0),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        Consulta segundaConsulta = new Consulta(
+                2, paciente, medico,
+                LocalDate.now().atTime(11, 0),
+                new BigDecimal("300.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        repository.salvar(
+                primeiraConsulta, "Hipertensao arterial", null, null);
+
+        repository.salvar(
+                segundaConsulta, "Diabetes tipo 2", null, null);
+
+        assertNotNull(repository.listarTodos());
+        assertEquals(2, repository.listarTodos().size());
+    }
 }

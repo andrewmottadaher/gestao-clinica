@@ -46,6 +46,6 @@ public class PacienteService {
     }
 
     public List<Paciente> listarTodos() {
-        return null;
+        return pacienteRepository.listarTodos();
     }
 }

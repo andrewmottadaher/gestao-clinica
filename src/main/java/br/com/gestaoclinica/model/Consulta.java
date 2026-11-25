@@ -34,6 +34,10 @@ public class Consulta {
             throw new IllegalArgumentException(
                     "O medico da consulta e obrigatorio.");
         }
+        if (dataHoraAgendamento == null) {
+            throw new IllegalArgumentException(
+                    "A data e hora do agendamento sao obrigatorias.");
+        }
 
         this.id = id;
         this.paciente = paciente;

@@ -42,6 +42,10 @@ public class Consulta {
             throw new IllegalArgumentException(
                     "O valor da consulta e obrigatorio.");
         }
+        if (valor.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(
+                    "O valor da consulta nao pode ser negativo.");
+        }
 
         this.id = id;
         this.paciente = paciente;

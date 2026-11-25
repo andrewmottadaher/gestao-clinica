@@ -76,4 +76,8 @@ public class PacienteService {
                 telefone,
                 convenio);
     }
+
+    public boolean excluir(int id) {
+        return false;
+    }
 }

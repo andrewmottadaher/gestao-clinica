@@ -272,4 +272,27 @@ class PacienteServiceTest {
         assertNull(atualizado);
         assertTrue(service.listarTodos().isEmpty());
     }
+
+    @Test
+    void deveExcluirPacienteExistenteSemConsultasVinculadas() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente cadastrado = service.cadastrar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        boolean excluido = service.excluir(cadastrado.getId());
+
+        assertTrue(excluido);
+        assertNull(service.buscarPorId(cadastrado.getId()));
+    }
 }

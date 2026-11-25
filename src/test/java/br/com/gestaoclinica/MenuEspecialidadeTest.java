@@ -211,4 +211,42 @@ class MenuEspecialidadeTest {
         scanner.close();
         output.close();
     }
+
+    @Test
+    void deveInformarQuandoNaoExistemEspecialidadesCadastradas() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner("2\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Nenhuma especialidade cadastrada."));
+    }
+
+    @Test
+    void deveInformarQuandoNaoExistemEspecialidadesCadastradas() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner("2\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Nenhuma especialidade cadastrada."));
+    }
 }

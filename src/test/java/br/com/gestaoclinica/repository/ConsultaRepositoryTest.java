@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -360,5 +361,12 @@ class ConsultaRepositoryTest {
                 ModalidadeConsulta.PRESENCIAL);
 
         assertTrue(repository.existePorPaciente(paciente.getId()));
+    }
+
+    @Test
+    void deveRetornarFalseQuandoPacienteNaoPossuiConsultaVinculada() {
+        ConsultaRepository repository = new ConsultaRepository();
+
+        assertFalse(repository.existePorPaciente(1));
     }
 }

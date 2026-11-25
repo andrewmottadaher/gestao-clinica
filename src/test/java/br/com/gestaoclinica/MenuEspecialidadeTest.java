@@ -1,5 +1,6 @@
 package br.com.gestaoclinica;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -41,6 +42,33 @@ class MenuEspecialidadeTest {
         assertTrue(textoExibido.contains("Atualizar especialidade"));
         assertTrue(textoExibido.contains("Excluir especialidade"));
         assertTrue(textoExibido.contains("Voltar ao menu principal"));
+
+        scanner.close();
+        output.close();
+    }
+
+    @Test
+    void deveEncerrarMenuAoSelecionarOpcaoZero() {
+        EspecialidadeService service = new EspecialidadeService(
+                new EspecialidadeRepository(),
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner("0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String textoExibido = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(textoExibido.contains("Voltando ao menu principal"));
+        assertFalse(scanner.hasNextLine());
 
         scanner.close();
         output.close();

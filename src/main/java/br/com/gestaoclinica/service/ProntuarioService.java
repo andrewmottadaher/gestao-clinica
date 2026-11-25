@@ -29,6 +29,10 @@ public class ProntuarioService {
             throw new IllegalArgumentException(
                     "Consulta nao encontrada.");
         }
+        if (prontuarioRepository.existePorConsulta(consultaId)) {
+            throw new IllegalArgumentException(
+                    "A consulta ja possui um prontuario.");
+        }
 
         return prontuarioRepository.salvar(
                 consulta,

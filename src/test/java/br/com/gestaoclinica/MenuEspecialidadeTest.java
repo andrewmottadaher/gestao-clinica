@@ -169,4 +169,46 @@ class MenuEspecialidadeTest {
         scanner.close();
         output.close();
     }
+
+    @Test
+    void deveListarEspecialidadesCadastradas() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        service.cadastrar(
+                "Cardiologia",
+                "Especialidade do sistema cardiovascular");
+
+        service.cadastrar(
+                "Neurologia",
+                "Especialidade do sistema nervoso");
+
+        Scanner scanner = new Scanner("2\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String textoExibido = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(textoExibido.contains("ID: 1"));
+        assertTrue(textoExibido.contains("Cardiologia"));
+        assertTrue(textoExibido.contains("Especialidade do sistema cardiovascular"));
+
+        assertTrue(textoExibido.contains("ID: 2"));
+        assertTrue(textoExibido.contains("Neurologia"));
+        assertTrue(textoExibido.contains("Especialidade do sistema nervoso"));
+
+        scanner.close();
+        output.close();
+    }
 }

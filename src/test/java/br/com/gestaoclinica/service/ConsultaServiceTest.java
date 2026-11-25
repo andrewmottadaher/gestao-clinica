@@ -420,4 +420,22 @@ class ConsultaServiceTest {
                 consultaAtualizada.getModalidade());
         assertEquals(StatusConsulta.AGENDADA, consultaAtualizada.getStatus());
     }
+
+    @Test
+    void deveRetornarNullAoAtualizarConsultaInexistente() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository());
+
+        Consulta resultado = service.atualizar(
+                999,
+                1,
+                1,
+                LocalDateTime.of(2026, 12, 11, 15, 30),
+                new BigDecimal("300.00"),
+                ModalidadeConsulta.TELEMEDICINA);
+
+        assertNull(resultado);
+    }
 }

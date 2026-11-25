@@ -151,4 +151,16 @@ class PacienteTest {
                 null,
                 null));
     }
+
+    @Test
+    void deveRejeitarTelefoneVazio() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "",
+                null));
+    }
 }

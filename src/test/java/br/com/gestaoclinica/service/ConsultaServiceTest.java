@@ -1275,4 +1275,14 @@ class ConsultaServiceTest {
         assertTrue(service.excluir(consulta.getId()));
         assertNull(consultaRepository.buscarPorId(consulta.getId()));
     }
+
+    @Test
+    void deveRetornarFalseAoExcluirConsultaInexistente() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository());
+
+        assertFalse(service.excluir(999));
+    }
 }

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -521,5 +522,72 @@ class ProntuarioServiceTest {
         assertEquals(
                 consultaOriginal.getId(),
                 encontrado.getConsulta().getId());
+    }
+
+    @Test
+    void deveExcluirProntuarioExistente() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteRepository pacienteRepository = new PacienteRepository();
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1, "Cardiologia", "Doencas do coracao");
+
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31888888888",
+                null);
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos",
+                "CRM123",
+                "carlos@email.com",
+                "31999999999",
+                especialidade);
+
+        Consulta consulta = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.now(),
+                new BigDecimal("250.00"),
+                StatusConsulta.REALIZADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        Prontuario cadastrado = service.cadastrar(
+                consulta.getId(),
+                "Diagnostico",
+                "Prescricao",
+                "Observacoes");
+
+        boolean excluido = service.excluir(cadastrado.getId());
+
+        assertTrue(excluido);
+        assertNull(service.buscarPorId(cadastrado.getId()));
+    }
+
+    @Test
+    void deveRetornarFalseAoExcluirProntuarioInexistente() {
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        ProntuarioService service = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        boolean excluido = service.excluir(999);
+
+        assertFalse(excluido);
     }
 }

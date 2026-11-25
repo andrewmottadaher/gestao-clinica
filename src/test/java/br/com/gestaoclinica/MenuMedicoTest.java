@@ -2,21 +2,28 @@ package br.com.gestaoclinica;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
 import br.com.gestaoclinica.model.Especialidade;
 import br.com.gestaoclinica.model.Medico;
+import br.com.gestaoclinica.model.ModalidadeConsulta;
+import br.com.gestaoclinica.model.StatusConsulta;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
+import br.com.gestaoclinica.repository.PacienteRepository;
 import br.com.gestaoclinica.service.EspecialidadeService;
 import br.com.gestaoclinica.service.MedicoService;
 
@@ -679,5 +686,65 @@ class MenuMedicoTest {
         String resultado = saida.toString(StandardCharsets.UTF_8);
 
         assertTrue(resultado.contains("Medico nao encontrado."));
+    }
+
+    @Test
+    void naoDeveExcluirMedicoComConsultasVinculadas() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                consultaRepository);
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        Especialidade especialidade = especialidadeService.cadastrar(
+                "Cardiologia",
+                "Especialidade cardiologica");
+
+        service.cadastrar(
+                "Carlos Silva",
+                "123456",
+                "carlos@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        var medico = medicoRepository.buscarPorId(1);
+
+        var paciente = pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31988888888",
+                null);
+
+        consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        Scanner scanner = new Scanner("5\n1\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        assertNotNull(service.buscarPorId(1));
     }
 }

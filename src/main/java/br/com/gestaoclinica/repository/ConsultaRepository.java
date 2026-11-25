@@ -48,4 +48,31 @@ public class ConsultaRepository {
     public List<Consulta> listarTodos() {
         return new ArrayList<>(consultas.values());
     }
+
+    public Consulta atualizar(
+            int id,
+            Paciente paciente,
+            Medico medico,
+            LocalDateTime dataHoraAgendamento,
+            BigDecimal valor,
+            StatusConsulta status,
+            ModalidadeConsulta modalidade) {
+
+        if (!consultas.containsKey(id)) {
+            return null;
+        }
+
+        Consulta consultaAtualizada = new Consulta(
+                id,
+                paciente,
+                medico,
+                dataHoraAgendamento,
+                valor,
+                status,
+                modalidade);
+
+        consultas.put(id, consultaAtualizada);
+
+        return consultaAtualizada;
+    }
 }

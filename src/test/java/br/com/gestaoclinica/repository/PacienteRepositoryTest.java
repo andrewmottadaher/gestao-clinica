@@ -245,4 +245,21 @@ class PacienteRepositoryTest {
 
         assertTrue(repository.existeCpf(" 12345678900 "));
     }
+
+    @Test
+    void naoDeveConsiderarProprioCpfComoDuplicado() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente paciente = repository.salvar(
+                "Joao",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        assertFalse(repository.existeCpf(
+                paciente.getCpf(),
+                paciente.getId()));
+    }
 }

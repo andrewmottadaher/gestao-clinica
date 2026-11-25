@@ -3,7 +3,9 @@ package br.com.gestaoclinica.repository;
 import br.com.gestaoclinica.model.Paciente;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PacienteRepository {
@@ -36,5 +38,9 @@ public class PacienteRepository {
 
     public Paciente buscarPorId(int id) {
         return pacientes.get(id);
+    }
+
+    public List<Paciente> listarTodos() {
+        return new ArrayList<>(pacientes.values());
     }
 }

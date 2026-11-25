@@ -135,4 +135,38 @@ class MenuEspecialidadeTest {
         scanner.close();
         output.close();
     }
+
+    @Test
+    void deveExibirErroAoCadastrarEspecialidadeDuplicada() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner(
+                "1\nCardiologia\nEspecialidade cardiovascular\n"
+                        + "1\nCardiologia\nOutra descricao\n"
+                        + "0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String textoExibido = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(textoExibido.contains(
+                "Ja existe uma especialidade cadastrada com esse nome."));
+
+        assertEquals(1, repository.listarTodos().size());
+
+        scanner.close();
+        output.close();
+    }
 }

@@ -98,4 +98,23 @@ class PacienteRepositoryTest {
         assertTrue(pacientes.contains(primeiro));
         assertTrue(pacientes.contains(segundo));
     }
+
+    @Test
+    void devePreservarPacientesArmazenadosAoModificarListaRetornada() {
+        PacienteRepository repository = new PacienteRepository();
+
+        repository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        List<Paciente> pacientes = repository.listarTodos();
+
+        pacientes.clear();
+
+        assertEquals(1, repository.listarTodos().size());
+    }
 }

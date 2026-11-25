@@ -50,6 +50,10 @@ public class Consulta {
             throw new IllegalArgumentException(
                     "O status da consulta e obrigatorio.");
         }
+        if (modalidade == null) {
+            throw new IllegalArgumentException(
+                    "A modalidade da consulta e obrigatoria.");
+        }
 
         this.id = id;
         this.paciente = paciente;

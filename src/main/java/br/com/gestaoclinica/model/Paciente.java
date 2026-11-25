@@ -33,5 +33,9 @@ public class Paciente {
             throw new IllegalArgumentException(
                     "O sexo do paciente deve ser M ou F.");
         }
+        if (telefone == null || telefone.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O telefone do paciente e obrigatorio.");
+        }
     }
 }

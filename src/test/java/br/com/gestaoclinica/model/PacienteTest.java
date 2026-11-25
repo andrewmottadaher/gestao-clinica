@@ -91,4 +91,16 @@ class PacienteTest {
                 "31999999999",
                 null));
     }
+
+    @Test
+    void deveRejeitarDataNascimentoNula() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "Joao Silva",
+                "12345678901",
+                null,
+                "M",
+                "31999999999",
+                null));
+    }
 }

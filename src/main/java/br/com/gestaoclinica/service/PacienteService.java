@@ -25,6 +25,12 @@ public class PacienteService {
             String sexo,
             String telefone,
             String convenio) {
+
+        if (pacienteRepository.existeCpf(cpf)) {
+            throw new IllegalArgumentException(
+                    "Ja existe um paciente cadastrado com esse CPF.");
+        }
+
         return pacienteRepository.salvar(
                 nome,
                 cpf,

@@ -232,13 +232,15 @@ class MenuEspecialidadeTest {
     }
 
     @Test
-    void deveInformarQuandoNaoExistemEspecialidadesCadastradas() {
+    void deveBuscarEspecialidadePorIdPelaInterface() {
         EspecialidadeRepository repository = new EspecialidadeRepository();
         EspecialidadeService service = new EspecialidadeService(
                 repository,
                 new MedicoRepository());
 
-        Scanner scanner = new Scanner("2\n0\n");
+        service.cadastrar("Cardiologia", "Especialidade do sistema cardiovascular");
+
+        Scanner scanner = new Scanner("3\n0\n");
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
 
@@ -246,7 +248,10 @@ class MenuEspecialidadeTest {
 
         menu.exibir();
 
-        assertTrue(saida.toString(StandardCharsets.UTF_8)
-                .contains("Nenhuma especialidade cadastrada."));
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Informe o ID da especialidade:"));
+        assertTrue(resultado.contains("Nome: Cardiologia"));
+        assertTrue(resultado.contains("Descricao: Especialidade do sistema cardiovascular"));
     }
 }

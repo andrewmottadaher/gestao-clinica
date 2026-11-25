@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -348,5 +349,20 @@ class PacienteServiceTest {
                 () -> service.excluir(paciente.getId()));
 
         assertNotNull(service.buscarPorId(paciente.getId()));
+    }
+
+    @Test
+    void deveRetornarFalseAoExcluirPacienteInexistente() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        boolean excluido = service.excluir(999);
+
+        assertFalse(excluido);
+        assertTrue(service.listarTodos().isEmpty());
     }
 }

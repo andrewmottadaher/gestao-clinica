@@ -61,4 +61,8 @@ public class ConsultaService {
                 StatusConsulta.AGENDADA,
                 modalidade);
     }
+
+    public Consulta buscarPorId(int id) {
+        return consultaRepository.buscarPorId(id);
+    }
 }

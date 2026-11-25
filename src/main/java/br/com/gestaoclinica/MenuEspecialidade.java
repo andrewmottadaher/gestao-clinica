@@ -52,6 +52,9 @@ public class MenuEspecialidade {
             if (opcao.equals("4")) {
                 atualizarEspecialidade();
             }
+            if (opcao.equals("5")) {
+                excluirEspecialidade();
+            }
         }
     }
 
@@ -136,6 +139,27 @@ public class MenuEspecialidade {
             }
 
             output.println("Especialidade atualizada com sucesso.");
+
+        } catch (NumberFormatException e) {
+            output.println("Erro: informe um ID numerico valido.");
+        } catch (IllegalArgumentException e) {
+            output.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private void excluirEspecialidade() {
+        output.print("Informe o ID da especialidade: ");
+
+        try {
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            boolean excluida = service.excluir(id);
+
+            if (excluida) {
+                output.println("Especialidade excluida com sucesso.");
+            } else {
+                output.println("Especialidade nao encontrada.");
+            }
 
         } catch (NumberFormatException e) {
             output.println("Erro: informe um ID numerico valido.");

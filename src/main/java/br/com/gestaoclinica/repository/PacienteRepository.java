@@ -43,4 +43,8 @@ public class PacienteRepository {
     public List<Paciente> listarTodos() {
         return new ArrayList<>(pacientes.values());
     }
+
+    public boolean excluir(int id) {
+        return pacientes.remove(id) != null;
+    }
 }

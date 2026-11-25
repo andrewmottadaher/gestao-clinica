@@ -4,9 +4,11 @@ import br.com.gestaoclinica.model.Paciente;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PacienteRepositoryTest {
 
@@ -74,5 +76,26 @@ class PacienteRepositoryTest {
         Paciente encontrado = repository.buscarPorId(99);
 
         assertEquals(null, encontrado);
+    }
+
+    @Test
+    void deveListarTodosOsPacientesCadastrados() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente primeiro = repository.salvar(
+                "Joao Silva", "12345678901",
+                LocalDate.of(1990, 5, 10), "M",
+                "31999999999", null);
+
+        Paciente segundo = repository.salvar(
+                "Maria Silva", "98765432100",
+                LocalDate.of(1992, 8, 15), "F",
+                "31988888888", null);
+
+        List<Paciente> pacientes = repository.listarTodos();
+
+        assertEquals(2, pacientes.size());
+        assertTrue(pacientes.contains(primeiro));
+        assertTrue(pacientes.contains(segundo));
     }
 }

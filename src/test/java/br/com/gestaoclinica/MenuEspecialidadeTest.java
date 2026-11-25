@@ -391,7 +391,7 @@ class MenuEspecialidadeTest {
 
         service.cadastrar("Cardiologia", "Especialidade do sistema cardiovascular");
 
-        Scanner scanner = new Scanner("5\n0\n");
+        Scanner scanner = new Scanner("5\n1\n0\n");
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
 
@@ -402,5 +402,24 @@ class MenuEspecialidadeTest {
         assertTrue(saida.toString(StandardCharsets.UTF_8)
                 .contains("Especialidade excluida com sucesso."));
         assertEquals(null, repository.buscarPorId(1));
+    }
+
+    @Test
+    void deveInformarQuandoEspecialidadeNaoExistirNaExclusao() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner("5\n99\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Especialidade nao encontrada."));
     }
 }

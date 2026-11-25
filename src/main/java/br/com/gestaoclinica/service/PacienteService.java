@@ -58,6 +58,22 @@ public class PacienteService {
             String telefone,
             String convenio) {
 
-        return null;
+        if (pacienteRepository.buscarPorId(id) == null) {
+            return null;
+        }
+
+        if (pacienteRepository.existeCpf(cpf, id)) {
+            throw new IllegalArgumentException(
+                    "Ja existe um paciente cadastrado com esse CPF.");
+        }
+
+        return pacienteRepository.atualizar(
+                id,
+                nome,
+                cpf,
+                dataNascimento,
+                sexo,
+                telefone,
+                convenio);
     }
 }

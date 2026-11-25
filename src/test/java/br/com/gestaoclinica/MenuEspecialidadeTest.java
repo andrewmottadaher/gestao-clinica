@@ -336,4 +336,25 @@ class MenuEspecialidadeTest {
         assertTrue(saida.toString(StandardCharsets.UTF_8)
                 .contains("Especialidade nao encontrada."));
     }
+
+    @Test
+    void deveExibirErroAoAtualizarEspecialidadeComNomeVazio() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        service.cadastrar("Cardiologia", "Descricao antiga");
+
+        Scanner scanner = new Scanner("4\n1\n\nNova descricao\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("O nome da especialidade e obrigatorio."));
+    }
 }

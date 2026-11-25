@@ -21,15 +21,26 @@ public class MenuEspecialidade {
     }
 
     public void exibir() {
-        output.println("\n==================================");
-        output.println("     GERENCIAR ESPECIALIDADES");
-        output.println("==================================");
-        output.println("1 - Cadastrar especialidade");
-        output.println("2 - Listar especialidades");
-        output.println("3 - Buscar especialidade por ID");
-        output.println("4 - Atualizar especialidade");
-        output.println("5 - Excluir especialidade");
-        output.println("0 - Voltar ao menu principal");
-        output.println("==================================");
+        while (true) {
+            output.println("\n==================================");
+            output.println("     GERENCIAR ESPECIALIDADES");
+            output.println("==================================");
+            output.println("1 - Cadastrar especialidade");
+            output.println("2 - Listar especialidades");
+            output.println("3 - Buscar especialidade por ID");
+            output.println("4 - Atualizar especialidade");
+            output.println("5 - Excluir especialidade");
+            output.println("0 - Voltar ao menu principal");
+            output.println("==================================");
+
+            output.print("Escolha uma opcao: ");
+
+            String opcao = scanner.nextLine().trim();
+
+            if (opcao.equals("0")) {
+                output.println("Voltando ao menu principal...");
+                return;
+            }
+        }
     }
 }

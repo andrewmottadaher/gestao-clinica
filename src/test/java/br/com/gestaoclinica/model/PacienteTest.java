@@ -43,4 +43,16 @@ class PacienteTest {
                 "31999999999",
                 null));
     }
+
+    @Test
+    void deveRejeitarNomeComApenasEspacos() {
+        assertThrows(IllegalArgumentException.class, () -> new Paciente(
+                1,
+                "   ",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null));
+    }
 }

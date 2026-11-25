@@ -1,5 +1,6 @@
 package br.com.gestaoclinica;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -69,6 +70,39 @@ class MenuEspecialidadeTest {
 
         assertTrue(textoExibido.contains("Voltando ao menu principal"));
         assertFalse(scanner.hasNextLine());
+
+        scanner.close();
+        output.close();
+    }
+
+    @Test
+    void deveCadastrarEspecialidadePelaOpcaoUm() {
+        EspecialidadeRepository repository = new EspecialidadeRepository();
+
+        EspecialidadeService service = new EspecialidadeService(
+                repository,
+                new MedicoRepository());
+
+        Scanner scanner = new Scanner(
+                "1\nCardiologia\nEspecialidade do sistema cardiovascular\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuEspecialidade menu = new MenuEspecialidade(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String textoExibido = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(textoExibido.contains("Nome:"));
+        assertTrue(textoExibido.contains("Descricao:"));
+        assertTrue(textoExibido.contains("Especialidade cadastrada com sucesso. ID: 1"));
+        assertEquals(1, repository.listarTodos().size());
+        assertEquals("Cardiologia", repository.buscarPorId(1).getNome());
 
         scanner.close();
         output.close();

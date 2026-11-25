@@ -13,22 +13,34 @@ import org.junit.jupiter.api.Test;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.EspecialidadeRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
+import br.com.gestaoclinica.service.EspecialidadeService;
 import br.com.gestaoclinica.service.MedicoService;
 
 class MenuMedicoTest {
 
     @Test
     void deveExibirOpcoesDoMenuDeMedicos() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
         MedicoService service = new MedicoService(
-                new MedicoRepository(),
-                new EspecialidadeRepository(),
+                medicoRepository,
+                especialidadeRepository,
                 new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
 
         Scanner scanner = new Scanner("0\n");
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
 
-        MenuMedico menu = new MenuMedico(service, scanner, output);
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
 
         menu.exibir();
 
@@ -47,16 +59,27 @@ class MenuMedicoTest {
 
     @Test
     void deveEncerrarMenuAoSelecionarZero() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
         MedicoService service = new MedicoService(
-                new MedicoRepository(),
-                new EspecialidadeRepository(),
+                medicoRepository,
+                especialidadeRepository,
                 new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
 
         Scanner scanner = new Scanner("0\n");
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
 
-        MenuMedico menu = new MenuMedico(service, scanner, output);
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
 
         menu.exibir();
 
@@ -64,5 +87,47 @@ class MenuMedicoTest {
 
         assertTrue(resultado.contains("Voltando ao menu principal"));
         assertFalse(resultado.contains("Opcao invalida."));
+    }
+
+    @Test
+    void deveCadastrarMedicoComSucesso() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        especialidadeService.cadastrar("Cardiologia", "Doencas do coracao");
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "Carlos Silva\n"
+                        + "CRM123\n"
+                        + "carlos@email.com\n"
+                        + "31999999999\n"
+                        + "1\n"
+                        + "0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        assertTrue(saida.toString(StandardCharsets.UTF_8)
+                .contains("Medico cadastrado com sucesso."));
+
+        assertTrue(medicoRepository.buscarPorId(1) != null);
     }
 }

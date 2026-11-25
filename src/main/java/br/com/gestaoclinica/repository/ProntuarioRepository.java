@@ -62,4 +62,8 @@ public class ProntuarioRepository {
 
         return prontuarioAtualizado;
     }
+
+    public boolean excluir(int id) {
+        return prontuarios.remove(id) != null;
+    }
 }

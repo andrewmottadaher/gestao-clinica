@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PacienteRepositoryTest {
@@ -116,5 +117,23 @@ class PacienteRepositoryTest {
         pacientes.clear();
 
         assertEquals(1, repository.listarTodos().size());
+    }
+
+    @Test
+    void deveExcluirPacienteExistente() {
+        PacienteRepository repository = new PacienteRepository();
+
+        Paciente paciente = repository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        boolean excluido = repository.excluir(paciente.getId());
+
+        assertTrue(excluido);
+        assertNull(repository.buscarPorId(paciente.getId()));
     }
 }

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -188,5 +189,17 @@ class ConsultaServiceTest {
         Consulta consultaEncontrada = service.buscarPorId(1);
 
         assertSame(consultaCadastrada, consultaEncontrada);
+    }
+
+    @Test
+    void deveRetornarNullAoBuscarConsultaPorIdInexistente() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository());
+
+        Consulta consulta = service.buscarPorId(999);
+
+        assertNull(consulta);
     }
 }

@@ -44,4 +44,25 @@ class MenuMedicoTest {
         assertTrue(resultado.contains("7 - Ativar medico"));
         assertTrue(resultado.contains("0 - Voltar ao menu principal"));
     }
+
+    @Test
+    void deveEncerrarMenuAoSelecionarZero() {
+        MedicoService service = new MedicoService(
+                new MedicoRepository(),
+                new EspecialidadeRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Voltando ao menu principal"));
+        assertFalse(resultado.contains("Opcao invalida."));
+    }
 }

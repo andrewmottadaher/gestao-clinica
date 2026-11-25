@@ -219,4 +219,35 @@ class PacienteServiceTest {
                 "31988888888",
                 null));
     }
+
+    @Test
+    void devePermitirAtualizacaoMantendoProprioCpf() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                consultaRepository);
+
+        Paciente cadastrado = service.cadastrar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Paciente atualizado = service.atualizar(
+                cadastrado.getId(),
+                "Joao Santos",
+                cadastrado.getCpf(),
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31977777777",
+                null);
+
+        assertNotNull(atualizado);
+        assertEquals("12345678901", atualizado.getCpf());
+        assertEquals("Joao Santos", atualizado.getNome());
+    }
 }

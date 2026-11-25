@@ -711,4 +711,57 @@ class ConsultaServiceTest {
         assertEquals(novoPaciente.getId(), atualizada.getPaciente().getId());
         assertEquals(novoMedico.getId(), atualizada.getMedico().getId());
     }
+
+    @Test
+    void deveRejeitarAtualizacaoComValorNegativo() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        Paciente paciente = pacienteRepository.salvar(
+                "Joao Silva",
+                "12345678901",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        MedicoRepository medicoRepository = new MedicoRepository();
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Atendimento cardiologico");
+
+        Medico medico = medicoRepository.salvar(
+                "Carlos Souza",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+
+        Consulta original = consultaRepository.salvar(
+                paciente,
+                medico,
+                LocalDateTime.of(2026, 12, 10, 14, 30),
+                new BigDecimal("250.00"),
+                StatusConsulta.AGENDADA,
+                ModalidadeConsulta.PRESENCIAL);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository);
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizar(
+                original.getId(),
+                paciente.getId(),
+                medico.getId(),
+                LocalDateTime.of(2026, 12, 11, 15, 30),
+                new BigDecimal("-10.00"),
+                ModalidadeConsulta.TELEMEDICINA));
+
+        Consulta consultaAtual = consultaRepository.buscarPorId(original.getId());
+
+        assertEquals(new BigDecimal("250.00"), consultaAtual.getValor());
+        assertEquals(ModalidadeConsulta.PRESENCIAL, consultaAtual.getModalidade());
+    }
 }

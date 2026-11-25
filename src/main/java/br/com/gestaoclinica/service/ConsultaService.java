@@ -35,6 +35,10 @@ public class ConsultaService {
             throw new IllegalArgumentException(
                     "Paciente nao encontrado.");
         }
+        if (medicoRepository.buscarPorId(medicoId) == null) {
+            throw new IllegalArgumentException(
+                    "Medico nao encontrado.");
+        }
 
         return null;
     }

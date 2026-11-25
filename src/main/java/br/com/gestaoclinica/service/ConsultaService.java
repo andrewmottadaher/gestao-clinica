@@ -70,4 +70,14 @@ public class ConsultaService {
     public List<Consulta> listarTodos() {
         return consultaRepository.listarTodos();
     }
+
+    public Consulta atualizar(
+            int consultaId,
+            int pacienteId,
+            int medicoId,
+            LocalDateTime dataHoraAgendamento,
+            BigDecimal valor,
+            ModalidadeConsulta modalidade) {
+        return null;
+    }
 }

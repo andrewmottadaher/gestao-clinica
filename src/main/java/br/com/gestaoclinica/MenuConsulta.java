@@ -56,6 +56,12 @@ public class MenuConsulta {
                 output.println("Informe a modalidade da consulta (PRESENCIAL ou TELEMEDICINA):");
                 String modalidade = scanner.nextLine();
 
+                if (!"PRESENCIAL".equalsIgnoreCase(modalidade)
+                        && !"TELEMEDICINA".equalsIgnoreCase(modalidade)) {
+                    output.println("Modalidade invalida.");
+                    continue;
+                }
+
                 continue;
             }
             output.println("Opcao invalida.");

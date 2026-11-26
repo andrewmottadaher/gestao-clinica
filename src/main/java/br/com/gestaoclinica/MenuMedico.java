@@ -61,6 +61,7 @@ public class MenuMedico {
                 case 4 -> atualizar();
                 case 5 -> excluir();
                 case 6 -> inativar();
+                case 7 -> ativar();
                 case 0 -> output.println("Voltando ao menu principal...");
                 default -> output.println("Opcao invalida.");
             }
@@ -242,6 +243,26 @@ public class MenuMedico {
                 output.println("Medico inativado com sucesso.");
             } else {
                 output.println("Medico nao encontrado.");
+            }
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
+        }
+    }
+
+    private void ativar() {
+        try {
+            output.print("Informe o ID do medico para ativar: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            boolean ativado = service.ativar(id);
+
+            if (ativado) {
+                output.println("Medico ativado com sucesso.");
+            } else {
+                output.println("Medico nao encontrado ou ja esta ativo.");
             }
 
         } catch (NumberFormatException e) {

@@ -1,5 +1,7 @@
 package br.com.gestaoclinica;
 
+import br.com.gestaoclinica.model.Especialidade;
+import br.com.gestaoclinica.model.ModalidadeConsulta;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.PacienteRepository;
 import br.com.gestaoclinica.repository.MedicoRepository;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -265,5 +268,61 @@ class MenuConsultaTest {
         String resultado = outputStream.toString();
 
         assertTrue(resultado.contains("Valor invalido."));
+    }
+
+    @Test
+    void deveAgendarConsultaComModalidadePresencial() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + paciente.getId() + "\n"
+                        + medico.getId() + "\n"
+                        + "26/11/2026 14:30\n"
+                        + "150.00\n"
+                        + "PRESENCIAL\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        assertTrue(consultaRepository.listarTodos().size() == 1);
+
+        assertTrue(
+                consultaRepository.listarTodos()
+                        .get(0)
+                        .getModalidade() == ModalidadeConsulta.PRESENCIAL);
     }
 }

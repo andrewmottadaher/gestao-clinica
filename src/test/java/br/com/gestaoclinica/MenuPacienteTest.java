@@ -73,7 +73,15 @@ class MenuPacienteTest {
                 new PacienteRepository(),
                 new ConsultaRepository());
 
-        Scanner scanner = new Scanner("1\n0\n");
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "Joao da Silva\n"
+                        + "12345678900\n"
+                        + "15/05/1990\n"
+                        + "M\n"
+                        + "31999999999\n"
+                        + "Unimed\n"
+                        + "0\n");
 
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
@@ -90,6 +98,37 @@ class MenuPacienteTest {
         assertTrue(resultado.contains("Paciente cadastrado com sucesso."));
         assertEquals("Joao da Silva", service.buscarPorId(1).getNome());
         assertEquals("12345678900", service.buscarPorId(1).getCpf());
-        assertEquals(LocalDate.of(1990, 5, 15), service.buscarPorId(1).getDataNascimento());
+        assertEquals(
+                LocalDate.of(1990, 5, 15),
+                service.buscarPorId(1).getDataNascimento());
+    }
+
+    @Test
+    void deveInformarErroAoCadastrarPacienteComDataInvalida() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "Joao da Silva\n"
+                        + "12345678900\n"
+                        + "31/02/1990\n"
+                        + "0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains(
+                "Erro: informe uma data valida no formato dd/MM/aaaa."));
     }
 }

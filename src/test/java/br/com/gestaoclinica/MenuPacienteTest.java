@@ -42,4 +42,26 @@ class MenuPacienteTest {
         assertTrue(resultado.contains("5 - Excluir paciente"));
         assertTrue(resultado.contains("0 - Voltar ao menu principal"));
     }
+
+    @Test
+    void deveEncerrarMenuAoSelecionarOpcaoZero() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

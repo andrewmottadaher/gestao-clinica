@@ -43,6 +43,7 @@ public class MenuPaciente {
                 case 2 -> listar();
                 case 3 -> buscar();
                 case 4 -> atualizar();
+                case 5 -> excluir();
                 case 0 -> {
                     output.println("Voltando ao menu principal...");
                     return;
@@ -210,6 +211,26 @@ public class MenuPaciente {
             output.println("Informe um ID valido.");
         } catch (DateTimeParseException e) {
             output.println("Erro: informe uma data valida no formato dd/MM/aaaa.");
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
+        }
+    }
+
+    private void excluir() {
+        try {
+            output.print("Informe o ID do paciente: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            boolean excluido = service.excluir(id);
+
+            if (excluido) {
+                output.println("Paciente excluido com sucesso.");
+            } else {
+                output.println("Paciente nao encontrado.");
+            }
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
         } catch (IllegalArgumentException e) {
             output.println(e.getMessage());
         }

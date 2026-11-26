@@ -44,7 +44,10 @@ public class MenuConsulta {
                 output.print("Informe o ID do paciente: ");
                 String pacienteId = scanner.nextLine();
 
-                output.println("Informe o ID do medico:");
+                output.print("Informe o ID do medico: ");
+                String medicoId = scanner.nextLine();
+
+                output.println("Informe a data e hora da consulta:");
                 continue;
             }
             output.println("Opcao invalida.");

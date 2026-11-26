@@ -94,8 +94,22 @@ public class MenuConsulta {
                     continue;
                 }
 
-                int idPaciente = Integer.parseInt(pacienteId);
-                int idMedico = Integer.parseInt(medicoId);
+                int idPaciente;
+                int idMedico;
+
+                try {
+                    idPaciente = Integer.parseInt(pacienteId);
+                } catch (NumberFormatException e) {
+                    output.println("ID do paciente invalido.");
+                    continue;
+                }
+
+                try {
+                    idMedico = Integer.parseInt(medicoId);
+                } catch (NumberFormatException e) {
+                    output.println("ID do medico invalido.");
+                    continue;
+                }
 
                 ModalidadeConsulta modalidadeConsulta = ModalidadeConsulta.valueOf(modalidade.toUpperCase());
 

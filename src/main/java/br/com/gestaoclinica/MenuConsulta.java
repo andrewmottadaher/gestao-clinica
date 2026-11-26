@@ -53,6 +53,9 @@ public class MenuConsulta {
                 output.print("Informe o valor da consulta: ");
                 String valor = scanner.nextLine();
 
+                output.println("Informe a modalidade da consulta (PRESENCIAL ou TELEMEDICINA):");
+                String modalidade = scanner.nextLine();
+
                 continue;
             }
             output.println("Opcao invalida.");

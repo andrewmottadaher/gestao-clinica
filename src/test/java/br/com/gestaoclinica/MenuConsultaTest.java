@@ -33,6 +33,8 @@ class MenuConsultaTest {
         menu.exibir();
 
         String resultado = outputStream.toString();
+        System.out.println("SAIDA CAPTURADA:");
+        System.out.println(resultado);
 
         assertTrue(resultado.contains("GERENCIAR CONSULTAS"));
         assertTrue(resultado.contains("1 - Agendar consulta"));
@@ -43,5 +45,26 @@ class MenuConsultaTest {
         assertTrue(resultado.contains("6 - Concluir consulta"));
         assertTrue(resultado.contains("7 - Excluir consulta"));
         assertTrue(resultado.contains("0 - Voltar ao menu principal"));
+    }
+
+    @Test
+    void deveEncerrarMenuDeConsultasAoSelecionarZero() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository(),
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner("0\n");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
     }
 }

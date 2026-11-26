@@ -74,4 +74,24 @@ class MenuProntuarioTest {
 
         assertTrue(resultado.contains("Voltando ao menu principal..."));
     }
+
+    @Test
+    void deveInformarQuandoOpcaoForInvalida() {
+        ProntuarioService service = new ProntuarioService(
+                new ProntuarioRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("9\n0\n");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuProntuario menu = new MenuProntuario(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Opcao invalida."));
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

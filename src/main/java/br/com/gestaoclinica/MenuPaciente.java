@@ -42,6 +42,7 @@ public class MenuPaciente {
                 case 1 -> cadastrar();
                 case 2 -> listar();
                 case 3 -> buscar();
+                case 4 -> atualizar();
                 case 0 -> {
                     output.println("Voltando ao menu principal...");
                     return;
@@ -150,5 +151,9 @@ public class MenuPaciente {
         } catch (NumberFormatException e) {
             output.println("Informe um ID valido.");
         }
+    }
+
+    private void atualizar() {
+        output.print("Informe o ID do paciente: ");
     }
 }

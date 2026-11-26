@@ -40,6 +40,11 @@ public class MenuConsulta {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+            if ("1".equals(opcao)) {
+                output.println("Informe o ID do paciente:");
+                continue;
+            }
+
             output.println("Opcao invalida.");
         }
     }

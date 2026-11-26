@@ -175,4 +175,36 @@ class MenuPacienteTest {
 
         assertEquals(1, service.listarTodos().size());
     }
+
+    @Test
+    void deveCadastrarPacienteSemConvenio() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "Carlos Souza\n"
+                        + "98765432100\n"
+                        + "10/08/1980\n"
+                        + "M\n"
+                        + "31977777777\n"
+                        + "\n"
+                        + "0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Paciente cadastrado com sucesso."));
+        assertEquals(null, service.buscarPorId(1).getConvenio());
+    }
 }

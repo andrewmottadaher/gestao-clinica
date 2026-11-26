@@ -131,4 +131,48 @@ class MenuPacienteTest {
         assertTrue(resultado.contains(
                 "Erro: informe uma data valida no formato dd/MM/aaaa."));
     }
+
+    @Test
+    void deveInformarErroAoCadastrarPacienteComCpfDuplicado() {
+        PacienteRepository pacienteRepository = new PacienteRepository();
+
+        PacienteService service = new PacienteService(
+                pacienteRepository,
+                new ConsultaRepository());
+
+        service.cadastrar(
+                "Maria da Silva",
+                "12345678900",
+                LocalDate.of(1985, 10, 20),
+                "F",
+                "31988888888",
+                null);
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "Joao da Silva\n"
+                        + "12345678900\n"
+                        + "15/05/1990\n"
+                        + "M\n"
+                        + "31999999999\n"
+                        + "Unimed\n"
+                        + "0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains(
+                "Ja existe um paciente cadastrado com esse CPF."));
+
+        assertEquals(1, service.listarTodos().size());
+    }
 }

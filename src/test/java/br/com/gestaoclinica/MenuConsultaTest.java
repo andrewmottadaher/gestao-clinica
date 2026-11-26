@@ -98,7 +98,7 @@ class MenuConsultaTest {
                 new MedicoRepository(),
                 new ProntuarioRepository());
 
-        Scanner scanner = new Scanner("1\n0\n");
+        Scanner scanner = new Scanner("1\n1\n0\n");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(outputStream);
 
@@ -130,5 +130,26 @@ class MenuConsultaTest {
         String resultado = outputStream.toString();
 
         assertTrue(resultado.contains("Informe o ID do medico:"));
+    }
+
+    @Test
+    void deveSolicitarDataHoraAposInformarIdDoMedico() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository(),
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner("1\n1\n1\n0\n0\n");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Informe a data e hora da consulta:"));
     }
 }

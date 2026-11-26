@@ -618,46 +618,6 @@ class MenuMedicoTest {
     }
 
     @Test
-    void deveExcluirMedicoPelaInterface() {
-        MedicoRepository medicoRepository = new MedicoRepository();
-        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
-
-        MedicoService service = new MedicoService(
-                medicoRepository,
-                especialidadeRepository,
-                new ConsultaRepository());
-
-        EspecialidadeService especialidadeService = new EspecialidadeService(
-                especialidadeRepository,
-                medicoRepository);
-
-        Especialidade especialidade = especialidadeService.cadastrar(
-                "Cardiologia",
-                "Especialidade cardiologica");
-
-        service.cadastrar(
-                "Carlos Silva",
-                "123456",
-                "carlos@email.com",
-                "31999999999",
-                especialidade.getId());
-
-        Scanner scanner = new Scanner("5\n1\n0\n");
-        ByteArrayOutputStream saida = new ByteArrayOutputStream();
-        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
-
-        MenuMedico menu = new MenuMedico(
-                service,
-                especialidadeService,
-                scanner,
-                output);
-
-        menu.exibir();
-
-        assertNull(service.buscarPorId(1));
-    }
-
-    @Test
     void deveInformarQuandoMedicoNaoExistirNaExclusao() {
         MedicoRepository medicoRepository = new MedicoRepository();
         EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();

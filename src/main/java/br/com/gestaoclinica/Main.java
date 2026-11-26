@@ -85,6 +85,16 @@ public class Main {
         menu.exibir();
     }
 
+    private static void gerenciarMedicos() {
+        MenuMedico menu = new MenuMedico(
+                medicoService,
+                especialidadeService,
+                scanner,
+                System.out);
+
+        menu.exibir();
+    }
+
     public static void main(String[] args) {
         int opcao;
 
@@ -94,7 +104,7 @@ public class Main {
 
             switch (opcao) {
                 case 1 -> gerenciarEspecialidades();
-                case 2 -> System.out.println("Gerenciamento de medicos.");
+                case 2 -> gerenciarMedicos();
                 case 3 -> System.out.println("Gerenciamento de pacientes.");
                 case 4 -> System.out.println("Gerenciamento de consultas.");
                 case 5 -> System.out.println("Gerenciamento de prontuarios.");

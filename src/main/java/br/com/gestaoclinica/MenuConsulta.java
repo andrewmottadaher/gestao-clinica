@@ -113,14 +113,19 @@ public class MenuConsulta {
 
                 ModalidadeConsulta modalidadeConsulta = ModalidadeConsulta.valueOf(modalidade.toUpperCase());
 
-                service.agendar(
-                        idPaciente,
-                        idMedico,
-                        dataHora,
-                        valor,
-                        modalidadeConsulta);
+                try {
+                    service.agendar(
+                            idPaciente,
+                            idMedico,
+                            dataHora,
+                            valor,
+                            modalidadeConsulta);
 
-                output.println("Consulta agendada com sucesso.");
+                    output.println("Consulta agendada com sucesso.");
+
+                } catch (IllegalArgumentException e) {
+                    output.println(e.getMessage());
+                }
             }
             output.println("Opcao invalida.");
         }

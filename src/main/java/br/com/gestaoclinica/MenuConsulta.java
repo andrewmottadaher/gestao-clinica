@@ -4,6 +4,10 @@ import br.com.gestaoclinica.service.ConsultaService;
 
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 public class MenuConsulta {
 
@@ -48,7 +52,20 @@ public class MenuConsulta {
                 String medicoId = scanner.nextLine();
 
                 output.print("Informe a data e hora da consulta: ");
-                String dataHora = scanner.nextLine();
+
+                LocalDateTime dataHora;
+
+                try {
+                    DateTimeFormatter formato = DateTimeFormatter
+                            .ofPattern("dd/MM/uuuu HH:mm")
+                            .withResolverStyle(ResolverStyle.STRICT);
+
+                    dataHora = LocalDateTime.parse(scanner.nextLine(), formato);
+
+                } catch (DateTimeParseException e) {
+                    output.println("Data e hora invalida.");
+                    continue;
+                }
 
                 output.print("Informe o valor da consulta: ");
                 String valor = scanner.nextLine();

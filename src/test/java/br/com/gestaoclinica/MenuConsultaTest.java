@@ -541,4 +541,50 @@ class MenuConsultaTest {
         assertTrue(resultado.contains("ID do medico invalido."));
         assertTrue(resultado.contains("Voltando ao menu principal..."));
     }
+
+    @Test
+    void deveInformarQuandoPacienteNaoForEncontrado() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "999\n"
+                        + "1\n"
+                        + "26/11/2026 14:30\n"
+                        + "150.00\n"
+                        + "PRESENCIAL\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Paciente nao encontrado."));
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

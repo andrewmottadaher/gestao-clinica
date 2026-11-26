@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.Scanner;
 
+import br.com.gestaoclinica.model.Paciente;
 import br.com.gestaoclinica.service.PacienteService;
 
 public class MenuPaciente {
@@ -90,6 +91,7 @@ public class MenuPaciente {
 
             switch (opcao) {
                 case 1 -> cadastrar();
+                case 2 -> listar();
                 case 0 -> {
                     output.println("Voltando ao menu principal...");
                     return;
@@ -97,5 +99,36 @@ public class MenuPaciente {
                 default -> output.println("Opcao invalida.");
             }
         }
+    }
+
+    private void listar() {
+        output.println("\n=== LISTA DE PACIENTES ===");
+
+        var pacientes = service.listarTodos();
+
+        if (pacientes.isEmpty()) {
+            output.println("Nenhum paciente cadastrado.");
+            return;
+        }
+
+        for (Paciente paciente : pacientes) {
+            exibirDadosPaciente(paciente);
+            output.println("------------------------------");
+        }
+    }
+
+    private void exibirDadosPaciente(Paciente paciente) {
+        output.println("ID: " + paciente.getId());
+        output.println("Nome: " + paciente.getNome());
+        output.println("CPF: " + paciente.getCpf());
+        output.println("Data de nascimento: "
+                + paciente.getDataNascimento().format(
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        output.println("Sexo: " + paciente.getSexo());
+        output.println("Telefone: " + paciente.getTelefone());
+        output.println("Convenio: "
+                + (paciente.getConvenio() == null
+                        ? "Nao informado"
+                        : paciente.getConvenio()));
     }
 }

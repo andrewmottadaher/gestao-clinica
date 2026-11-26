@@ -1,4 +1,3 @@
-
 package br.com.gestaoclinica;
 
 import br.com.gestaoclinica.service.ConsultaService;
@@ -22,15 +21,25 @@ public class MenuConsulta {
     }
 
     public void exibir() {
-    output.println();
-    output.println("=== GERENCIAR CONSULTAS ===");
-    output.println("1 - Agendar consulta");
-    output.println("2 - Listar consultas");
-    output.println("3 - Buscar consulta por ID");
-    output.println("4 - Atualizar consulta");
-    output.println("5 - Cancelar consulta");
-    output.println("6 - Concluir consulta");
-    output.println("7 - Excluir consulta");
-    output.println("0 - Voltar ao menu principal");
-}
+        while (true) {
+            output.println();
+            output.println("=== GERENCIAR CONSULTAS ===");
+            output.println("1 - Agendar consulta");
+            output.println("2 - Listar consultas");
+            output.println("3 - Buscar consulta por ID");
+            output.println("4 - Atualizar consulta");
+            output.println("5 - Cancelar consulta");
+            output.println("6 - Concluir consulta");
+            output.println("7 - Excluir consulta");
+            output.println("0 - Voltar ao menu principal");
+            output.print("Escolha uma opcao: ");
+
+            String opcao = scanner.nextLine();
+
+            if ("0".equals(opcao)) {
+                output.println("Voltando ao menu principal...");
+                return;
+            }
+        }
+    }
 }

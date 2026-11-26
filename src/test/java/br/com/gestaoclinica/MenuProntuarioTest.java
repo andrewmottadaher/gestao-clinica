@@ -2,15 +2,23 @@ package br.com.gestaoclinica;
 
 import org.junit.jupiter.api.Test;
 
+import br.com.gestaoclinica.model.Especialidade;
+import br.com.gestaoclinica.model.ModalidadeConsulta;
 import br.com.gestaoclinica.repository.ConsultaRepository;
+import br.com.gestaoclinica.repository.MedicoRepository;
+import br.com.gestaoclinica.repository.PacienteRepository;
 import br.com.gestaoclinica.repository.ProntuarioRepository;
+import br.com.gestaoclinica.service.ConsultaService;
 import br.com.gestaoclinica.service.ProntuarioService;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 class MenuProntuarioTest {
@@ -93,5 +101,78 @@ class MenuProntuarioTest {
 
         assertTrue(resultado.contains("Opcao invalida."));
         assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
+
+    @Test
+    void deveCadastrarProntuarioPelaInterface() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService consultaService = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                prontuarioRepository);
+
+        var consulta = consultaService.agendar(
+                paciente.getId(),
+                medico.getId(),
+                LocalDate.now().atTime(9, 0),
+                new BigDecimal("150.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        consultaService.concluir(consulta.getId());
+
+        ProntuarioService prontuarioService = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + consulta.getId() + "\n"
+                        + "Hipertensao arterial\n"
+                        + "Uso de medicacao prescrita\n"
+                        + "Retorno em 30 dias\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuProntuario menu = new MenuProntuario(
+                prontuarioService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Prontuario cadastrado com sucesso."));
+        assertEquals(1, prontuarioRepository.listarTodos().size());
+        assertEquals(
+                "Hipertensao arterial",
+                prontuarioRepository.listarTodos().get(0).getDiagnostico());
     }
 }

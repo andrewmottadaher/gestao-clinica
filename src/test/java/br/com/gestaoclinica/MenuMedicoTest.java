@@ -995,4 +995,47 @@ class MenuMedicoTest {
 
         assertTrue(resultado.contains("Medico nao encontrado ou ja esta ativo."));
     }
+
+    @Test
+    void deveManterMedicoAtivoAoTentarAtivaLoNovamente() {
+        MedicoRepository medicoRepository = new MedicoRepository();
+        EspecialidadeRepository especialidadeRepository = new EspecialidadeRepository();
+
+        MedicoService service = new MedicoService(
+                medicoRepository,
+                especialidadeRepository,
+                new ConsultaRepository());
+
+        EspecialidadeService especialidadeService = new EspecialidadeService(
+                especialidadeRepository,
+                medicoRepository);
+
+        Especialidade especialidade = especialidadeService.cadastrar(
+                "Cardiologia",
+                "Especialidade cardiologica");
+
+        service.cadastrar(
+                "Carlos Silva",
+                "123456",
+                "carlos@email.com",
+                "31999999999",
+                especialidade.getId());
+
+        Scanner scanner = new Scanner("7\n1\n0\n");
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuMedico menu = new MenuMedico(
+                service,
+                especialidadeService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        assertEquals("S", service.buscarPorId(1).getAtivo());
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+        assertTrue(resultado.contains("Medico nao encontrado ou ja esta ativo."));
+    }
 }

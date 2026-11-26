@@ -341,4 +341,88 @@ class MenuProntuarioTest {
 
         assertTrue(resultado.contains("Prontuario nao encontrado."));
     }
+
+    @Test
+    void deveAtualizarProntuarioPelaInterface() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService consultaService = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                prontuarioRepository);
+
+        var consulta = consultaService.agendar(
+                paciente.getId(),
+                medico.getId(),
+                LocalDate.now().atTime(9, 0),
+                new BigDecimal("150.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        consultaService.concluir(consulta.getId());
+
+        ProntuarioService prontuarioService = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        var prontuario = prontuarioService.cadastrar(
+                consulta.getId(),
+                "Hipertensao arterial",
+                "Uso de medicacao prescrita",
+                "Retorno em 30 dias");
+
+        Scanner scanner = new Scanner(
+                "4\n"
+                        + prontuario.getId() + "\n"
+                        + "Diabetes tipo 2\n"
+                        + "Controle glicemico\n"
+                        + "Retorno em 15 dias\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuProntuario menu = new MenuProntuario(
+                prontuarioService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Prontuario atualizado com sucesso."));
+        assertEquals(
+                "Diabetes tipo 2",
+                prontuarioRepository.buscarPorId(prontuario.getId()).getDiagnostico());
+        assertEquals(
+                "Controle glicemico",
+                prontuarioRepository.buscarPorId(prontuario.getId()).getPrescricao());
+        assertEquals(
+                "Retorno em 15 dias",
+                prontuarioRepository.buscarPorId(prontuario.getId()).getObservacoes());
+    }
 }

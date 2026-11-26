@@ -67,4 +67,26 @@ class MenuConsultaTest {
 
         assertTrue(resultado.contains("Voltando ao menu principal..."));
     }
+
+    @Test
+    void deveInformarQuandoOpcaoForInvalida() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository(),
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner("9\n0\n");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Opcao invalida."));
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

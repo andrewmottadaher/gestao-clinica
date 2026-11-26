@@ -1,6 +1,7 @@
 package br.com.gestaoclinica;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -530,5 +531,62 @@ class MenuPacienteTest {
         String resultado = saida.toString(StandardCharsets.UTF_8);
 
         assertTrue(resultado.contains("Informe um ID valido."));
+    }
+
+    @Test
+    void deveExcluirPacientePelaInterface() {
+        PacienteRepository repository = new PacienteRepository();
+
+        PacienteService service = new PacienteService(
+                repository,
+                new ConsultaRepository());
+
+        service.cadastrar(
+                "Joao Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Scanner scanner = new Scanner("5\n1\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertNull(service.buscarPorId(1));
+        assertTrue(resultado.contains("Paciente excluido com sucesso."));
+    }
+
+    @Test
+    void deveInformarErroAoExcluirPacienteInexistente() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("5\n99\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Paciente nao encontrado."));
     }
 }

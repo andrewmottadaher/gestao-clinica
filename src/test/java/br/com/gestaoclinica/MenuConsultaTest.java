@@ -792,4 +792,75 @@ class MenuConsultaTest {
         assertTrue(resultado.contains("Joao da Silva"));
         assertTrue(resultado.contains("Carlos Oliveira"));
     }
+
+    @Test
+    void deveAtualizarConsultaPelaInterface() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+
+        var consulta = service.agendar(
+                paciente.getId(),
+                medico.getId(),
+                LocalDateTime.of(2026, 11, 27, 14, 30),
+                new BigDecimal("150.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        Scanner scanner = new Scanner(
+                "4\n"
+                        + consulta.getId() + "\n"
+                        + paciente.getId() + "\n"
+                        + medico.getId() + "\n"
+                        + "28/11/2026 15:30\n"
+                        + "200.00\n"
+                        + "TELEMEDICINA\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        var consultaAtualizada = consultaRepository.buscarPorId(consulta.getId());
+
+        assertTrue(
+                consultaAtualizada.getDataHoraAgendamento()
+                        .equals(LocalDateTime.of(2026, 11, 28, 15, 30)));
+
+        assertTrue(
+                consultaAtualizada.getValor()
+                        .compareTo(new BigDecimal("200.00")) == 0);
+
+        assertTrue(
+                consultaAtualizada.getModalidade()
+                        == ModalidadeConsulta.TELEMEDICINA);
+    }
 }

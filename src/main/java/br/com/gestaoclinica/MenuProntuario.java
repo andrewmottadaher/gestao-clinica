@@ -50,7 +50,8 @@ public class MenuProntuario {
                 case 0 -> output.println("Voltando ao menu principal...");
                 case 1 -> cadastrar();
                 case 2 -> listar();
-                case 3, 4, 5 ->
+                case 3 -> buscar();
+                case 4, 5 ->
                     output.println("Opcao ainda nao implementada.");
                 default -> output.println("Opcao invalida.");
             }
@@ -112,5 +113,24 @@ public class MenuProntuario {
         output.println("Data de registro: "
                 + prontuario.getDataRegistro().format(
                         DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+    }
+
+    private void buscar() {
+        try {
+            output.print("Informe o ID do prontuario: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            Prontuario prontuario = service.buscarPorId(id);
+
+            if (prontuario == null) {
+                output.println("Prontuario nao encontrado.");
+                return;
+            }
+
+            exibirDadosProntuario(prontuario);
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        }
     }
 }

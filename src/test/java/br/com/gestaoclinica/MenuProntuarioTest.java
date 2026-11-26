@@ -245,7 +245,7 @@ class MenuProntuarioTest {
     }
 
     @Test
-    void deveBuscarProntuarioPorIdPelaInterface() {
+    void deveBuscarProntuarioExistentePorIdPelaInterface() {
         ConsultaRepository consultaRepository = new ConsultaRepository();
         PacienteRepository pacienteRepository = new PacienteRepository();
         MedicoRepository medicoRepository = new MedicoRepository();
@@ -295,6 +295,35 @@ class MenuProntuarioTest {
                 "Hipertensao arterial",
                 "Uso de medicacao prescrita",
                 "Retorno em 30 dias");
+
+        Scanner scanner = new Scanner(
+                "3\n" + prontuario.getId() + "\n0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuProntuario menu = new MenuProntuario(
+                prontuarioService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Hipertensao arterial"));
+        assertTrue(resultado.contains(
+                "ID da consulta: " + consulta.getId()));
+    }
+
+    @Test
+    void deveInformarQuandoProntuarioNaoExistirNaBuscaPelaInterface() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        ProntuarioService prontuarioService = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
 
         Scanner scanner = new Scanner("3\n999\n0\n");
 

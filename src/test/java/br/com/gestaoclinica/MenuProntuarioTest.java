@@ -1,16 +1,5 @@
 package br.com.gestaoclinica;
 
-import org.junit.jupiter.api.Test;
-
-import br.com.gestaoclinica.model.Especialidade;
-import br.com.gestaoclinica.model.ModalidadeConsulta;
-import br.com.gestaoclinica.repository.ConsultaRepository;
-import br.com.gestaoclinica.repository.MedicoRepository;
-import br.com.gestaoclinica.repository.PacienteRepository;
-import br.com.gestaoclinica.repository.ProntuarioRepository;
-import br.com.gestaoclinica.service.ConsultaService;
-import br.com.gestaoclinica.service.ProntuarioService;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -21,6 +10,17 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Scanner;
+
+import org.junit.jupiter.api.Test;
+
+import br.com.gestaoclinica.model.Especialidade;
+import br.com.gestaoclinica.model.ModalidadeConsulta;
+import br.com.gestaoclinica.repository.ConsultaRepository;
+import br.com.gestaoclinica.repository.MedicoRepository;
+import br.com.gestaoclinica.repository.PacienteRepository;
+import br.com.gestaoclinica.repository.ProntuarioRepository;
+import br.com.gestaoclinica.service.ConsultaService;
+import br.com.gestaoclinica.service.ProntuarioService;
 
 class MenuProntuarioTest {
 
@@ -473,7 +473,7 @@ class MenuProntuarioTest {
                 prontuarioRepository,
                 consultaRepository);
 
-        var prontuario = prontuarioService.cadastrar(
+        prontuarioService.cadastrar(
                 consulta.getId(),
                 "Hipertensao arterial",
                 "Uso de medicacao prescrita",

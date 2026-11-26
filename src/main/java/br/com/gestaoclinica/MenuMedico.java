@@ -1,14 +1,8 @@
 package br.com.gestaoclinica;
 
-import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import br.com.gestaoclinica.model.Medico;
-import br.com.gestaoclinica.repository.ConsultaRepository;
-import br.com.gestaoclinica.repository.EspecialidadeRepository;
-import br.com.gestaoclinica.repository.MedicoRepository;
 import br.com.gestaoclinica.service.EspecialidadeService;
 import br.com.gestaoclinica.service.MedicoService;
 

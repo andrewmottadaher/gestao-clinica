@@ -47,7 +47,12 @@ public class MenuConsulta {
                 output.print("Informe o ID do medico: ");
                 String medicoId = scanner.nextLine();
 
-                output.println("Informe a data e hora da consulta:");
+                output.print("Informe a data e hora da consulta: ");
+                String dataHora = scanner.nextLine();
+
+                output.print("Informe o valor da consulta: ");
+                String valor = scanner.nextLine();
+
                 continue;
             }
             output.println("Opcao invalida.");

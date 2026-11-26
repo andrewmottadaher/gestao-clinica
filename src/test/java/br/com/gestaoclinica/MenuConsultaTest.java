@@ -629,4 +629,61 @@ class MenuConsultaTest {
         assertTrue(resultado.contains("Medico nao encontrado."));
         assertTrue(resultado.contains("Voltando ao menu principal..."));
     }
+
+    @Test
+    void deveInformarQuandoMedicoEstiverInativo() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        medicoRepository.inativar(medico.getId());
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + paciente.getId() + "\n"
+                        + medico.getId() + "\n"
+                        + "26/11/2026 14:30\n"
+                        + "150.00\n"
+                        + "PRESENCIAL\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains(
+                "Nao e possivel agendar consulta com medico inativo."));
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

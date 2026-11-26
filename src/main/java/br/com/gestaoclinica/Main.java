@@ -104,6 +104,24 @@ public class Main {
         menu.exibir();
     }
 
+    private static void gerenciarConsultas() {
+        MenuConsulta menu = new MenuConsulta(
+                consultaService,
+                scanner,
+                System.out);
+
+        menu.exibir();
+    }
+
+    private static void gerenciarProntuarios() {
+        MenuProntuario menu = new MenuProntuario(
+                prontuarioService,
+                scanner,
+                System.out);
+
+        menu.exibir();
+    }
+
     public static void main(String[] args) {
         int opcao;
 
@@ -115,8 +133,8 @@ public class Main {
                 case 1 -> gerenciarEspecialidades();
                 case 2 -> gerenciarMedicos();
                 case 3 -> gerenciarPacientes();
-                case 4 -> System.out.println("Gerenciamento de consultas.");
-                case 5 -> System.out.println("Gerenciamento de prontuarios.");
+                case 4 -> gerenciarConsultas();
+                case 5 -> gerenciarProntuarios();
                 case 0 -> System.out.println("Encerrando o sistema...");
                 default -> System.out.println("Opcao invalida.");
             }

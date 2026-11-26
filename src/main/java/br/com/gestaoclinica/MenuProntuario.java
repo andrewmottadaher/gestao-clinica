@@ -52,7 +52,7 @@ public class MenuProntuario {
                 case 2 -> listar();
                 case 3 -> buscar();
                 case 4 -> atualizar();
-                case 5 -> output.println("Opcao ainda nao implementada.");
+                case 5 -> excluir();
                 default -> output.println("Opcao invalida.");
             }
 
@@ -168,6 +168,24 @@ public class MenuProntuario {
             output.println("Informe um ID valido.");
         } catch (IllegalArgumentException e) {
             output.println(e.getMessage());
+        }
+    }
+
+    private void excluir() {
+        try {
+            output.print("Informe o ID do prontuario: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            boolean excluido = service.excluir(id);
+
+            if (excluido) {
+                output.println("Prontuario excluido com sucesso.");
+            } else {
+                output.println("Prontuario nao encontrado.");
+            }
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
         }
     }
 }

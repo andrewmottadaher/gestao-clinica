@@ -1,10 +1,12 @@
 package br.com.gestaoclinica;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
@@ -63,5 +65,31 @@ class MenuPacienteTest {
         String resultado = saida.toString(StandardCharsets.UTF_8);
 
         assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
+
+    @Test
+    void deveCadastrarPacientePelaInterface() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("1\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Paciente cadastrado com sucesso."));
+        assertEquals("Joao da Silva", service.buscarPorId(1).getNome());
+        assertEquals("12345678900", service.buscarPorId(1).getCpf());
+        assertEquals(LocalDate.of(1990, 5, 15), service.buscarPorId(1).getDataNascimento());
     }
 }

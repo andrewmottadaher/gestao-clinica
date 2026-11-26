@@ -47,6 +47,10 @@ public class MenuConsulta {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+            if ("5".equals(opcao)) {
+                cancelar();
+                continue;
+            }
             if ("4".equals(opcao)) {
                 atualizar();
                 continue;
@@ -282,6 +286,33 @@ public class MenuConsulta {
                     ModalidadeConsulta.valueOf(modalidade.toUpperCase()));
 
             output.println("Consulta atualizada com sucesso.");
+
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
+        }
+    }
+
+    private void cancelar() {
+        output.print("Informe o ID da consulta: ");
+
+        int consultaId;
+
+        try {
+            consultaId = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            output.println("ID da consulta invalido.");
+            return;
+        }
+
+        try {
+            boolean cancelada = service.cancelar(consultaId);
+
+            if (!cancelada) {
+                output.println("Consulta nao encontrada.");
+                return;
+            }
+
+            output.println("Consulta cancelada com sucesso.");
 
         } catch (IllegalArgumentException e) {
             output.println(e.getMessage());

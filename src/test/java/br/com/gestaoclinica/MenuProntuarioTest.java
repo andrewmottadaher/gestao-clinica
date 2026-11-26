@@ -243,4 +243,73 @@ class MenuProntuarioTest {
 
         assertTrue(resultado.contains("Hipertensao arterial"));
     }
+
+    @Test
+    void deveBuscarProntuarioPorIdPelaInterface() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService consultaService = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                prontuarioRepository);
+
+        var consulta = consultaService.agendar(
+                paciente.getId(),
+                medico.getId(),
+                LocalDate.now().atTime(9, 0),
+                new BigDecimal("150.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        consultaService.concluir(consulta.getId());
+
+        ProntuarioService prontuarioService = new ProntuarioService(
+                prontuarioRepository,
+                consultaRepository);
+
+        var prontuario = prontuarioService.cadastrar(
+                consulta.getId(),
+                "Hipertensao arterial",
+                "Uso de medicacao prescrita",
+                "Retorno em 30 dias");
+
+        Scanner scanner = new Scanner("3\n999\n0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuProntuario menu = new MenuProntuario(
+                prontuarioService,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Prontuario nao encontrado."));
+    }
 }

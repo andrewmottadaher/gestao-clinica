@@ -2,6 +2,7 @@ package br.com.gestaoclinica;
 
 import br.com.gestaoclinica.model.ModalidadeConsulta;
 import br.com.gestaoclinica.service.ConsultaService;
+import br.com.gestaoclinica.model.Consulta;
 
 import java.io.PrintStream;
 import java.math.BigDecimal;
@@ -45,6 +46,10 @@ public class MenuConsulta {
             if ("0".equals(opcao)) {
                 output.println("Voltando ao menu principal...");
                 return;
+            }
+            if ("2".equals(opcao)) {
+                listar();
+                continue;
             }
             if ("1".equals(opcao)) {
                 output.print("Informe o ID do paciente: ");
@@ -128,6 +133,28 @@ public class MenuConsulta {
                 }
             }
             output.println("Opcao invalida.");
+        }
+    }
+
+    private void listar() {
+        var consultas = service.listarTodos();
+
+        if (consultas.isEmpty()) {
+            output.println("Nenhuma consulta cadastrada.");
+            return;
+        }
+
+        output.println("\n--- CONSULTAS CADASTRADAS ---");
+
+        for (Consulta consulta : consultas) {
+            output.println("ID: " + consulta.getId());
+            output.println("Paciente: " + consulta.getPaciente().getNome());
+            output.println("Medico: " + consulta.getMedico().getNome());
+            output.println("Data e hora: " + consulta.getDataHoraAgendamento());
+            output.println("Valor: " + consulta.getValor());
+            output.println("Status: " + consulta.getStatus());
+            output.println("Modalidade: " + consulta.getModalidade());
+            output.println("----------------------------------");
         }
     }
 }

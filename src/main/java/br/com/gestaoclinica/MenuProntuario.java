@@ -51,8 +51,8 @@ public class MenuProntuario {
                 case 1 -> cadastrar();
                 case 2 -> listar();
                 case 3 -> buscar();
-                case 4, 5 ->
-                    output.println("Opcao ainda nao implementada.");
+                case 4 -> atualizar();
+                case 5 -> output.println("Opcao ainda nao implementada.");
                 default -> output.println("Opcao invalida.");
             }
 
@@ -131,6 +131,43 @@ public class MenuProntuario {
 
         } catch (NumberFormatException e) {
             output.println("Informe um ID valido.");
+        }
+    }
+
+    private void atualizar() {
+        try {
+            output.print("Informe o ID do prontuario: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            Prontuario prontuario = service.buscarPorId(id);
+
+            if (prontuario == null) {
+                output.println("Prontuario nao encontrado.");
+                return;
+            }
+
+            output.print("Informe o novo diagnostico: ");
+            String diagnostico = scanner.nextLine();
+
+            output.print("Informe a nova prescricao: ");
+            String prescricao = scanner.nextLine();
+
+            output.print("Informe as novas observacoes: ");
+            String observacoes = scanner.nextLine();
+
+            service.atualizar(
+                    id,
+                    prontuario.getConsulta().getId(),
+                    diagnostico,
+                    prescricao,
+                    observacoes);
+
+            output.println("Prontuario atualizado com sucesso.");
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
         }
     }
 }

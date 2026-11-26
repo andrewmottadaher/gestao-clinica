@@ -319,4 +319,27 @@ class MenuPacienteTest {
 
         assertTrue(resultado.contains("Paciente nao encontrado."));
     }
+
+    @Test
+    void deveInformarErroAoBuscarPacienteComIdNaoNumerico() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("3\nabc\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Informe um ID valido."));
+    }
 }

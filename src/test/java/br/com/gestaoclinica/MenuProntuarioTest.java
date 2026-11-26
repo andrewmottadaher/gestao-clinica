@@ -55,4 +55,23 @@ class MenuProntuarioTest {
         assertTrue(resultado.contains("5 - Excluir prontuario"));
         assertTrue(resultado.contains("0 - Voltar ao menu principal"));
     }
+
+    @Test
+    void deveEncerrarMenuDeProntuariosAoSelecionarZero() throws Exception {
+        ProntuarioService service = new ProntuarioService(
+                new ProntuarioRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("0\n");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuProntuario menu = new MenuProntuario(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

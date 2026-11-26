@@ -481,4 +481,34 @@ class MenuConsultaTest {
                         .get(0)
                         .getModalidade() == ModalidadeConsulta.PRESENCIAL);
     }
+
+    @Test
+    void deveInformarQuandoIdDoPacienteForInvalido() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository(),
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + "abc\n"
+                        + "1\n"
+                        + "26/11/2026 14:30\n"
+                        + "150.00\n"
+                        + "PRESENCIAL\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("ID do paciente invalido."));
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

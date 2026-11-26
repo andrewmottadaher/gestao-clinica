@@ -46,11 +46,41 @@ public class MenuProntuario {
 
             switch (opcao) {
                 case 0 -> output.println("Voltando ao menu principal...");
-                case 1, 2, 3, 4, 5 ->
+                case 1 -> cadastrar();
+                case 2, 3, 4, 5 ->
                     output.println("Opcao ainda nao implementada.");
                 default -> output.println("Opcao invalida.");
             }
 
         } while (opcao != 0);
+    }
+
+    private void cadastrar() {
+        try {
+            output.print("Informe o ID da consulta: ");
+            int consultaId = Integer.parseInt(scanner.nextLine().trim());
+
+            output.print("Informe o diagnostico: ");
+            String diagnostico = scanner.nextLine();
+
+            output.print("Informe a prescricao: ");
+            String prescricao = scanner.nextLine();
+
+            output.print("Informe as observacoes: ");
+            String observacoes = scanner.nextLine();
+
+            service.cadastrar(
+                    consultaId,
+                    diagnostico,
+                    prescricao,
+                    observacoes);
+
+            output.println("Prontuario cadastrado com sucesso.");
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
+        }
     }
 }

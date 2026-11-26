@@ -98,7 +98,7 @@ class MenuConsultaTest {
                 new MedicoRepository(),
                 new ProntuarioRepository());
 
-        Scanner scanner = new Scanner("1\n1\n1\n0\n");
+        Scanner scanner = new Scanner("1\n1\n1\n26/11/2026 14:30\n150.00\n0\n");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(outputStream);
 
@@ -119,7 +119,7 @@ class MenuConsultaTest {
                 new MedicoRepository(),
                 new ProntuarioRepository());
 
-        Scanner scanner = new Scanner("1\n1\n1\n0\n");
+        Scanner scanner = new Scanner("1\n1\n1\n26/11/2026 14:30\n150.00\n0\n");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(outputStream);
 
@@ -140,7 +140,7 @@ class MenuConsultaTest {
                 new MedicoRepository(),
                 new ProntuarioRepository());
 
-        Scanner scanner = new Scanner("1\n1\n1\n0\n");
+        Scanner scanner = new Scanner("1\n1\n1\n26/11/2026 14:30\n150.00\n0\n");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(outputStream);
 
@@ -161,7 +161,7 @@ class MenuConsultaTest {
                 new MedicoRepository(),
                 new ProntuarioRepository());
 
-        Scanner scanner = new Scanner("1\n1\n1\n26/11/2026 14:30\n0\n");
+        Scanner scanner = new Scanner("1\n1\n1\n26/11/2026 14:30\n150.00\n0\n");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(outputStream);
 
@@ -172,5 +172,26 @@ class MenuConsultaTest {
         String resultado = outputStream.toString();
 
         assertTrue(resultado.contains("Informe o valor da consulta:"));
+    }
+
+    @Test
+    void deveSolicitarModalidadeAposInformarValor() {
+        ConsultaService service = new ConsultaService(
+                new ConsultaRepository(),
+                new PacienteRepository(),
+                new MedicoRepository(),
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner("1\n1\n1\n26/11/2026 14:30\n150.00\n0\n");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Informe a modalidade da consulta"));
     }
 }

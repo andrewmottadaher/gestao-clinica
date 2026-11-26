@@ -1,5 +1,56 @@
 package br.com.gestaoclinica;
 
+import br.com.gestaoclinica.service.ProntuarioService;
+
+import java.io.PrintStream;
+import java.util.Scanner;
+
 public class MenuProntuario {
 
+    private final ProntuarioService service;
+    private final Scanner scanner;
+    private final PrintStream output;
+
+    public MenuProntuario(
+            ProntuarioService service,
+            Scanner scanner,
+            PrintStream output) {
+        this.service = service;
+        this.scanner = scanner;
+        this.output = output;
+    }
+
+    public void exibir() {
+        int opcao;
+
+        do {
+            output.println("\n==================================");
+            output.println("       GERENCIAR PRONTUARIOS");
+            output.println("==================================");
+            output.println("1 - Cadastrar prontuario");
+            output.println("2 - Listar prontuarios");
+            output.println("3 - Buscar prontuario por ID");
+            output.println("4 - Atualizar prontuario");
+            output.println("5 - Excluir prontuario");
+            output.println("0 - Voltar ao menu principal");
+            output.println("==================================");
+            output.print("Escolha uma opcao: ");
+
+            try {
+                opcao = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                output.println("Informe um numero inteiro valido.");
+                opcao = -1;
+                continue;
+            }
+
+            switch (opcao) {
+                case 0 -> output.println("Voltando ao menu principal...");
+                case 1, 2, 3, 4, 5 ->
+                    output.println("Opcao ainda nao implementada.");
+                default -> output.println("Opcao invalida.");
+            }
+
+        } while (opcao != 0);
+    }
 }

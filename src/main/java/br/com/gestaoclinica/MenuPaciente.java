@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Scanner;
 
 import br.com.gestaoclinica.service.PacienteService;
@@ -27,9 +28,13 @@ public class MenuPaciente {
             output.print("Data de nascimento (dd/MM/yyyy): ");
             String dataTexto = scanner.nextLine().trim();
 
+            DateTimeFormatter formatoData = DateTimeFormatter
+                    .ofPattern("dd/MM/uuuu")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
             LocalDate dataNascimento = LocalDate.parse(
                     dataTexto,
-                    DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                    formatoData);
 
             output.print("Sexo (M/F): ");
             String sexo = scanner.nextLine().trim().toUpperCase();

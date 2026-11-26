@@ -587,4 +587,46 @@ class MenuConsultaTest {
         assertTrue(resultado.contains("Paciente nao encontrado."));
         assertTrue(resultado.contains("Voltando ao menu principal..."));
     }
+
+    @Test
+    void deveInformarQuandoMedicoNaoForEncontrado() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+
+        Scanner scanner = new Scanner(
+                "1\n"
+                        + paciente.getId() + "\n"
+                        + "999\n"
+                        + "26/11/2026 14:30\n"
+                        + "150.00\n"
+                        + "PRESENCIAL\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Medico nao encontrado."));
+        assertTrue(resultado.contains("Voltando ao menu principal..."));
+    }
 }

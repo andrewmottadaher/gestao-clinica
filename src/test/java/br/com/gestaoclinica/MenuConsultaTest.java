@@ -740,4 +740,56 @@ class MenuConsultaTest {
         assertTrue(resultado.contains("Joao da Silva"));
         assertTrue(resultado.contains("Carlos Oliveira"));
     }
+    @Test
+    void deveBuscarConsultaPorIdPelaInterface() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+
+        service.agendar(
+                paciente.getId(),
+                medico.getId(),
+                LocalDateTime.of(2026, 11, 27, 14, 30),
+                new BigDecimal("150.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        Scanner scanner = new Scanner("3\n0\n");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        String resultado = outputStream.toString();
+
+        assertTrue(resultado.contains("Joao da Silva"));
+        assertTrue(resultado.contains("Carlos Oliveira"));
+    }
 }

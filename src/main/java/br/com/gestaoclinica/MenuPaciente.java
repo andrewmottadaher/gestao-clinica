@@ -134,5 +134,21 @@ public class MenuPaciente {
     }
 
     private void buscar() {
+        try {
+            output.print("Informe o ID do paciente: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            Paciente paciente = service.buscarPorId(id);
+
+            if (paciente == null) {
+                output.println("Paciente nao encontrado.");
+                return;
+            }
+
+            exibirDadosPaciente(paciente);
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        }
     }
 }

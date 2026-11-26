@@ -47,6 +47,10 @@ public class MenuConsulta {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+            if ("6".equals(opcao)) {
+                concluir();
+                continue;
+            }
             if ("5".equals(opcao)) {
                 cancelar();
                 continue;
@@ -313,6 +317,33 @@ public class MenuConsulta {
             }
 
             output.println("Consulta cancelada com sucesso.");
+
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
+        }
+    }
+
+    private void concluir() {
+        output.print("Informe o ID da consulta: ");
+
+        int consultaId;
+
+        try {
+            consultaId = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            output.println("ID da consulta invalido.");
+            return;
+        }
+
+        try {
+            boolean concluida = service.concluir(consultaId);
+
+            if (!concluida) {
+                output.println("Consulta nao encontrada.");
+                return;
+            }
+
+            output.println("Consulta concluida com sucesso.");
 
         } catch (IllegalArgumentException e) {
             output.println(e.getMessage());

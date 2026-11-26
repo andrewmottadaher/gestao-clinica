@@ -47,6 +47,10 @@ public class MenuConsulta {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+            if ("4".equals(opcao)) {
+                atualizar();
+                continue;
+            }
             if ("3".equals(opcao)) {
                 buscar();
                 continue;
@@ -188,5 +192,99 @@ public class MenuConsulta {
         output.println("Valor: " + consulta.getValor());
         output.println("Status: " + consulta.getStatus());
         output.println("Modalidade: " + consulta.getModalidade());
+    }
+
+    private void atualizar() {
+        output.print("Informe o ID da consulta: ");
+
+        int consultaId;
+
+        try {
+            consultaId = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            output.println("ID da consulta invalido.");
+            return;
+        }
+
+        Consulta consultaExistente = service.buscarPorId(consultaId);
+
+        if (consultaExistente == null) {
+            output.println("Consulta nao encontrada.");
+            return;
+        }
+
+        output.print("Informe o ID do paciente: ");
+        int pacienteId;
+
+        try {
+            pacienteId = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            output.println("ID do paciente invalido.");
+            return;
+        }
+
+        output.print("Informe o ID do medico: ");
+        int medicoId;
+
+        try {
+            medicoId = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            output.println("ID do medico invalido.");
+            return;
+        }
+
+        output.print("Informe a nova data e hora da consulta: ");
+
+        LocalDateTime dataHora;
+
+        try {
+            DateTimeFormatter formato = DateTimeFormatter
+                    .ofPattern("dd/MM/uuuu HH:mm")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+            dataHora = LocalDateTime.parse(scanner.nextLine(), formato);
+        } catch (DateTimeParseException e) {
+            output.println("Data e hora invalida.");
+            return;
+        }
+
+        output.print("Informe o novo valor da consulta: ");
+
+        BigDecimal valor;
+
+        try {
+            valor = new BigDecimal(scanner.nextLine().replace(",", "."));
+
+            if (valor.compareTo(BigDecimal.ZERO) < 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            output.println("Valor invalido.");
+            return;
+        }
+
+        output.println("Informe a nova modalidade (PRESENCIAL ou TELEMEDICINA):");
+        String modalidade = scanner.nextLine();
+
+        if (!"PRESENCIAL".equalsIgnoreCase(modalidade)
+                && !"TELEMEDICINA".equalsIgnoreCase(modalidade)) {
+            output.println("Modalidade invalida.");
+            return;
+        }
+
+        try {
+            service.atualizar(
+                    consultaId,
+                    pacienteId,
+                    medicoId,
+                    dataHora,
+                    valor,
+                    ModalidadeConsulta.valueOf(modalidade.toUpperCase()));
+
+            output.println("Consulta atualizada com sucesso.");
+
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
+        }
     }
 }

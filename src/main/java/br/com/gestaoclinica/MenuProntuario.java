@@ -1,8 +1,10 @@
 package br.com.gestaoclinica;
 
+import br.com.gestaoclinica.model.Prontuario;
 import br.com.gestaoclinica.service.ProntuarioService;
 
 import java.io.PrintStream;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class MenuProntuario {
@@ -47,7 +49,8 @@ public class MenuProntuario {
             switch (opcao) {
                 case 0 -> output.println("Voltando ao menu principal...");
                 case 1 -> cadastrar();
-                case 2, 3, 4, 5 ->
+                case 2 -> listar();
+                case 3, 4, 5 ->
                     output.println("Opcao ainda nao implementada.");
                 default -> output.println("Opcao invalida.");
             }
@@ -82,5 +85,32 @@ public class MenuProntuario {
         } catch (IllegalArgumentException e) {
             output.println(e.getMessage());
         }
+    }
+
+    private void listar() {
+        output.println("\n=== LISTA DE PRONTUARIOS ===");
+
+        var prontuarios = service.listarTodos();
+
+        if (prontuarios.isEmpty()) {
+            output.println("Nenhum prontuario cadastrado.");
+            return;
+        }
+
+        for (Prontuario prontuario : prontuarios) {
+            exibirDadosProntuario(prontuario);
+            output.println("------------------------------");
+        }
+    }
+
+    private void exibirDadosProntuario(Prontuario prontuario) {
+        output.println("ID: " + prontuario.getId());
+        output.println("ID da consulta: " + prontuario.getConsulta().getId());
+        output.println("Diagnostico: " + prontuario.getDiagnostico());
+        output.println("Prescricao: " + prontuario.getPrescricao());
+        output.println("Observacoes: " + prontuario.getObservacoes());
+        output.println("Data de registro: "
+                + prontuario.getDataRegistro().format(
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 }

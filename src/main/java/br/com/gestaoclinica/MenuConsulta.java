@@ -3,6 +3,7 @@ package br.com.gestaoclinica;
 import br.com.gestaoclinica.service.ConsultaService;
 
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -68,7 +69,20 @@ public class MenuConsulta {
                 }
 
                 output.print("Informe o valor da consulta: ");
-                String valor = scanner.nextLine();
+
+                BigDecimal valor;
+
+                try {
+                    valor = new BigDecimal(scanner.nextLine().replace(",", "."));
+
+                    if (valor.compareTo(BigDecimal.ZERO) < 0) {
+                        throw new NumberFormatException();
+                    }
+
+                } catch (NumberFormatException e) {
+                    output.println("Valor invalido.");
+                    continue;
+                }
 
                 output.println("Informe a modalidade da consulta (PRESENCIAL ou TELEMEDICINA):");
                 String modalidade = scanner.nextLine();

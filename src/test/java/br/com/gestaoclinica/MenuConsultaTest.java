@@ -779,7 +779,7 @@ class MenuConsultaTest {
                 new BigDecimal("150.00"),
                 ModalidadeConsulta.PRESENCIAL);
 
-        Scanner scanner = new Scanner("3\n0\n");
+        Scanner scanner = new Scanner("3\n1\n0\n");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(outputStream);
 

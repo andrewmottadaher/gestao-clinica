@@ -47,6 +47,10 @@ public class MenuConsulta {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+            if ("3".equals(opcao)) {
+                buscar();
+                continue;
+            }
             if ("2".equals(opcao)) {
                 listar();
                 continue;
@@ -156,5 +160,33 @@ public class MenuConsulta {
             output.println("Modalidade: " + consulta.getModalidade());
             output.println("----------------------------------");
         }
+    }
+
+    private void buscar() {
+        output.print("Informe o ID da consulta: ");
+
+        int id;
+
+        try {
+            id = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+            return;
+        }
+
+        Consulta consulta = service.buscarPorId(id);
+
+        if (consulta == null) {
+            output.println("Consulta nao encontrada.");
+            return;
+        }
+
+        output.println("ID: " + consulta.getId());
+        output.println("Paciente: " + consulta.getPaciente().getNome());
+        output.println("Medico: " + consulta.getMedico().getNome());
+        output.println("Data e hora: " + consulta.getDataHoraAgendamento());
+        output.println("Valor: " + consulta.getValor());
+        output.println("Status: " + consulta.getStatus());
+        output.println("Modalidade: " + consulta.getModalidade());
     }
 }

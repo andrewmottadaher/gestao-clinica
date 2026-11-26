@@ -360,7 +360,7 @@ class MenuPacienteTest {
                 new PacienteRepository(),
                 new ConsultaRepository());
 
-        Scanner scanner = new Scanner("4\n0\n");
+        Scanner scanner = new Scanner("4\n0\n0\n");
 
         ByteArrayOutputStream saida = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);

@@ -154,6 +154,64 @@ public class MenuPaciente {
     }
 
     private void atualizar() {
-        output.print("Informe o ID do paciente: ");
+        try {
+            output.print("Informe o ID do paciente: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            Paciente paciente = service.buscarPorId(id);
+
+            if (paciente == null) {
+                output.println("Paciente nao encontrado.");
+                return;
+            }
+
+            output.print("Nome: ");
+            String nome = scanner.nextLine().trim();
+
+            output.print("CPF: ");
+            String cpf = scanner.nextLine().trim();
+
+            output.print("Data de nascimento (dd/MM/yyyy): ");
+            String dataTexto = scanner.nextLine().trim();
+
+            DateTimeFormatter formatoData = DateTimeFormatter
+                    .ofPattern("dd/MM/uuuu")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+            LocalDate dataNascimento = LocalDate.parse(
+                    dataTexto,
+                    formatoData);
+
+            output.print("Sexo (M/F): ");
+            String sexo = scanner.nextLine().trim().toUpperCase();
+
+            output.print("Telefone: ");
+            String telefone = scanner.nextLine().trim();
+
+            output.print("Convenio (opcional): ");
+            String convenio = scanner.nextLine().trim();
+
+            if (convenio.isBlank()) {
+                convenio = null;
+            }
+
+            service.atualizar(
+                    id,
+                    nome,
+                    cpf,
+                    dataNascimento,
+                    sexo,
+                    telefone,
+                    convenio);
+
+            output.println("Paciente atualizado com sucesso.");
+
+        } catch (NumberFormatException e) {
+            output.println("Informe um ID valido.");
+        } catch (DateTimeParseException e) {
+            output.println("Erro: informe uma data valida no formato dd/MM/aaaa.");
+        } catch (IllegalArgumentException e) {
+            output.println(e.getMessage());
+        }
     }
 }

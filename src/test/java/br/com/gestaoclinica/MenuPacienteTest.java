@@ -508,4 +508,27 @@ class MenuPacienteTest {
         assertEquals("Maria Silva", paciente.getNome());
         assertEquals("98765432100", paciente.getCpf());
     }
+
+    @Test
+    void deveInformarErroAoAtualizarPacienteComIdNaoNumerico() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("4\nabc\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Informe um ID valido."));
+    }
 }

@@ -41,10 +41,12 @@ public class MenuConsulta {
                 return;
             }
             if ("1".equals(opcao)) {
-                output.println("Informe o ID do paciente:");
+                output.print("Informe o ID do paciente: ");
+                String pacienteId = scanner.nextLine();
+
+                output.println("Informe o ID do medico:");
                 continue;
             }
-
             output.println("Opcao invalida.");
         }
     }

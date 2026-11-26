@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
+import br.com.gestaoclinica.model.Paciente;
 import br.com.gestaoclinica.repository.ConsultaRepository;
 import br.com.gestaoclinica.repository.PacienteRepository;
 import br.com.gestaoclinica.service.PacienteService;
@@ -341,5 +342,87 @@ class MenuPacienteTest {
         String resultado = saida.toString(StandardCharsets.UTF_8);
 
         assertTrue(resultado.contains("Informe um ID valido."));
+    }
+
+    @Test
+    void deveIniciarAtualizacaoDePacientePelaInterface() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("4\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Informe o ID do paciente:"));
+    }
+
+    @Test
+    void deveAtualizarPacientePelaInterface() {
+        PacienteRepository repository = new PacienteRepository();
+
+        PacienteService service = new PacienteService(
+                repository,
+                new ConsultaRepository());
+
+        service.cadastrar(
+                "Joao Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                null);
+
+        Scanner scanner = new Scanner(
+                "4\n1\nJoao Santos\n12345678900\n15/06/1990\nM\n31888888888\nUnimed\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        Paciente pacienteAtualizado = service.buscarPorId(1);
+
+        assertEquals("Joao Santos", pacienteAtualizado.getNome());
+        assertEquals("31888888888", pacienteAtualizado.getTelefone());
+        assertEquals("Unimed", pacienteAtualizado.getConvenio());
+    }
+
+    @Test
+    void deveInformarErroAoAtualizarPacienteInexistente() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("4\n99\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Paciente nao encontrado."));
     }
 }

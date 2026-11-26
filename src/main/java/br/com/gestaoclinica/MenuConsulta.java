@@ -40,6 +40,7 @@ public class MenuConsulta {
                 output.println("Voltando ao menu principal...");
                 return;
             }
+            output.println("Opcao invalida.");
         }
     }
 }

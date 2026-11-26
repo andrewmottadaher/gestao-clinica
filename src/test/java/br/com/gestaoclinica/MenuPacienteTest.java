@@ -263,4 +263,60 @@ class MenuPacienteTest {
 
         assertTrue(resultado.contains("Nenhum paciente cadastrado."));
     }
+
+    @Test
+    void deveBuscarPacientePorIdPelaInterface() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        service.cadastrar(
+                "Maria da Silva",
+                "12345678900",
+                LocalDate.of(1985, 10, 20),
+                "F",
+                "31988888888",
+                "Unimed");
+
+        Scanner scanner = new Scanner("3\n1\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Maria da Silva"));
+        assertTrue(resultado.contains("12345678900"));
+        assertTrue(resultado.contains("20/10/1985"));
+    }
+
+    @Test
+    void deveInformarQuandoPacienteNaoForEncontradoNaBusca() {
+        PacienteService service = new PacienteService(
+                new PacienteRepository(),
+                new ConsultaRepository());
+
+        Scanner scanner = new Scanner("3\n99\n0\n");
+
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(saida, true, StandardCharsets.UTF_8);
+
+        MenuPaciente menu = new MenuPaciente(
+                service,
+                scanner,
+                output);
+
+        menu.exibir();
+
+        String resultado = saida.toString(StandardCharsets.UTF_8);
+
+        assertTrue(resultado.contains("Paciente nao encontrado."));
+    }
 }

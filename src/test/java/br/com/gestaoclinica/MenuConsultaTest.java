@@ -926,4 +926,66 @@ class MenuConsultaTest {
                 == br.com.gestaoclinica.model.StatusConsulta.CANCELADA);
     }
 
+    @Test
+    void deveConcluirConsultaPelaInterface() {
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository();
+        MedicoRepository medicoRepository = new MedicoRepository();
+
+        Especialidade especialidade = new Especialidade(
+                1,
+                "Cardiologia",
+                "Especialidade medica");
+
+        var paciente = pacienteRepository.salvar(
+                "Joao da Silva",
+                "12345678900",
+                LocalDate.of(1990, 5, 10),
+                "M",
+                "31999999999",
+                "Particular");
+
+        var medico = medicoRepository.salvar(
+                "Carlos Oliveira",
+                "CRM123",
+                "carlos@email.com",
+                "31988888888",
+                especialidade);
+
+        ConsultaService service = new ConsultaService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                new ProntuarioRepository());
+
+        var consulta = service.agendar(
+                paciente.getId(),
+                medico.getId(),
+                LocalDateTime.of(2026, 11, 27, 14, 30),
+                new BigDecimal("150.00"),
+                ModalidadeConsulta.PRESENCIAL);
+
+        Scanner scanner = new Scanner(
+                "6\n"
+                        + consulta.getId() + "\n"
+                        + "0\n"
+                        + "0\n"
+                        + "27/11/2026 16:00\n"
+                        + "100.00\n"
+                        + "PRESENCIAL\n"
+                        + "0\n");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(outputStream);
+
+        MenuConsulta menu = new MenuConsulta(service, scanner, output);
+
+        menu.exibir();
+
+        var consultaConcluida = consultaRepository.buscarPorId(consulta.getId());
+
+        assertTrue(
+                consultaConcluida.getStatus()
+                        == br.com.gestaoclinica.model.StatusConsulta.REALIZADA);
+    }
 }

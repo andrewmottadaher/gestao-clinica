@@ -1,5 +1,6 @@
 package br.com.gestaoclinica;
 
+import br.com.gestaoclinica.model.ModalidadeConsulta;
 import br.com.gestaoclinica.service.ConsultaService;
 
 import java.io.PrintStream;
@@ -93,7 +94,19 @@ public class MenuConsulta {
                     continue;
                 }
 
-                continue;
+                int idPaciente = Integer.parseInt(pacienteId);
+                int idMedico = Integer.parseInt(medicoId);
+
+                ModalidadeConsulta modalidadeConsulta = ModalidadeConsulta.valueOf(modalidade.toUpperCase());
+
+                service.agendar(
+                        idPaciente,
+                        idMedico,
+                        dataHora,
+                        valor,
+                        modalidadeConsulta);
+
+                output.println("Consulta agendada com sucesso.");
             }
             output.println("Opcao invalida.");
         }
